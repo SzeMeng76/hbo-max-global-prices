@@ -754,14 +754,38 @@ async def parse_max_prices(html: str, country_code: str) -> Tuple[List[Dict[str,
                                 
                                 # 方法2: 从兄弟元素查找套餐名
                                 if plan_name == "HBO Max Plan":
-                                    siblings = elem.find_previous_siblings(['div', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'])
-                                    for sibling in siblings[:3]:  # 只检查前3个兄弟元素
-                                        sibling_text = sibling.get_text(strip=True)
-                                        # 检查是否包含已知套餐名
-                                        if any(name in sibling_text.lower() for name in ['podstawowy', 'standardowy', 'premium', 'basic', 'standard', 'ultimate']):
-                                            if len(sibling_text) < 50:
-                                                plan_name = sibling_text
+                                    # 扩大搜索范围，包括前面和后面的兄弟元素
+                                    siblings = list(elem.find_previous_siblings(['div', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'span', 'p'])[:5]) + \
+                                              list(elem.find_next_siblings(['div', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'span', 'p'])[:5])
+                                    for sibling in siblings:
+                                        sibling_text = sibling.get_text(strip=True).lower()
+                                        # 检查是否包含已知套餐名（支持更多语言）
+                                        plan_keywords = {
+                                            'podstawowy': 'Basic', 'basic': 'Basic', 'basis': 'Basic', 'temel': 'Basic',
+                                            'standardowy': 'Standard', 'standard': 'Standard', 'standart': 'Standard',
+                                            'premium': 'Premium', 'prémium': 'Premium', 'en üst': 'Premium',
+                                            'ultimate': 'Ultimate', 'platino': 'Ultimate', 'último': 'Ultimate'
+                                        }
+                                        for keyword, name in plan_keywords.items():
+                                            if keyword in sibling_text and len(sibling_text) < 100:
+                                                plan_name = name
+                                                print(f"    🔍 {country_code}: 从兄弟元素找到套餐名: '{sibling_text}' -> {name}")
                                                 break
+                                        if plan_name != "HBO Max Plan":
+                                            break
+                                
+                                # 方法2.5: 基于价格推断套餐类型（土耳其特殊处理）
+                                if plan_name == "HBO Max Plan" and country_code.lower() == 'tr':
+                                    # 过滤掉节省金额，只保留实际套餐价格
+                                    if price_number in [459.8, 599.8]:
+                                        print(f"    ⚠️ {country_code}: 跳过节省金额: {price_number} TL")
+                                        continue
+                                    elif price_number in [229.9, 2299.0]:
+                                        plan_name = "Standard"
+                                        print(f"    💡 {country_code}: 基于价格推断套餐: {price_number} TL -> Standard")
+                                    elif price_number in [299.9, 2999.0]:
+                                        plan_name = "Premium" 
+                                        print(f"    💡 {country_code}: 基于价格推断套餐: {price_number} TL -> Premium")
                                 
                                 # 方法3: 从当前元素的class或data属性推断
                                 if plan_name == "HBO Max Plan" and elem.get('class'):
