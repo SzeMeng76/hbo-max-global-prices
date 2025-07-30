@@ -100,6 +100,206 @@ COUNTRY_NAMES = {
     "pl": "Poland", "tr": "Turkey"
 }
 
+# HBO Max 套餐名统一映射表（参考Spotify项目架构）
+# 将各种语言/变体的套餐名统一为标准英文名称
+HBO_PLAN_NAME_MAP = {
+    # 标准英文套餐名（保持不变）
+    "mobile": "Mobile",
+    "standard": "Standard", 
+    "ultimate": "Ultimate",
+    "premium": "Premium",
+    "basic": "Basic",
+    "max": "Max",
+    
+    # 西班牙语套餐名映射
+    "móvil": "Mobile",
+    "movil": "Mobile",
+    "estándar": "Standard",
+    "estandar": "Standard",
+    "último": "Ultimate",
+    "ultimo": "Ultimate",
+    "máximo": "Ultimate",
+    "maximo": "Ultimate",
+    "platino": "Ultimate",  # 重要：Platino = Ultimate
+    "básico": "Basic",
+    "basico": "Basic",
+    "premium": "Premium",
+    
+    # 拉美地区常见套餐名
+    "básico con anuncios": "Basic",
+    "basico con anuncios": "Basic",
+    
+    # 葡萄牙语套餐名映射
+    "móvel": "Mobile",
+    "movel": "Mobile",
+    "padrão": "Standard",
+    "padrao": "Standard",
+    "supremo": "Ultimate",
+    "máximo": "Ultimate",
+    "maximo": "Ultimate",
+    "básico": "Basic",
+    "basico": "Basic",
+    
+    # 法语套餐名映射
+    "mobile": "Mobile",
+    "standard": "Standard",
+    "premium": "Premium",
+    "ultime": "Ultimate",
+    "de base": "Basic",
+    "base": "Basic",
+    
+    # 德语套餐名映射
+    "mobil": "Mobile",
+    "standard": "Standard",
+    "premium": "Premium",
+    "ultimativ": "Ultimate",
+    "basis": "Basic",
+    "grund": "Basic",
+    
+    # 意大利语套餐名映射
+    "mobile": "Mobile",
+    "standard": "Standard",
+    "premium": "Premium",
+    "ultimo": "Ultimate",
+    "base": "Basic",
+    "di base": "Basic",
+    
+    # 荷兰语套餐名映射
+    "mobiel": "Mobile",
+    "standaard": "Standard",
+    "premium": "Premium",
+    "ultiem": "Ultimate",
+    "basis": "Basic",
+    
+    # 波兰语套餐名映射
+    "mobilny": "Mobile",
+    "standardowy": "Standard",
+    "premium": "Premium",
+    "najwyższy": "Ultimate",
+    "podstawowy": "Basic",
+    
+    # 捷克语套餐名映射
+    "mobilní": "Mobile",
+    "standardní": "Standard",
+    "premium": "Premium",
+    "ultimátní": "Ultimate",
+    "základní": "Basic",
+    
+    # 匈牙利语套餐名映射
+    "mobil": "Mobile",
+    "standard": "Standard",
+    "prémium": "Premium",
+    "premium": "Premium",
+    "végső": "Ultimate",
+    "alap": "Basic",
+    
+    # 土耳其语套餐名映射
+    "mobil": "Mobile",
+    "standart": "Standard",
+    "premium": "Premium",
+    "en üst": "Ultimate",
+    "temel": "Basic",
+    
+    # 亚洲语言套餐名映射（如果有）
+    "手机": "Mobile",
+    "移动": "Mobile",
+    "标准": "Standard",
+    "高级": "Premium",
+    "至尊": "Ultimate",
+    "终极": "Ultimate",
+    "基础": "Basic",
+    "基本": "Basic",
+    
+    # 繁体中文套餐名映射
+    "標準": "Standard",
+    "高級": "Ultimate",  # 高級在HBO Max中通常是最高级套餐
+    "手機": "Mobile",
+    "移動": "Mobile",
+    "基礎": "Basic",
+    "基本": "Basic",
+    "終極": "Ultimate",
+    "至尊": "Ultimate",
+    
+    # 马来语套餐名映射
+    "mudah alih": "Mobile",
+    "standard": "Standard",
+    "premium": "Premium",
+    "muktamad": "Ultimate",
+    "asas": "Basic",
+    
+    # 泰语套餐名映射
+    "มือถือ": "Mobile",
+    "มาตรฐาน": "Standard", 
+    "พรีเมียม": "Premium",
+    "สูงสุด": "Ultimate",
+    "พื้นฐาน": "Basic",
+    
+    # 印尼语套餐名映射
+    "mobile": "Mobile",
+    "standar": "Standard",
+    "premium": "Premium",
+    "tertinggi": "Ultimate",
+    "dasar": "Basic",
+    
+    # 菲律宾语(塔加洛语)套餐名映射
+    "mobile": "Mobile",
+    "karaniwan": "Standard", 
+    "premium": "Premium",
+    "pinakamataas": "Ultimate",
+    "pangunahing": "Basic",
+    
+    # 其他可能的变体
+    "mob": "Mobile",
+    "std": "Standard",
+    "prem": "Premium",
+    "ult": "Ultimate",
+    "bas": "Basic",
+    "max": "Max"
+}
+
+def normalize_plan_name(plan_name: str) -> str:
+    """
+    统一套餐名称，将各种语言/变体的套餐名转换为标准英文名称
+    参考Spotify项目的架构设计
+    """
+    if not plan_name:
+        return "Unknown Plan"
+    
+    # 清理套餐名称
+    cleaned_name = plan_name.strip().lower()
+    
+    # 移除常见的前缀/后缀
+    prefixes_to_remove = ['hbo max', 'max', 'hbo', 'plan', 'subscription', 'abonnement', 'suscripción']
+    for prefix in prefixes_to_remove:
+        if cleaned_name.startswith(prefix):
+            cleaned_name = cleaned_name[len(prefix):].strip()
+        if cleaned_name.endswith(prefix):
+            cleaned_name = cleaned_name[:-len(prefix)].strip()
+    
+    # 移除特殊字符和多余空格
+    cleaned_name = re.sub(r'[^\w\s]', ' ', cleaned_name)
+    cleaned_name = ' '.join(cleaned_name.split())
+    
+    # 检查映射表
+    if cleaned_name in HBO_PLAN_NAME_MAP:
+        normalized = HBO_PLAN_NAME_MAP[cleaned_name]
+        print(f"    📋 套餐名映射: '{plan_name}' -> '{normalized}'")
+        return normalized
+    
+    # 部分匹配检查（用于处理复合名称）
+    for key, value in HBO_PLAN_NAME_MAP.items():
+        if key in cleaned_name or cleaned_name in key:
+            print(f"    📋 套餐名部分匹配: '{plan_name}' -> '{value}' (匹配关键词: '{key}')")
+            return value
+    
+    # 如果没有找到映射，返回首字母大写的原名称
+    fallback_name = ' '.join(word.capitalize() for word in cleaned_name.split())
+    if not fallback_name:
+        fallback_name = "Unknown Plan"
+    
+    print(f"    ⚠️ 套餐名未找到映射: '{plan_name}' -> '{fallback_name}' (建议添加到映射表)")
+    return fallback_name
+
 # 请求头配置
 USER_AGENTS: List[str] = [
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0 Safari/537.36",
@@ -300,15 +500,17 @@ def extract_price_number(price_str: str) -> float:
 def detect_currency(price_str: str, country_code: str = None) -> str:
     """检测价格字符串中的货币，优先使用国家上下文"""
     
-    # 国家到货币的精确映射
+    # 国家到货币的精确映射（最高优先级）
     country_currency_map = {
         'my': 'MYR',     # Malaysia - RM
-        'sg': 'SGD',     # Singapore - S$
+        'sg': 'SGD',     # Singapore - S$ 或 $（需要特别处理）
         'th': 'THB',     # Thailand - ฿
         'id': 'IDR',     # Indonesia - Rp
         'ph': 'PHP',     # Philippines - ₱
-        'hk': 'HKD',     # Hong Kong - HK$
+        'hk': 'HKD',     # Hong Kong - HK$ 或 $（需要特别处理）
         'tw': 'TWD',     # Taiwan - NT$
+        'au': 'AUD',     # Australia - A$ 或 $（需要特别处理）
+        'us': 'USD',     # United States - $
         'co': 'COP',     # Colombia - $
         'cr': 'CRC',     # Costa Rica - ₡
         'gt': 'GTQ',     # Guatemala - Q
@@ -317,7 +519,7 @@ def detect_currency(price_str: str, country_code: str = None) -> str:
         'mx': 'MXN',     # Mexico - $
         'hn': 'HNL',     # Honduras - L
         'ni': 'NIO',     # Nicaragua - C$
-        'pa': 'PAB',     # Panama - B/.
+        'pa': 'PAB',     # Panama - B/. 或 $
         'ar': 'ARS',     # Argentina - $
         'bo': 'BOB',     # Bolivia - Bs
         'do': 'DOP',     # Dominican Republic - RD$
@@ -326,8 +528,6 @@ def detect_currency(price_str: str, country_code: str = None) -> str:
         'py': 'PYG',     # Paraguay - Gs
         'cl': 'CLP',     # Chile - $
         'br': 'BRL',     # Brazil - R$
-        'us': 'USD',     # United States - $
-        'au': 'AUD',     # Australia - A$
         'pl': 'PLN',     # Poland - zł
         'cz': 'CZK',     # Czech Republic - Kč
         'hu': 'HUF',     # Hungary - Ft
@@ -354,63 +554,49 @@ def detect_currency(price_str: str, country_code: str = None) -> str:
         'ad': 'EUR',     # Andorra - €
     }
     
-    # 如果提供了国家代码，首先尝试使用国家映射
+    # 优先使用国家上下文（最重要的修复）
     if country_code:
         country_code_lower = country_code.lower()
         if country_code_lower in country_currency_map:
-            mapped_currency = country_currency_map[country_code_lower]
-            
-            # 验证价格字符串中是否有对应的符号
-            currency_patterns = {
-                'GTQ': ['Q'],                           # Guatemala
-                'CRC': ['₡'],                          # Costa Rica
-                'MYR': ['RM'],                         # Malaysia
-                'THB': ['฿'],                          # Thailand
-                'IDR': ['Rp'],                         # Indonesia
-                'PEN': ['S/.'],                        # Peru
-                'HNL': ['L'],                          # Honduras
-                'PYG': ['Gs'],                         # Paraguay
-                'SGD': ['S$'],                         # Singapore
-                'HKD': ['HK$'],                        # Hong Kong
-                'TWD': ['NT$'],                        # Taiwan
-                'TRY': ['₺'],                          # Turkey
-                'PLN': ['zł'],                         # Poland
-                'CZK': ['Kč'],                         # Czech Republic
-                'HUF': ['Ft'],                         # Hungary
-                'BRL': ['R$'],                         # Brazil
-                'AUD': ['A$'],                         # Australia
-                'EUR': ['€'],                          # Euro countries
-                'USD': ['$'],                          # USD countries
-            }
-            
-            # 检查是否有对应的符号模式
-            if mapped_currency in currency_patterns:
-                patterns = currency_patterns[mapped_currency]
-                for pattern in patterns:
-                    if pattern in price_str:
-                        return mapped_currency
-            
-            # 如果没有找到特定符号但映射存在，仍然返回映射的货币
-            # 这对于使用通用$符号的国家很有用
-            if mapped_currency in ['USD', 'COP', 'UYU', 'MXN', 'ARS', 'CLP'] and '$' in price_str:
-                return mapped_currency
+            expected_currency = country_currency_map[country_code_lower]
+            print(f"    💱 {country_code}: 使用国家映射货币 {expected_currency}")
+            return expected_currency
     
-    # 回退到原有的符号检测逻辑
+    # 详细的货币符号检测（按优先级排序）
     currency_symbols = {
-        'US$': 'USD', 'USD': 'USD', 
-        'C$': 'CAD', 'CA$': 'CAD', 'A$': 'AUD', 'S$': 'SGD', 'HK$': 'HKD',
-        'MX$': 'MXN', 'NZ$': 'NZD', 'NT$': 'TWD', 'R$': 'BRL',
-        '€': 'EUR', 'EUR': 'EUR', '£': 'GBP', 'GBP': 'GBP',
+        # 优先检查带前缀的特殊符号（避免与通用$混淆）
+        'US$': 'USD', 'USD': 'USD',
+        'S$': 'SGD', 'SGD': 'SGD',  # 新加坡元
+        'HK$': 'HKD', 'HKD': 'HKD',  # 港币
+        'A$': 'AUD', 'AUD': 'AUD',   # 澳元
+        'C$': 'CAD', 'CA$': 'CAD',   # 加元
+        'MX$': 'MXN', 'NZ$': 'NZD', 'NT$': 'TWD',
+        'R$': 'BRL', 'RD$': 'DOP',   # 巴西雷亚尔, 多米尼加比索
+        
+        # 特殊货币符号
+        '€': 'EUR', 'EUR': 'EUR',
+        '£': 'GBP', 'GBP': 'GBP', 
         '¥': 'JPY', '￥': 'JPY', 'JPY': 'JPY',
-        '₹': 'INR', 'INR': 'INR', '₱': 'PHP', 'PHP': 'PHP',
+        '₹': 'INR', 'INR': 'INR',
+        '₱': 'PHP', 'PHP': 'PHP',
         '₪': 'ILS', '₨': 'PKR', '₦': 'NGN', '₵': 'GHS',
         '₡': 'CRC', '₩': 'KRW', '₴': 'UAH', '₽': 'RUB',
-        '₺': 'TRY', 'TRY': 'TRY', 'zł': 'PLN', 'PLN': 'PLN',
-        'Kč': 'CZK', 'CZK': 'CZK', 'Ft': 'HUF', 'HUF': 'HUF',
+        '₺': 'TRY', 'TRY': 'TRY',
+        
+        # 字母缩写
+        'zł': 'PLN', 'PLN': 'PLN',
+        'Kč': 'CZK', 'CZK': 'CZK', 
+        'Ft': 'HUF', 'HUF': 'HUF',
         'CHF': 'CHF', 'NOK': 'NOK', 'SEK': 'SEK', 'DKK': 'DKK',
-        'RM': 'MYR', '฿': 'THB', 'Rp': 'IDR', 'S/.': 'PEN',
-        'L': 'HNL', 'Gs': 'PYG', 'Q': 'GTQ', 'kr': 'SEK',
-        '$': 'USD'  # 默认$为USD
+        'RM': 'MYR', 'MYR': 'MYR',  # 马来西亚林吉特
+        '฿': 'THB', 'THB': 'THB',    # 泰铢
+        'Rp': 'IDR', 'IDR': 'IDR',   # 印尼盾
+        'S/.': 'PEN', 'PEN': 'PEN',  # 秘鲁索尔
+        'L': 'HNL', 'Gs': 'PYG', 'Q': 'GTQ',
+        'kr': 'SEK',  # 默认kr为瑞典克朗
+        
+        # 最后检查通用美元符号（优先级最低）
+        '$': 'USD'
     }
     
     # 按符号长度从长到短排序，优先匹配更具体的符号
@@ -459,7 +645,10 @@ async def parse_max_prices(html: str, country_code: str) -> Tuple[List[Dict[str,
                         name = name_elem.get_text(strip=True)
                         price = price_elem.get_text(strip=True)
                         
-                        key = (p, name, price)
+                        # 统一套餐名称（参考Spotify项目架构）
+                        normalized_name = normalize_plan_name(name)
+                        
+                        key = (p, normalized_name, price)
                         if key in seen:
                             continue
                         seen.add(key)
@@ -468,16 +657,29 @@ async def parse_max_prices(html: str, country_code: str) -> Tuple[List[Dict[str,
                         price_number = extract_price_number(price)
                         currency = detect_currency(price, country_code)
                         
+                        # 处理年付价格：如果是年付且价格格式为"12x $X.XX/mes"，计算年度总价
+                        annual_total_price = price_number
+                        if p == 'yearly' and price_number > 0:
+                            # 检查是否是"12x"格式
+                            if '12x' in price or '12 x' in price:
+                                # 年付价格 = 月价格 × 12
+                                annual_total_price = price_number * 12
+                                print(f"    💰 {country_code}: 年付价格计算: {price_number}/月 × 12 = {annual_total_price}/年")
+                        
                         plan_data = {
                             "plan_group": p,
                             "label": label,
-                            "name": name,
+                            "name": normalized_name,  # 使用统一后的套餐名
+                            "original_name": name,    # 保留原始套餐名用于调试
                             "price": price,
-                            "price_number": price_number,
+                            "price_number": annual_total_price,  # 使用计算后的年度价格
+                            "monthly_price": price_number,       # 保留原始月价格用于显示
                             "currency": currency
                         }
                         plans.append(plan_data)
-                        print(f"✅ {country_code}: {name} ({label}) - {price} ({currency})")
+                        print(f"✅ {country_code}: {normalized_name} ({label}) - {price} ({currency})")
+                        if name != normalized_name:
+                            print(f"    📋 原始名称: '{name}' -> 统一名称: '{normalized_name}'")
                         
                     except Exception as e:
                         print(f"⚠️ {country_code}: 解析套餐失败 - {e}")
@@ -503,10 +705,14 @@ async def parse_max_prices(html: str, country_code: str) -> Tuple[List[Dict[str,
                     price_number = extract_price_number(text)
                     currency = detect_currency(text, country_code)
                     if price_number > 0:
+                        # 统一套餐名称
+                        normalized_name = normalize_plan_name("HBO Max Plan")
+                        
                         plans.append({
                             "plan_group": "unknown",
                             "label": "未知周期",
-                            "name": "HBO Max Plan",
+                            "name": normalized_name,
+                            "original_name": "HBO Max Plan",
                             "price": text,
                             "price_number": price_number,
                             "currency": currency

@@ -125,24 +125,84 @@ def convert_currency(amount: float, from_currency: str, to_currency: str, rates:
         return None
 
 def standardize_plan_name(plan_name: str) -> str:
-    """标准化套餐名称（参考Spotify项目逻辑）"""
+    """标准化套餐名称（使用统一的映射表，与max_scraper.py保持一致）"""
     if not plan_name:
         return "Unknown Plan"
     
-    plan_lower = plan_name.lower()
+    # 使用与max_scraper.py相同的normalize_plan_name逻辑
+    # 这里简化版本，主要处理HBO Max的标准套餐名
     
-    # HBO Max 特定的套餐名称标准化
-    if any(keyword in plan_lower for keyword in ['with ads', 'ad-supported', 'advertisement']):
-        return "HBO Max (With Ads)"
-    elif any(keyword in plan_lower for keyword in ['ad-free', 'no ads', 'premium']):
-        return "HBO Max (Ad-Free)"
-    elif any(keyword in plan_lower for keyword in ['ultimate', 'max', 'plus']):
-        return "HBO Max Ultimate"
-    elif any(keyword in plan_lower for keyword in ['basic', 'standard']):
-        return "HBO Max Basic"
-    else:
-        # 保持原始名称，但清理格式
-        return plan_name.strip()
+    plan_lower = plan_name.lower().strip()
+    
+    # 移除常见的前缀/后缀
+    prefixes_to_remove = ['hbo max', 'max', 'hbo', 'plan', 'subscription']
+    for prefix in prefixes_to_remove:
+        if plan_lower.startswith(prefix):
+            plan_lower = plan_lower[len(prefix):].strip()
+        if plan_lower.endswith(prefix):
+            plan_lower = plan_lower[:-len(prefix)].strip()
+    
+    # HBO Max 标准套餐名映射
+    plan_mapping = {
+        'mobile': 'Mobile',
+        'standard': 'Standard', 
+        'ultimate': 'Ultimate',
+        'premium': 'Premium',
+        'basic': 'Basic',
+        
+        # 西班牙语
+        'móvil': 'Mobile',
+        'movil': 'Mobile',
+        'estándar': 'Standard',
+        'estandar': 'Standard',
+        'último': 'Ultimate',
+        'ultimo': 'Ultimate',
+        'platino': 'Ultimate',  # 重要：Platino = Ultimate
+        'básico': 'Basic',
+        'basico': 'Basic',
+        
+        # 拉美地区完整套餐名
+        'básico con anuncios': 'Basic',
+        'basico con anuncios': 'Basic',
+        
+        # 葡萄牙语
+        'móvel': 'Mobile',
+        'movel': 'Mobile',
+        'padrão': 'Standard',
+        'padrao': 'Standard',
+        'supremo': 'Ultimate',
+        
+        # 其他语言的常见映射
+        'mobil': 'Mobile',
+        'standardowy': 'Standard',
+        'ultimativ': 'Ultimate',
+        'mobilní': 'Mobile',
+        'standardní': 'Standard',
+        
+        # 中文套餐名映射
+        '手机': 'Mobile',
+        '标准': 'Standard',
+        '高级': 'Premium',
+        '至尊': 'Ultimate',
+        '基础': 'Basic',
+        '標準': 'Standard',       # 繁体中文
+        '高級': 'Ultimate',       # 繁体中文：高級通常是最高级
+        '手機': 'Mobile',         # 繁体中文
+        '基礎': 'Basic'          # 繁体中文
+    }
+    
+    # 检查直接映射
+    if plan_lower in plan_mapping:
+        return plan_mapping[plan_lower]
+    
+    # 部分匹配检查
+    for key, value in plan_mapping.items():
+        if key in plan_lower or plan_lower in key:
+            return value
+    
+    # 如果没有找到映射，返回首字母大写的原名称
+    fallback_name = ' '.join(word.capitalize() for word in plan_lower.split())
+    return fallback_name if fallback_name else "Unknown Plan"
 
 def process_country_data(country_data: Dict[str, Any], rates: Dict[str, float]) -> List[Dict[str, Any]]:
     """处理单个国家的数据"""
@@ -176,6 +236,7 @@ def process_country_data(country_data: Dict[str, Any], rates: Dict[str, float]) 
                     'original_price': original_price,
                     'original_currency': currency,
                     'original_price_number': price_number,
+                    'monthly_price': plan.get('monthly_price', price_number),  # 保留月价格用于显示
                     'price_cny': round(cny_price, 2),
                     'exchange_rate_used': rates.get(currency, 1.0) if currency != BASE_CURRENCY else rates.get(TARGET_CURRENCY, 7.0)
                 }
@@ -268,27 +329,35 @@ def get_chinese_country_name(english_name: str) -> str:
     return country_map.get(english_name, english_name)
 
 def generate_top_cheapest(all_plans: List[Dict[str, Any]], plan_type: str = "all", limit: int = 10) -> List[Dict[str, Any]]:
-    """生成最便宜的套餐排行榜"""
-    # 根据套餐类型过滤
+    """生成最便宜的套餐排行榜（参考Spotify项目的分类逻辑）"""
+    # 根据套餐类型过滤（更精确的分类）
     if plan_type == "monthly":
-        filtered_plans = [p for p in all_plans if p.get('plan_group') == 'monthly']
+        filtered_plans = [p for p in all_plans if p.get('plan_group') == 'monthly' or '每月' in p.get('billing_cycle', '')]
     elif plan_type == "yearly":
-        filtered_plans = [p for p in all_plans if p.get('plan_group') == 'yearly']
-    elif plan_type == "ad_free":
-        filtered_plans = [p for p in all_plans if 'ad-free' in p.get('plan_name', '').lower()]
-    elif plan_type == "with_ads":
-        filtered_plans = [p for p in all_plans if 'with ads' in p.get('plan_name', '').lower()]
+        filtered_plans = [p for p in all_plans if p.get('plan_group') == 'yearly' or '每年' in p.get('billing_cycle', '')]
+    elif plan_type == "mobile":
+        filtered_plans = [p for p in all_plans if 'mobile' in p.get('plan_name', '').lower()]
+    elif plan_type == "standard":
+        filtered_plans = [p for p in all_plans if 'standard' in p.get('plan_name', '').lower()]
+    elif plan_type == "ultimate":
+        filtered_plans = [p for p in all_plans if 'ultimate' in p.get('plan_name', '').lower()]
+    elif plan_type == "premium":
+        filtered_plans = [p for p in all_plans if 'premium' in p.get('plan_name', '').lower()]
+    elif plan_type == "basic":
+        filtered_plans = [p for p in all_plans if 'basic' in p.get('plan_name', '').lower()]
     else:
         filtered_plans = all_plans
     
     # 按价格排序
     sorted_plans = sorted(filtered_plans, key=lambda x: x.get('price_cny', float('inf')))
     
-    # 生成排行榜
+    # 生成排行榜，添加排名
     top_plans = []
     for i, plan in enumerate(sorted_plans[:limit]):
         top_plan = plan.copy()
         top_plan['rank'] = i + 1
+        # 格式化价格显示（类似Spotify的格式）
+        top_plan['price_number'] = str(plan.get('original_price_number', 0))
         top_plans.append(top_plan)
     
     return top_plans
@@ -339,25 +408,31 @@ def main():
     print(f"  处理失败: {failed_countries} 个国家") 
     print(f"  总套餐数: {len(all_plans)} 个")
     
-    # 生成各种排行榜
+    # 生成各种排行榜（参考Spotify项目的分类方式）
     print(f"\n🏆 生成排行榜...")
     
     # 总体最便宜的前10名
     top_10_all = generate_top_cheapest(all_plans, "all", 10)
     
-    # 按月付费最便宜的前10名
-    top_10_monthly = generate_top_cheapest(all_plans, "monthly", 10)
+    # 按套餐类型分类的排行榜
+    top_10_mobile = generate_top_cheapest(all_plans, "mobile", 10)
+    top_10_standard = generate_top_cheapest(all_plans, "standard", 10)
+    top_10_ultimate = generate_top_cheapest(all_plans, "ultimate", 10)
     
-    # 按年付费最便宜的前10名
+    # 按付费周期分类的排行榜
+    top_10_monthly = generate_top_cheapest(all_plans, "monthly", 10)
     top_10_yearly = generate_top_cheapest(all_plans, "yearly", 10)
     
-    # 无广告版本最便宜的前10名
-    top_10_ad_free = generate_top_cheapest(all_plans, "ad_free", 10)
+    # 新增：Ultimate年付套餐排行榜（组合过滤）
+    ultimate_yearly_plans = [p for p in all_plans 
+                           if 'ultimate' in p.get('plan_name', '').lower() 
+                           and (p.get('plan_group') == 'yearly' or '每年' in p.get('billing_cycle', ''))]
+    top_10_ultimate_yearly = sorted(ultimate_yearly_plans, key=lambda x: x.get('price_cny', float('inf')))[:10]
+    for i, plan in enumerate(top_10_ultimate_yearly, 1):
+        plan['rank'] = i
+        plan['price_number'] = str(plan.get('original_price_number', 0))
     
-    # 含广告版本最便宜的前10名
-    top_10_with_ads = generate_top_cheapest(all_plans, "with_ads", 10)
-    
-    # 构建输出数据
+    # 构建输出数据（参考Spotify项目的JSON结构）
     output_data = {
         "_metadata": {
             "generated_at": datetime.now().isoformat(),
@@ -371,29 +446,39 @@ def main():
             "cny_exchange_rate": rates.get(TARGET_CURRENCY, 0)
         },
         "_top_10_cheapest_all": {
-            "description": "Top 10 cheapest HBO Max plans (all types)",
+            "description": "最便宜的10个HBO Max套餐（所有类型）",
             "updated_at": datetime.now().strftime('%Y-%m-%d'),
             "data": top_10_all
         },
+        "_top_10_cheapest_mobile": {
+            "description": "最便宜的10个Mobile套餐",
+            "updated_at": datetime.now().strftime('%Y-%m-%d'),
+            "data": top_10_mobile
+        },
+        "_top_10_cheapest_standard": {
+            "description": "最便宜的10个Standard套餐", 
+            "updated_at": datetime.now().strftime('%Y-%m-%d'),
+            "data": top_10_standard
+        },
+        "_top_10_cheapest_ultimate": {
+            "description": "最便宜的10个Ultimate套餐",
+            "updated_at": datetime.now().strftime('%Y-%m-%d'), 
+            "data": top_10_ultimate
+        },
         "_top_10_cheapest_monthly": {
-            "description": "Top 10 cheapest HBO Max monthly plans", 
+            "description": "最便宜的10个按月付费套餐", 
             "updated_at": datetime.now().strftime('%Y-%m-%d'),
             "data": top_10_monthly
         },
         "_top_10_cheapest_yearly": {
-            "description": "Top 10 cheapest HBO Max yearly plans",
+            "description": "最便宜的10个按年付费套餐",
             "updated_at": datetime.now().strftime('%Y-%m-%d'), 
             "data": top_10_yearly
         },
-        "_top_10_cheapest_ad_free": {
-            "description": "Top 10 cheapest HBO Max ad-free plans",
-            "updated_at": datetime.now().strftime('%Y-%m-%d'),
-            "data": top_10_ad_free
-        },
-        "_top_10_cheapest_with_ads": {
-            "description": "Top 10 cheapest HBO Max plans with ads",
-            "updated_at": datetime.now().strftime('%Y-%m-%d'),
-            "data": top_10_with_ads
+        "_top_10_cheapest_ultimate_yearly": {
+            "description": "最便宜的10个Ultimate年付套餐",
+            "updated_at": datetime.now().strftime('%Y-%m-%d'), 
+            "data": top_10_ultimate_yearly
         }
     }
     
