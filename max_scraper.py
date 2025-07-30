@@ -55,8 +55,8 @@ REGION_PATHS: Dict[str, List[str]] = {
     "ba": ["/ba/en", "/ba/hr"],
     "bg": ["/bg/en", "/bg/bg"],
     "hr": ["/hr/en", "/hr/hr"],
-    "cz": ["/cz/en", "/cz/cs"],
-    "hu": ["/hu/en", "/hu/hu"],
+    "cz": ["/cz/cs"],
+    "hu": ["/hu/hu"],
     "mk": ["/mk/en", "/mk/mk"],
     "md": ["/md/en", "/md/ro"],
     "me": ["/me/en", "/me/sr"],
@@ -64,17 +64,17 @@ REGION_PATHS: Dict[str, List[str]] = {
     "rs": ["/rs/en", "/rs/sr"],
     "sk": ["/sk/en", "/sk/sk"],
     "si": ["/si/en", "/si/sl"],
-    "dk": ["/dk/en", "/dk/da"],
+    "dk": ["/dk/da"],
     "fi": ["/fi/en", "/fi/fi"],
-    "no": ["/no/en", "/no/no"],
-    "se": ["/se/en", "/se/sv"],
+    "no": ["/no/no"],
+    "se": ["/se/sv"],
     "es": ["/es/en", "/es/es"],
     "fr": ["/fr/en", "/fr/fr"],
     "be": ["/be/en", "/be/nl", "/be/fr"],
     "pt": ["/pt/en", "/pt/pt"],
     "nl": ["/nl/en", "/nl/nl"],
     "pl": ["/pl/pl"],
-    "tr": ["/tr/en", "/tr/tr"],
+    "tr": ["/tr/tr"],
 }
 
 # 国家名称映射
@@ -699,26 +699,60 @@ async def parse_max_prices(html: str, country_code: str) -> Tuple[List[Dict[str,
         price_elements = soup.find_all(['div', 'span', 'p'], class_=re.compile(r'price|cost|plan', re.I))
         if price_elements:
             print(f"📊 {country_code}: 找到 {len(price_elements)} 个价格相关元素")
-            for elem in price_elements[:5]:  # 只取前5个避免过多
+            for elem in price_elements[:10]:  # 增加检查数量
                 text = elem.get_text(strip=True)
-                if re.search(r'[€$£¥₹₱₪₨₦₵₡]\s*[\d,.]|\d+[\d,.]*\s*[€$£¥₹₱₪₨₦₵₡]', text):
-                    price_number = extract_price_number(text)
-                    currency = detect_currency(text, country_code)
-                    if price_number > 0:
-                        # 统一套餐名称
-                        normalized_name = normalize_plan_name("HBO Max Plan")
-                        
-                        plans.append({
-                            "plan_group": "unknown",
-                            "label": "未知周期",
-                            "name": normalized_name,
-                            "original_name": "HBO Max Plan",
-                            "price": text,
-                            "price_number": price_number,
-                            "currency": currency
-                        })
-                        print(f"✅ {country_code}: 备用解析 - {text} ({currency})")
-                        break
+                # 检查是否包含价格信息
+                if re.search(r'[€$£¥₹₱₪₨₦₵₡₺zł]\s*[\d,.]|\d+[\d,.]*\s*[€$£¥₹₱₪₨₦₵₡₺zł]|[\d,.]+\s*(zł|Kč|Ft|kr)', text):
+                    # 尝试提取个别价格而不是整个文本块
+                    price_matches = re.findall(r'(\d+[,.]?\d*)\s*(zł|€|$|£|¥|₹|₱|₪|₨|₦|₵|₡|₺|Kč|Ft|kr)(?:/(?:mies|mes|month|rok|year|año))?', text)
+                    
+                    if price_matches:
+                        for price_match in price_matches[:3]:  # 限制每个元素最多3个价格
+                            price_text = price_match[0] + ' ' + price_match[1]
+                            price_number = extract_price_number(price_text)
+                            currency = detect_currency(price_text, country_code)
+                            
+                            if price_number > 0:
+                                # 尝试从父元素获取套餐名称
+                                plan_name = "HBO Max Plan"
+                                parent = elem.find_parent()
+                                if parent:
+                                    # 查找套餐名称（通常在h3, h4等标题中）
+                                    title_elem = parent.find(['h1', 'h2', 'h3', 'h4', 'h5', 'h6'])
+                                    if title_elem:
+                                        title_text = title_elem.get_text(strip=True)
+                                        if title_text and len(title_text) < 50:  # 避免过长的文本
+                                            plan_name = title_text
+                                
+                                normalized_name = normalize_plan_name(plan_name)
+                                
+                                plans.append({
+                                    "plan_group": "unknown",
+                                    "label": "未知周期",
+                                    "name": normalized_name,
+                                    "original_name": plan_name,
+                                    "price": price_text,
+                                    "price_number": price_number,
+                                    "currency": currency
+                                })
+                                print(f"✅ {country_code}: 备用解析 - {normalized_name}: {price_text} ({currency})")
+                    else:
+                        # 如果没有匹配到具体价格，使用原来的逻辑
+                        price_number = extract_price_number(text)
+                        currency = detect_currency(text, country_code)
+                        if price_number > 0:
+                            normalized_name = normalize_plan_name("HBO Max Plan")
+                            plans.append({
+                                "plan_group": "unknown",
+                                "label": "未知周期",
+                                "name": normalized_name,
+                                "original_name": "HBO Max Plan",
+                                "price": text,
+                                "price_number": price_number,
+                                "currency": currency
+                            })
+                            print(f"✅ {country_code}: 备用解析 - {text} ({currency})")
+                            break
         
         if plans:
             out = [f"**HBO Max {country_code.upper()} 订阅价格:**"]
