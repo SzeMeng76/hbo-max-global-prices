@@ -657,9 +657,9 @@ async def parse_max_prices(html: str, country_code: str) -> Tuple[List[Dict[str,
                         price_number = extract_price_number(price)
                         currency = detect_currency(price, country_code)
                         
-                        # 处理年付价格：如果是年付且价格格式为"12x $X.XX/mes"，计算年度总价
+                        # 处理年付价格：如果是年付或bundle且价格格式为"12x $X.XX/mes"，计算年度总价
                         annual_total_price = price_number
-                        if p == 'yearly' and price_number > 0:
+                        if (p == 'yearly' or p == 'bundle') and price_number > 0:
                             # 检查是否是"12x"格式
                             if '12x' in price or '12 x' in price:
                                 # 年付价格 = 月价格 × 12
