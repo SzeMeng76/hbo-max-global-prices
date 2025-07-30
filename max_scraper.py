@@ -223,6 +223,18 @@ def extract_price_number(price_str: str) -> float:
     if not price_str:
         return 0.0
     
+    # 首先尝试查找空格分隔的数字（如 "₡3 990" 或 "12x₡1 990"）
+    space_separated_pattern = r'(\d+(?:\s+\d+)+)'
+    space_matches = re.findall(space_separated_pattern, price_str)
+    
+    if space_matches:
+        # 处理空格分隔的数字，移除空格
+        number_part = space_matches[0].replace(' ', '')
+        try:
+            return float(number_part)
+        except ValueError:
+            pass
+    
     # 查找数字、逗号、点的连续组合
     number_pattern = r'([\d,\.]+)'
     number_matches = re.findall(number_pattern, price_str)
@@ -285,10 +297,107 @@ def extract_price_number(price_str: str) -> float:
     except ValueError:
         return 0.0
 
-def detect_currency(price_str: str) -> str:
-    """检测价格字符串中的货币"""
+def detect_currency(price_str: str, country_code: str = None) -> str:
+    """检测价格字符串中的货币，优先使用国家上下文"""
+    
+    # 国家到货币的精确映射
+    country_currency_map = {
+        'my': 'MYR',     # Malaysia - RM
+        'sg': 'SGD',     # Singapore - S$
+        'th': 'THB',     # Thailand - ฿
+        'id': 'IDR',     # Indonesia - Rp
+        'ph': 'PHP',     # Philippines - ₱
+        'hk': 'HKD',     # Hong Kong - HK$
+        'tw': 'TWD',     # Taiwan - NT$
+        'co': 'COP',     # Colombia - $
+        'cr': 'CRC',     # Costa Rica - ₡
+        'gt': 'GTQ',     # Guatemala - Q
+        'pe': 'PEN',     # Peru - S/.
+        'uy': 'UYU',     # Uruguay - $
+        'mx': 'MXN',     # Mexico - $
+        'hn': 'HNL',     # Honduras - L
+        'ni': 'NIO',     # Nicaragua - C$
+        'pa': 'PAB',     # Panama - B/.
+        'ar': 'ARS',     # Argentina - $
+        'bo': 'BOB',     # Bolivia - Bs
+        'do': 'DOP',     # Dominican Republic - RD$
+        'ec': 'USD',     # Ecuador - $ (uses USD)
+        'sv': 'USD',     # El Salvador - $ (uses USD)
+        'py': 'PYG',     # Paraguay - Gs
+        'cl': 'CLP',     # Chile - $
+        'br': 'BRL',     # Brazil - R$
+        'us': 'USD',     # United States - $
+        'au': 'AUD',     # Australia - A$
+        'pl': 'PLN',     # Poland - zł
+        'cz': 'CZK',     # Czech Republic - Kč
+        'hu': 'HUF',     # Hungary - Ft
+        'tr': 'TRY',     # Turkey - ₺
+        'dk': 'DKK',     # Denmark - kr
+        'no': 'NOK',     # Norway - kr
+        'se': 'SEK',     # Sweden - kr
+        'fi': 'EUR',     # Finland - €
+        'es': 'EUR',     # Spain - €
+        'fr': 'EUR',     # France - €
+        'be': 'EUR',     # Belgium - €
+        'pt': 'EUR',     # Portugal - €
+        'nl': 'EUR',     # Netherlands - €
+        'bg': 'BGN',     # Bulgaria - лв
+        'hr': 'EUR',     # Croatia - €
+        'mk': 'MKD',     # North Macedonia - ден
+        'md': 'MDL',     # Moldova - lei
+        'me': 'EUR',     # Montenegro - €
+        'ro': 'RON',     # Romania - lei
+        'rs': 'RSD',     # Serbia - din
+        'sk': 'EUR',     # Slovakia - €
+        'si': 'EUR',     # Slovenia - €
+        'ba': 'BAM',     # Bosnia and Herzegovina - KM
+        'ad': 'EUR',     # Andorra - €
+    }
+    
+    # 如果提供了国家代码，首先尝试使用国家映射
+    if country_code:
+        country_code_lower = country_code.lower()
+        if country_code_lower in country_currency_map:
+            mapped_currency = country_currency_map[country_code_lower]
+            
+            # 验证价格字符串中是否有对应的符号
+            currency_patterns = {
+                'GTQ': ['Q'],                           # Guatemala
+                'CRC': ['₡'],                          # Costa Rica
+                'MYR': ['RM'],                         # Malaysia
+                'THB': ['฿'],                          # Thailand
+                'IDR': ['Rp'],                         # Indonesia
+                'PEN': ['S/.'],                        # Peru
+                'HNL': ['L'],                          # Honduras
+                'PYG': ['Gs'],                         # Paraguay
+                'SGD': ['S$'],                         # Singapore
+                'HKD': ['HK$'],                        # Hong Kong
+                'TWD': ['NT$'],                        # Taiwan
+                'TRY': ['₺'],                          # Turkey
+                'PLN': ['zł'],                         # Poland
+                'CZK': ['Kč'],                         # Czech Republic
+                'HUF': ['Ft'],                         # Hungary
+                'BRL': ['R$'],                         # Brazil
+                'AUD': ['A$'],                         # Australia
+                'EUR': ['€'],                          # Euro countries
+                'USD': ['$'],                          # USD countries
+            }
+            
+            # 检查是否有对应的符号模式
+            if mapped_currency in currency_patterns:
+                patterns = currency_patterns[mapped_currency]
+                for pattern in patterns:
+                    if pattern in price_str:
+                        return mapped_currency
+            
+            # 如果没有找到特定符号但映射存在，仍然返回映射的货币
+            # 这对于使用通用$符号的国家很有用
+            if mapped_currency in ['USD', 'COP', 'UYU', 'MXN', 'ARS', 'CLP'] and '$' in price_str:
+                return mapped_currency
+    
+    # 回退到原有的符号检测逻辑
     currency_symbols = {
-        'US$': 'USD', 'USD': 'USD', '$': 'USD',
+        'US$': 'USD', 'USD': 'USD', 
         'C$': 'CAD', 'CA$': 'CAD', 'A$': 'AUD', 'S$': 'SGD', 'HK$': 'HKD',
         'MX$': 'MXN', 'NZ$': 'NZD', 'NT$': 'TWD', 'R$': 'BRL',
         '€': 'EUR', 'EUR': 'EUR', '£': 'GBP', 'GBP': 'GBP',
@@ -299,7 +408,9 @@ def detect_currency(price_str: str) -> str:
         '₺': 'TRY', 'TRY': 'TRY', 'zł': 'PLN', 'PLN': 'PLN',
         'Kč': 'CZK', 'CZK': 'CZK', 'Ft': 'HUF', 'HUF': 'HUF',
         'CHF': 'CHF', 'NOK': 'NOK', 'SEK': 'SEK', 'DKK': 'DKK',
-        'kr': 'SEK'
+        'RM': 'MYR', '฿': 'THB', 'Rp': 'IDR', 'S/.': 'PEN',
+        'L': 'HNL', 'Gs': 'PYG', 'Q': 'GTQ', 'kr': 'SEK',
+        '$': 'USD'  # 默认$为USD
     }
     
     # 按符号长度从长到短排序，优先匹配更具体的符号
@@ -309,7 +420,12 @@ def detect_currency(price_str: str) -> str:
         if symbol in price_str:
             return currency
     
-    # 默认返回美元
+    # 如果都没找到，返回国家映射的货币或默认USD
+    if country_code:
+        country_code_lower = country_code.lower()
+        if country_code_lower in country_currency_map:
+            return country_currency_map[country_code_lower]
+    
     return 'USD'
 
 async def parse_max_prices(html: str, country_code: str) -> Tuple[List[Dict[str, Any]], str]:
@@ -350,7 +466,7 @@ async def parse_max_prices(html: str, country_code: str) -> Tuple[List[Dict[str,
                         
                         # 提取价格数值和货币
                         price_number = extract_price_number(price)
-                        currency = detect_currency(price)
+                        currency = detect_currency(price, country_code)
                         
                         plan_data = {
                             "plan_group": p,
@@ -385,7 +501,7 @@ async def parse_max_prices(html: str, country_code: str) -> Tuple[List[Dict[str,
                 text = elem.get_text(strip=True)
                 if re.search(r'[€$£¥₹₱₪₨₦₵₡]\s*[\d,.]|\d+[\d,.]*\s*[€$£¥₹₱₪₨₦₵₡]', text):
                     price_number = extract_price_number(text)
-                    currency = detect_currency(text)
+                    currency = detect_currency(text, country_code)
                     if price_number > 0:
                         plans.append({
                             "plan_group": "unknown",
