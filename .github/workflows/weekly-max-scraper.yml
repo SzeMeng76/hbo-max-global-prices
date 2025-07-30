@@ -70,19 +70,7 @@ jobs:
           echo "📁 数据文件大小: $file_size"
           
           # 统计成功抓取的国家数量
-          python3 -c "
-import json
-try:
-    with open('max_prices_all_countries.json', 'r') as f:
-        data = json.load(f)
-    print(f'成功抓取的国家数量: {len(data)}')
-    sample_countries = list(data.keys())[:3]
-    for country in sample_countries:
-        plans = data[country].get('plans', [])
-        print(f'{country}: {len(plans)} 个套餐')
-except Exception as e:
-    print(f'数据统计失败: {e}')
-"
+          python3 -c "import json; data=json.load(open('max_prices_all_countries.json')); print(f'成功抓取的国家数量: {len(data)}'); [print(f'{k}: {len(v.get(\"plans\", []))} 个套餐') for k, v in list(data.items())[:3]]"
         else
           echo "❌ 爬虫数据文件未生成"
           exit 1
@@ -110,20 +98,7 @@ except Exception as e:
           
           # 显示最便宜的前3个套餐
           echo "🏆 最便宜的前三名:"
-          python3 -c "
-import json
-try:
-    with open('max_prices_cny_sorted.json', 'r') as f:
-        data = json.load(f)
-    top_plans = data.get('_top_10_cheapest_all', {}).get('data', [])
-    for i, plan in enumerate(top_plans[:3]):
-        country = plan.get('country_name_cn', plan.get('country_name', 'Unknown'))
-        name = plan.get('plan_name', 'Unknown')
-        price = plan.get('price_cny', 0)
-        print(f'{i+1}. {country} - {name}: ¥{price}')
-except Exception as e:
-    print(f'排行榜显示失败: {e}')
-"
+          python3 -c "import json; data=json.load(open('max_prices_cny_sorted.json')); top=data.get('_top_10_cheapest_all',{}).get('data',[]); [print(f'{i+1}. {p.get(\"country_name_cn\",p.get(\"country_name\",\"Unknown\"))} - {p.get(\"plan_name\",\"Unknown\")}: ¥{p.get(\"price_cny\",0)}') for i,p in enumerate(top[:3])]"
         else
           echo "❌ 汇率转换文件未生成"
           exit 1
@@ -218,21 +193,7 @@ except Exception as e:
           # 添加最便宜的前5名到摘要
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### 🏆 最便宜的HBO Max套餐 Top 5" >> $GITHUB_STEP_SUMMARY
-          python3 -c "
-import json
-try:
-    with open('max_prices_cny_sorted.json', 'r') as f:
-        data = json.load(f)
-    top_plans = data.get('_top_10_cheapest_all', {}).get('data', [])
-    for i, plan in enumerate(top_plans[:5]):
-        country = plan.get('country_name_cn', plan.get('country_name', 'Unknown'))
-        name = plan.get('plan_name', 'Unknown')
-        price = plan.get('price_cny', 0)
-        original = plan.get('original_price', 'N/A')
-        print(f'{i+1}. **{country}** - {name}: ¥{price} (原价: {original})')
-except Exception as e:
-    print(f'摘要生成失败: {e}')
-" >> $GITHUB_STEP_SUMMARY
+          python3 -c "import json; data=json.load(open('max_prices_cny_sorted.json')); top=data.get('_top_10_cheapest_all',{}).get('data',[]); [print(f'{i+1}. **{p.get(\"country_name_cn\",p.get(\"country_name\",\"Unknown\"))}** - {p.get(\"plan_name\",\"Unknown\")}: ¥{p.get(\"price_cny\",0)} (原价: {p.get(\"original_price\",\"N/A\")})') for i,p in enumerate(top[:5])]" >> $GITHUB_STEP_SUMMARY
         fi
         
         echo "" >> $GITHUB_STEP_SUMMARY
