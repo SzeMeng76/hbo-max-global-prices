@@ -799,6 +799,26 @@ async def parse_max_prices(html: str, country_code: str) -> Tuple[List[Dict[str,
                                 
                                 normalized_name = normalize_plan_name(plan_name)
                                 
+                                # 识别周期类型
+                                plan_group = "unknown"
+                                label = "未知周期"
+                                if any(period in price_text.lower() for period in ['month', 'mes', 'mies', 'mês']):
+                                    plan_group = "monthly"
+                                    label = "每月"
+                                elif any(period in price_text.lower() for period in ['year', 'año', 'rok', 'år']):
+                                    plan_group = "yearly"
+                                    label = "每年"
+                                elif price_number > 1000 and country_code.lower() in ['tr', 'pl', 'se', 'no', 'dk']:
+                                    # 基于价格推断年付（欧洲国家大额通常是年付）
+                                    plan_group = "yearly"
+                                    label = "每年"
+                                    print(f"    📅 {country_code}: 基于价格推断年付: {price_number}")
+                                elif price_number < 100 and country_code.lower() in ['tr', 'pl', 'se', 'no', 'dk']:
+                                    # 基于价格推断月付（欧洲国家小额通常是月付）
+                                    plan_group = "monthly"
+                                    label = "每月"
+                                    print(f"    📅 {country_code}: 基于价格推断月付: {price_number}")
+                                
                                 # 使用 seen 集合去重
                                 key = (normalized_name, price_text, currency)
                                 if key in seen:
@@ -806,8 +826,8 @@ async def parse_max_prices(html: str, country_code: str) -> Tuple[List[Dict[str,
                                 seen.add(key)
                                 
                                 plans.append({
-                                    "plan_group": "unknown",
-                                    "label": "未知周期",
+                                    "plan_group": plan_group,
+                                    "label": label,
                                     "name": normalized_name,
                                     "original_name": plan_name,
                                     "price": price_text,
@@ -823,6 +843,26 @@ async def parse_max_prices(html: str, country_code: str) -> Tuple[List[Dict[str,
                             if price_number > 0:
                                 normalized_name = normalize_plan_name("HBO Max Plan")
                                 
+                                # 识别周期类型
+                                plan_group = "unknown"
+                                label = "未知周期"
+                                if any(period in text.lower() for period in ['month', 'mes', 'mies', 'mês']):
+                                    plan_group = "monthly"
+                                    label = "每月"
+                                elif any(period in text.lower() for period in ['year', 'año', 'rok', 'år']):
+                                    plan_group = "yearly"
+                                    label = "每年"
+                                elif price_number > 1000 and country_code.lower() in ['tr', 'pl', 'se', 'no', 'dk']:
+                                    # 基于价格推断年付（欧洲国家大额通常是年付）
+                                    plan_group = "yearly"
+                                    label = "每年"
+                                    print(f"    📅 {country_code}: 基于价格推断年付: {price_number}")
+                                elif price_number < 100 and country_code.lower() in ['tr', 'pl', 'se', 'no', 'dk']:
+                                    # 基于价格推断月付（欧洲国家小额通常是月付）
+                                    plan_group = "monthly"
+                                    label = "每月"
+                                    print(f"    📅 {country_code}: 基于价格推断月付: {price_number}")
+                                
                                 # 使用 seen 集合去重
                                 key = (normalized_name, text, currency)
                                 if key in seen:
@@ -830,8 +870,8 @@ async def parse_max_prices(html: str, country_code: str) -> Tuple[List[Dict[str,
                                 seen.add(key)
                                 
                                 plans.append({
-                                    "plan_group": "unknown",
-                                    "label": "未知周期",
+                                    "plan_group": plan_group,
+                                    "label": label,
                                     "name": normalized_name,
                                     "original_name": "HBO Max Plan",
                                     "price": text,
