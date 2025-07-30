@@ -50,7 +50,7 @@ python max_rate_converter.py       # Convert currency and sort
 **Local Development:**
 ```bash
 # .env file
-PROXY_API_TEMPLATE=http://api.proxy-service.com/v1/gen?user=YOUR_USER&country={country}&pass=YOUR_PASS
+PROXY_API_TEMPLATE=http://api.mooproxy.xyz/v1/gen?user=YOUR_USER&country={country}&pass=YOUR_PASS
 API_KEY=your_openexchangerates_api_key
 ```
 
