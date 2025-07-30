@@ -1,4 +1,73 @@
 {
+  "PH": {
+    "country_code": "PH",
+    "country_name": "Philippines",
+    "plans": [
+      {
+        "plan_group": "monthly",
+        "label": "每月",
+        "name": "Mobile",
+        "original_name": "Mobile",
+        "price": "₱149/month",
+        "price_number": 149.0,
+        "monthly_price": 149.0,
+        "currency": "PHP"
+      },
+      {
+        "plan_group": "monthly",
+        "label": "每月",
+        "name": "Standard",
+        "original_name": "Standard",
+        "price": "₱269/month",
+        "price_number": 269.0,
+        "monthly_price": 269.0,
+        "currency": "PHP"
+      },
+      {
+        "plan_group": "monthly",
+        "label": "每月",
+        "name": "Ultimate",
+        "original_name": "Ultimate",
+        "price": "₱399/month",
+        "price_number": 399.0,
+        "monthly_price": 399.0,
+        "currency": "PHP"
+      },
+      {
+        "plan_group": "yearly",
+        "label": "每年",
+        "name": "Mobile",
+        "original_name": "Mobile",
+        "price": "₱1040/year",
+        "price_number": 1040.0,
+        "monthly_price": 1040.0,
+        "currency": "PHP"
+      },
+      {
+        "plan_group": "yearly",
+        "label": "每年",
+        "name": "Standard",
+        "original_name": "Standard",
+        "price": "₱1890/year",
+        "price_number": 1890.0,
+        "monthly_price": 1890.0,
+        "currency": "PHP"
+      },
+      {
+        "plan_group": "yearly",
+        "label": "每年",
+        "name": "Ultimate",
+        "original_name": "Ultimate",
+        "price": "₱2790/year",
+        "price_number": 2790.0,
+        "monthly_price": 2790.0,
+        "currency": "PHP"
+      }
+    ],
+    "scraped_at": "2025-07-30T21:33:15.277367",
+    "attempt": 1,
+    "success": true
+  },
   "HK": {
     "country_code": "HK",
     "country_name": "Hong Kong",
@@ -44,243 +113,56 @@
         "currency": "HKD"
       }
     ],
-    "scraped_at": "2025-07-30T20:49:58.439718",
+    "scraped_at": "2025-07-30T21:33:15.778766",
     "attempt": 1,
     "success": true
   },
-  "TW": {
-    "country_code": "TW",
-    "country_name": "Taiwan",
+  "SG": {
+    "country_code": "SG",
+    "country_name": "Singapore",
     "plans": [
       {
         "plan_group": "monthly",
         "label": "每月",
         "name": "Standard",
         "original_name": "Standard",
-        "price": "NT$220/month",
-        "price_number": 220.0,
-        "monthly_price": 220.0,
-        "currency": "TWD"
+        "price": "$14.48/month",
+        "price_number": 14.48,
+        "monthly_price": 14.48,
+        "currency": "SGD"
       },
       {
         "plan_group": "monthly",
         "label": "每月",
         "name": "Ultimate",
         "original_name": "Ultimate",
-        "price": "NT$299/month",
-        "price_number": 299.0,
-        "monthly_price": 299.0,
-        "currency": "TWD"
+        "price": "$18.98/month",
+        "price_number": 18.98,
+        "monthly_price": 18.98,
+        "currency": "SGD"
       },
       {
         "plan_group": "yearly",
         "label": "每年",
         "name": "Standard",
         "original_name": "Standard",
-        "price": "NT$2,190/year",
-        "price_number": 2190.0,
-        "monthly_price": 2190.0,
-        "currency": "TWD"
+        "price": "$129.98/year",
+        "price_number": 129.98,
+        "monthly_price": 129.98,
+        "currency": "SGD"
       },
       {
         "plan_group": "yearly",
         "label": "每年",
         "name": "Ultimate",
         "original_name": "Ultimate",
-        "price": "NT$2,990/year",
-        "price_number": 2990.0,
-        "monthly_price": 2990.0,
-        "currency": "TWD"
+        "price": "$169.98/year",
+        "price_number": 169.98,
+        "monthly_price": 169.98,
+        "currency": "SGD"
       }
     ],
-    "scraped_at": "2025-07-30T20:49:59.881110",
-    "attempt": 1,
-    "success": true
-  },
-  "MY": {
-    "country_code": "MY",
-    "country_name": "Malaysia",
-    "plans": [
-      {
-        "plan_group": "monthly",
-        "label": "每月",
-        "name": "Standard",
-        "original_name": "Standard",
-        "price": "RM34.9/month",
-        "price_number": 34.9,
-        "monthly_price": 34.9,
-        "currency": "MYR"
-      },
-      {
-        "plan_group": "monthly",
-        "label": "每月",
-        "name": "Ultimate",
-        "original_name": "Ultimate",
-        "price": "RM52.9/month",
-        "price_number": 52.9,
-        "monthly_price": 52.9,
-        "currency": "MYR"
-      },
-      {
-        "plan_group": "yearly",
-        "label": "每年",
-        "name": "Standard",
-        "original_name": "Standard",
-        "price": "RM279.9/year",
-        "price_number": 279.9,
-        "monthly_price": 279.9,
-        "currency": "MYR"
-      },
-      {
-        "plan_group": "yearly",
-        "label": "每年",
-        "name": "Ultimate",
-        "original_name": "Ultimate",
-        "price": "RM424.9/year",
-        "price_number": 424.9,
-        "monthly_price": 424.9,
-        "currency": "MYR"
-      }
-    ],
-    "scraped_at": "2025-07-30T20:49:59.951699",
-    "attempt": 1,
-    "success": true
-  },
-  "ID": {
-    "country_code": "ID",
-    "country_name": "Indonesia",
-    "plans": [
-      {
-        "plan_group": "monthly",
-        "label": "每月",
-        "name": "Mobile",
-        "original_name": "Mobile",
-        "price": "Rp49.000/month",
-        "price_number": 49000.0,
-        "monthly_price": 49000.0,
-        "currency": "IDR"
-      },
-      {
-        "plan_group": "monthly",
-        "label": "每月",
-        "name": "Standard",
-        "original_name": "Standard",
-        "price": "Rp79.000/month",
-        "price_number": 79000.0,
-        "monthly_price": 79000.0,
-        "currency": "IDR"
-      },
-      {
-        "plan_group": "monthly",
-        "label": "每月",
-        "name": "Ultimate",
-        "original_name": "Ultimate",
-        "price": "Rp119.000/month",
-        "price_number": 119000.0,
-        "monthly_price": 119000.0,
-        "currency": "IDR"
-      },
-      {
-        "plan_group": "yearly",
-        "label": "每年",
-        "name": "Mobile",
-        "original_name": "Mobile",
-        "price": "Rp349.000/year",
-        "price_number": 349000.0,
-        "monthly_price": 349000.0,
-        "currency": "IDR"
-      },
-      {
-        "plan_group": "yearly",
-        "label": "每年",
-        "name": "Standard",
-        "original_name": "Standard",
-        "price": "Rp549.000/year",
-        "price_number": 549000.0,
-        "monthly_price": 549000.0,
-        "currency": "IDR"
-      },
-      {
-        "plan_group": "yearly",
-        "label": "每年",
-        "name": "Ultimate",
-        "original_name": "Ultimate",
-        "price": "Rp829.000/year",
-        "price_number": 829000.0,
-        "monthly_price": 829000.0,
-        "currency": "IDR"
-      }
-    ],
-    "scraped_at": "2025-07-30T20:50:01.083962",
-    "attempt": 1,
-    "success": true
-  },
-  "PH": {
-    "country_code": "PH",
-    "country_name": "Philippines",
-    "plans": [
-      {
-        "plan_group": "monthly",
-        "label": "每月",
-        "name": "Mobile",
-        "original_name": "Mobile",
-        "price": "₱149/buwan",
-        "price_number": 149.0,
-        "monthly_price": 149.0,
-        "currency": "PHP"
-      },
-      {
-        "plan_group": "monthly",
-        "label": "每月",
-        "name": "Standard",
-        "original_name": "Standard",
-        "price": "₱269/buwan",
-        "price_number": 269.0,
-        "monthly_price": 269.0,
-        "currency": "PHP"
-      },
-      {
-        "plan_group": "monthly",
-        "label": "每月",
-        "name": "Ultimate",
-        "original_name": "Ultimate",
-        "price": "₱399/buwan",
-        "price_number": 399.0,
-        "monthly_price": 399.0,
-        "currency": "PHP"
-      },
-      {
-        "plan_group": "yearly",
-        "label": "每年",
-        "name": "Mobile",
-        "original_name": "Mobile",
-        "price": "₱1040/taon",
-        "price_number": 1040.0,
-        "monthly_price": 1040.0,
-        "currency": "PHP"
-      },
-      {
-        "plan_group": "yearly",
-        "label": "每年",
-        "name": "Standard",
-        "original_name": "Standard",
-        "price": "₱1890/taon",
-        "price_number": 1890.0,
-        "monthly_price": 1890.0,
-        "currency": "PHP"
-      },
-      {
-        "plan_group": "yearly",
-        "label": "每年",
-        "name": "Ultimate",
-        "original_name": "Ultimate",
-        "price": "₱2790/taon",
-        "price_number": 2790.0,
-        "monthly_price": 2790.0,
-        "currency": "PHP"
-      }
-    ],
-    "scraped_at": "2025-07-30T20:50:02.596689",
+    "scraped_at": "2025-07-30T21:33:22.531885",
     "attempt": 1,
     "success": true
   },
@@ -349,125 +231,174 @@
         "currency": "COP"
       }
     ],
-    "scraped_at": "2025-07-30T20:50:04.078479",
+    "scraped_at": "2025-07-30T21:33:26.251501",
     "attempt": 1,
     "success": true
   },
-  "CR": {
-    "country_code": "CR",
-    "country_name": "Costa Rica",
+  "ID": {
+    "country_code": "ID",
+    "country_name": "Indonesia",
     "plans": [
       {
         "plan_group": "monthly",
         "label": "每月",
-        "name": "Basic",
-        "original_name": "Básico con Anuncios",
-        "price": "₡3 990/mes",
-        "price_number": 3990.0,
-        "monthly_price": 3990.0,
-        "currency": "CRC"
+        "name": "Mobile",
+        "original_name": "Mobile",
+        "price": "Rp49.000/month",
+        "price_number": 49000.0,
+        "monthly_price": 49000.0,
+        "currency": "IDR"
       },
-      {
-        "plan_group": "monthly",
-        "label": "每月",
-        "name": "Standard",
-        "original_name": "Estándar",
-        "price": "₡5 990/mes",
-        "price_number": 5990.0,
-        "monthly_price": 5990.0,
-        "currency": "CRC"
-      },
-      {
-        "plan_group": "monthly",
-        "label": "每月",
-        "name": "Ultimate",
-        "original_name": "Platino",
-        "price": "₡7 990/mes",
-        "price_number": 7990.0,
-        "monthly_price": 7990.0,
-        "currency": "CRC"
-      },
-      {
-        "plan_group": "yearly",
-        "label": "每年",
-        "name": "Basic",
-        "original_name": "Básico con Anuncios",
-        "price": "12x₡1 990/mes",
-        "price_number": 23880.0,
-        "monthly_price": 1990.0,
-        "currency": "CRC"
-      },
-      {
-        "plan_group": "yearly",
-        "label": "每年",
-        "name": "Standard",
-        "original_name": "Estándar",
-        "price": "12x₡2 990/mes",
-        "price_number": 35880.0,
-        "monthly_price": 2990.0,
-        "currency": "CRC"
-      },
-      {
-        "plan_group": "yearly",
-        "label": "每年",
-        "name": "Ultimate",
-        "original_name": "Platino",
-        "price": "12x₡3 990/mes",
-        "price_number": 47880.0,
-        "monthly_price": 3990.0,
-        "currency": "CRC"
-      }
-    ],
-    "scraped_at": "2025-07-30T20:50:04.352061",
-    "attempt": 1,
-    "success": true
-  },
-  "TH": {
-    "country_code": "TH",
-    "country_name": "Thailand",
-    "plans": [
       {
         "plan_group": "monthly",
         "label": "每月",
         "name": "Standard",
         "original_name": "Standard",
-        "price": "฿199/month",
-        "price_number": 199.0,
-        "monthly_price": 199.0,
-        "currency": "THB"
+        "price": "Rp79.000/month",
+        "price_number": 79000.0,
+        "monthly_price": 79000.0,
+        "currency": "IDR"
       },
       {
         "plan_group": "monthly",
         "label": "每月",
         "name": "Ultimate",
         "original_name": "Ultimate",
-        "price": "฿299/month",
+        "price": "Rp119.000/month",
+        "price_number": 119000.0,
+        "monthly_price": 119000.0,
+        "currency": "IDR"
+      },
+      {
+        "plan_group": "yearly",
+        "label": "每年",
+        "name": "Mobile",
+        "original_name": "Mobile",
+        "price": "Rp349.000/year",
+        "price_number": 349000.0,
+        "monthly_price": 349000.0,
+        "currency": "IDR"
+      },
+      {
+        "plan_group": "yearly",
+        "label": "每年",
+        "name": "Standard",
+        "original_name": "Standard",
+        "price": "Rp549.000/year",
+        "price_number": 549000.0,
+        "monthly_price": 549000.0,
+        "currency": "IDR"
+      },
+      {
+        "plan_group": "yearly",
+        "label": "每年",
+        "name": "Ultimate",
+        "original_name": "Ultimate",
+        "price": "Rp829.000/year",
+        "price_number": 829000.0,
+        "monthly_price": 829000.0,
+        "currency": "IDR"
+      }
+    ],
+    "scraped_at": "2025-07-30T21:33:26.571019",
+    "attempt": 1,
+    "success": true
+  },
+  "MY": {
+    "country_code": "MY",
+    "country_name": "Malaysia",
+    "plans": [
+      {
+        "plan_group": "monthly",
+        "label": "每月",
+        "name": "Standard",
+        "original_name": "Standard",
+        "price": "RM34.9/month",
+        "price_number": 34.9,
+        "monthly_price": 34.9,
+        "currency": "MYR"
+      },
+      {
+        "plan_group": "monthly",
+        "label": "每月",
+        "name": "Ultimate",
+        "original_name": "Ultimate",
+        "price": "RM52.9/month",
+        "price_number": 52.9,
+        "monthly_price": 52.9,
+        "currency": "MYR"
+      },
+      {
+        "plan_group": "yearly",
+        "label": "每年",
+        "name": "Standard",
+        "original_name": "Standard",
+        "price": "RM279.9/year",
+        "price_number": 279.9,
+        "monthly_price": 279.9,
+        "currency": "MYR"
+      },
+      {
+        "plan_group": "yearly",
+        "label": "每年",
+        "name": "Ultimate",
+        "original_name": "Ultimate",
+        "price": "RM424.9/year",
+        "price_number": 424.9,
+        "monthly_price": 424.9,
+        "currency": "MYR"
+      }
+    ],
+    "scraped_at": "2025-07-30T21:33:26.835290",
+    "attempt": 1,
+    "success": true
+  },
+  "TW": {
+    "country_code": "TW",
+    "country_name": "Taiwan",
+    "plans": [
+      {
+        "plan_group": "monthly",
+        "label": "每月",
+        "name": "Standard",
+        "original_name": "Standard",
+        "price": "NT$220/month",
+        "price_number": 220.0,
+        "monthly_price": 220.0,
+        "currency": "TWD"
+      },
+      {
+        "plan_group": "monthly",
+        "label": "每月",
+        "name": "Ultimate",
+        "original_name": "Ultimate",
+        "price": "NT$299/month",
         "price_number": 299.0,
         "monthly_price": 299.0,
-        "currency": "THB"
+        "currency": "TWD"
       },
       {
         "plan_group": "yearly",
         "label": "每年",
         "name": "Standard",
         "original_name": "Standard",
-        "price": "฿1,390/year",
-        "price_number": 1390.0,
-        "monthly_price": 1390.0,
-        "currency": "THB"
+        "price": "NT$2,190/year",
+        "price_number": 2190.0,
+        "monthly_price": 2190.0,
+        "currency": "TWD"
       },
       {
         "plan_group": "yearly",
         "label": "每年",
         "name": "Ultimate",
         "original_name": "Ultimate",
-        "price": "฿2,090/year",
-        "price_number": 2090.0,
-        "monthly_price": 2090.0,
-        "currency": "THB"
+        "price": "NT$2,990/year",
+        "price_number": 2990.0,
+        "monthly_price": 2990.0,
+        "currency": "TWD"
       }
     ],
-    "scraped_at": "2025-07-30T20:50:05.717174",
+    "scraped_at": "2025-07-30T21:33:28.124014",
     "attempt": 1,
     "success": true
   },
@@ -536,7 +467,7 @@
         "currency": "GTQ"
       }
     ],
-    "scraped_at": "2025-07-30T20:50:07.380784",
+    "scraped_at": "2025-07-30T21:33:30.266572",
     "attempt": 1,
     "success": true
   },
@@ -605,125 +536,76 @@
         "currency": "PEN"
       }
     ],
-    "scraped_at": "2025-07-30T20:50:07.433653",
+    "scraped_at": "2025-07-30T21:33:30.731194",
     "attempt": 1,
     "success": true
   },
-  "SG": {
-    "country_code": "SG",
-    "country_name": "Singapore",
-    "plans": [
-      {
-        "plan_group": "monthly",
-        "label": "每月",
-        "name": "Standard",
-        "original_name": "Standard",
-        "price": "$14.48/month",
-        "price_number": 14.48,
-        "monthly_price": 14.48,
-        "currency": "SGD"
-      },
-      {
-        "plan_group": "monthly",
-        "label": "每月",
-        "name": "Ultimate",
-        "original_name": "Ultimate",
-        "price": "$18.98/month",
-        "price_number": 18.98,
-        "monthly_price": 18.98,
-        "currency": "SGD"
-      },
-      {
-        "plan_group": "yearly",
-        "label": "每年",
-        "name": "Standard",
-        "original_name": "Standard",
-        "price": "$129.98/year",
-        "price_number": 129.98,
-        "monthly_price": 129.98,
-        "currency": "SGD"
-      },
-      {
-        "plan_group": "yearly",
-        "label": "每年",
-        "name": "Ultimate",
-        "original_name": "Ultimate",
-        "price": "$169.98/year",
-        "price_number": 169.98,
-        "monthly_price": 169.98,
-        "currency": "SGD"
-      }
-    ],
-    "scraped_at": "2025-07-30T20:50:08.080349",
-    "attempt": 1,
-    "success": true
-  },
-  "MX": {
-    "country_code": "MX",
-    "country_name": "Mexico",
+  "CR": {
+    "country_code": "CR",
+    "country_name": "Costa Rica",
     "plans": [
       {
         "plan_group": "monthly",
         "label": "每月",
         "name": "Basic",
         "original_name": "Básico con Anuncios",
-        "price": "$149.00/mes",
-        "price_number": 149.0,
-        "monthly_price": 149.0,
-        "currency": "MXN"
+        "price": "₡3 990/mes",
+        "price_number": 3990.0,
+        "monthly_price": 3990.0,
+        "currency": "CRC"
       },
       {
         "plan_group": "monthly",
         "label": "每月",
         "name": "Standard",
         "original_name": "Estándar",
-        "price": "$199.00/mes",
-        "price_number": 199.0,
-        "monthly_price": 199.0,
-        "currency": "MXN"
+        "price": "₡5 990/mes",
+        "price_number": 5990.0,
+        "monthly_price": 5990.0,
+        "currency": "CRC"
       },
       {
         "plan_group": "monthly",
         "label": "每月",
         "name": "Ultimate",
         "original_name": "Platino",
-        "price": "$249.00/mes",
-        "price_number": 249.0,
-        "monthly_price": 249.0,
-        "currency": "MXN"
+        "price": "₡7 990/mes",
+        "price_number": 7990.0,
+        "monthly_price": 7990.0,
+        "currency": "CRC"
       },
       {
         "plan_group": "yearly",
         "label": "每年",
         "name": "Basic",
         "original_name": "Básico con Anuncios",
-        "price": "12x$99.00/mes",
-        "price_number": 1188.0,
-        "monthly_price": 99.0,
-        "currency": "MXN"
+        "price": "12x₡1 990/mes",
+        "price_number": 23880.0,
+        "monthly_price": 1990.0,
+        "currency": "CRC"
       },
       {
         "plan_group": "yearly",
         "label": "每年",
         "name": "Standard",
         "original_name": "Estándar",
-        "price": "12x$149.00/mes",
-        "price_number": 1788.0,
-        "monthly_price": 149.0,
-        "currency": "MXN"
+        "price": "12x₡2 990/mes",
+        "price_number": 35880.0,
+        "monthly_price": 2990.0,
+        "currency": "CRC"
       },
       {
         "plan_group": "yearly",
         "label": "每年",
         "name": "Ultimate",
         "original_name": "Platino",
-        "price": "12x$199.00/mes",
-        "price_number": 2388.0,
-        "monthly_price": 199.0,
-        "currency": "MXN"
+        "price": "12x₡3 990/mes",
+        "price_number": 47880.0,
+        "monthly_price": 3990.0,
+        "currency": "CRC"
       }
     ],
-    "scraped_at": "2025-07-30T20:50:08.494660",
+    "scraped_at": "2025-07-30T21:33:31.321387",
     "attempt": 1,
     "success": true
   },
@@ -792,7 +674,7 @@
         "currency": "UYU"
       }
     ],
-    "scraped_at": "2025-07-30T20:50:08.845498",
+    "scraped_at": "2025-07-30T21:33:32.353737",
     "attempt": 1,
     "success": true
   },
@@ -861,7 +743,125 @@
         "currency": "HNL"
       }
     ],
-    "scraped_at": "2025-07-30T20:50:10.873480",
+    "scraped_at": "2025-07-30T21:33:34.033203",
+    "attempt": 1,
+    "success": true
+  },
+  "MX": {
+    "country_code": "MX",
+    "country_name": "Mexico",
+    "plans": [
+      {
+        "plan_group": "monthly",
+        "label": "每月",
+        "name": "Basic",
+        "original_name": "Básico con Anuncios",
+        "price": "$149.00/mes",
+        "price_number": 149.0,
+        "monthly_price": 149.0,
+        "currency": "MXN"
+      },
+      {
+        "plan_group": "monthly",
+        "label": "每月",
+        "name": "Standard",
+        "original_name": "Estándar",
+        "price": "$199.00/mes",
+        "price_number": 199.0,
+        "monthly_price": 199.0,
+        "currency": "MXN"
+      },
+      {
+        "plan_group": "monthly",
+        "label": "每月",
+        "name": "Ultimate",
+        "original_name": "Platino",
+        "price": "$249.00/mes",
+        "price_number": 249.0,
+        "monthly_price": 249.0,
+        "currency": "MXN"
+      },
+      {
+        "plan_group": "yearly",
+        "label": "每年",
+        "name": "Basic",
+        "original_name": "Básico con Anuncios",
+        "price": "12x$99.00/mes",
+        "price_number": 1188.0,
+        "monthly_price": 99.0,
+        "currency": "MXN"
+      },
+      {
+        "plan_group": "yearly",
+        "label": "每年",
+        "name": "Standard",
+        "original_name": "Estándar",
+        "price": "12x$149.00/mes",
+        "price_number": 1788.0,
+        "monthly_price": 149.0,
+        "currency": "MXN"
+      },
+      {
+        "plan_group": "yearly",
+        "label": "每年",
+        "name": "Ultimate",
+        "original_name": "Platino",
+        "price": "12x$199.00/mes",
+        "price_number": 2388.0,
+        "monthly_price": 199.0,
+        "currency": "MXN"
+      }
+    ],
+    "scraped_at": "2025-07-30T21:33:34.101583",
+    "attempt": 1,
+    "success": true
+  },
+  "TH": {
+    "country_code": "TH",
+    "country_name": "Thailand",
+    "plans": [
+      {
+        "plan_group": "monthly",
+        "label": "每月",
+        "name": "Standard",
+        "original_name": "Standard",
+        "price": "฿199/month",
+        "price_number": 199.0,
+        "monthly_price": 199.0,
+        "currency": "THB"
+      },
+      {
+        "plan_group": "monthly",
+        "label": "每月",
+        "name": "Ultimate",
+        "original_name": "Ultimate",
+        "price": "฿299/month",
+        "price_number": 299.0,
+        "monthly_price": 299.0,
+        "currency": "THB"
+      },
+      {
+        "plan_group": "yearly",
+        "label": "每年",
+        "name": "Standard",
+        "original_name": "Standard",
+        "price": "฿1,390/year",
+        "price_number": 1390.0,
+        "monthly_price": 1390.0,
+        "currency": "THB"
+      },
+      {
+        "plan_group": "yearly",
+        "label": "每年",
+        "name": "Ultimate",
+        "original_name": "Ultimate",
+        "price": "฿2,090/year",
+        "price_number": 2090.0,
+        "monthly_price": 2090.0,
+        "currency": "THB"
+      }
+    ],
+    "scraped_at": "2025-07-30T21:33:39.539596",
     "attempt": 1,
     "success": true
   },
@@ -930,7 +930,7 @@
         "currency": "NIO"
       }
     ],
-    "scraped_at": "2025-07-30T20:50:32.107777",
+    "scraped_at": "2025-07-30T21:33:41.847562",
     "attempt": 2,
     "success": true
   },
@@ -999,145 +999,7 @@
         "currency": "DOP"
       }
     ],
-    "scraped_at": "2025-07-30T20:50:43.879621",
-    "attempt": 1,
-    "success": true
-  },
-  "EC": {
-    "country_code": "EC",
-    "country_name": "Ecuador",
-    "plans": [
-      {
-        "plan_group": "monthly",
-        "label": "每月",
-        "name": "Basic",
-        "original_name": "Básico con Anuncios",
-        "price": "$6.99/mes",
-        "price_number": 6.99,
-        "monthly_price": 6.99,
-        "currency": "USD"
-      },
-      {
-        "plan_group": "monthly",
-        "label": "每月",
-        "name": "Standard",
-        "original_name": "Estándar",
-        "price": "$8.29/mes",
-        "price_number": 8.29,
-        "monthly_price": 8.29,
-        "currency": "USD"
-      },
-      {
-        "plan_group": "monthly",
-        "label": "每月",
-        "name": "Ultimate",
-        "original_name": "Platino",
-        "price": "$9.99/mes",
-        "price_number": 9.99,
-        "monthly_price": 9.99,
-        "currency": "USD"
-      },
-      {
-        "plan_group": "yearly",
-        "label": "每年",
-        "name": "Basic",
-        "original_name": "Básico con Anuncios",
-        "price": "12x $3.29/mes",
-        "price_number": 39.480000000000004,
-        "monthly_price": 3.29,
-        "currency": "USD"
-      },
-      {
-        "plan_group": "yearly",
-        "label": "每年",
-        "name": "Standard",
-        "original_name": "Estándar",
-        "price": "12x $4.19/mes",
-        "price_number": 50.28,
-        "monthly_price": 4.19,
-        "currency": "USD"
-      },
-      {
-        "plan_group": "yearly",
-        "label": "每年",
-        "name": "Ultimate",
-        "original_name": "Platino",
-        "price": "12x $4.99/mes",
-        "price_number": 59.88,
-        "monthly_price": 4.99,
-        "currency": "USD"
-      }
-    ],
-    "scraped_at": "2025-07-30T20:50:44.040912",
-    "attempt": 1,
-    "success": true
-  },
-  "BO": {
-    "country_code": "BO",
-    "country_name": "Bolivia",
-    "plans": [
-      {
-        "plan_group": "monthly",
-        "label": "每月",
-        "name": "Basic",
-        "original_name": "Básico con Anuncios",
-        "price": "Bs32,90/mes",
-        "price_number": 32.9,
-        "monthly_price": 32.9,
-        "currency": "BOB"
-      },
-      {
-        "plan_group": "monthly",
-        "label": "每月",
-        "name": "Standard",
-        "original_name": "Estándar",
-        "price": "Bs42,90/mes",
-        "price_number": 42.9,
-        "monthly_price": 42.9,
-        "currency": "BOB"
-      },
-      {
-        "plan_group": "monthly",
-        "label": "每月",
-        "name": "Ultimate",
-        "original_name": "Platino",
-        "price": "Bs52,90/mes",
-        "price_number": 52.9,
-        "monthly_price": 52.9,
-        "currency": "BOB"
-      },
-      {
-        "plan_group": "yearly",
-        "label": "每年",
-        "name": "Basic",
-        "original_name": "Básico con Anuncios",
-        "price": "12x Bs22,90/mes",
-        "price_number": 274.79999999999995,
-        "monthly_price": 22.9,
-        "currency": "BOB"
-      },
-      {
-        "plan_group": "yearly",
-        "label": "每年",
-        "name": "Standard",
-        "original_name": "Estándar",
-        "price": "12x Bs29,90/mes",
-        "price_number": 358.79999999999995,
-        "monthly_price": 29.9,
-        "currency": "BOB"
-      },
-      {
-        "plan_group": "yearly",
-        "label": "每年",
-        "name": "Ultimate",
-        "original_name": "Platino",
-        "price": "12x Bs36,90/mes",
-        "price_number": 442.79999999999995,
-        "monthly_price": 36.9,
-        "currency": "BOB"
-      }
-    ],
-    "scraped_at": "2025-07-30T20:50:44.096946",
+    "scraped_at": "2025-07-30T21:33:48.935905",
     "attempt": 1,
     "success": true
   },
@@ -1206,7 +1068,76 @@
         "currency": "PAB"
       }
     ],
-    "scraped_at": "2025-07-30T20:50:44.274689",
+    "scraped_at": "2025-07-30T21:33:49.351413",
+    "attempt": 1,
+    "success": true
+  },
+  "BO": {
+    "country_code": "BO",
+    "country_name": "Bolivia",
+    "plans": [
+      {
+        "plan_group": "monthly",
+        "label": "每月",
+        "name": "Basic",
+        "original_name": "Básico con Anuncios",
+        "price": "Bs32,90/mes",
+        "price_number": 32.9,
+        "monthly_price": 32.9,
+        "currency": "BOB"
+      },
+      {
+        "plan_group": "monthly",
+        "label": "每月",
+        "name": "Standard",
+        "original_name": "Estándar",
+        "price": "Bs42,90/mes",
+        "price_number": 42.9,
+        "monthly_price": 42.9,
+        "currency": "BOB"
+      },
+      {
+        "plan_group": "monthly",
+        "label": "每月",
+        "name": "Ultimate",
+        "original_name": "Platino",
+        "price": "Bs52,90/mes",
+        "price_number": 52.9,
+        "monthly_price": 52.9,
+        "currency": "BOB"
+      },
+      {
+        "plan_group": "yearly",
+        "label": "每年",
+        "name": "Basic",
+        "original_name": "Básico con Anuncios",
+        "price": "12x Bs22,90/mes",
+        "price_number": 274.79999999999995,
+        "monthly_price": 22.9,
+        "currency": "BOB"
+      },
+      {
+        "plan_group": "yearly",
+        "label": "每年",
+        "name": "Standard",
+        "original_name": "Estándar",
+        "price": "12x Bs29,90/mes",
+        "price_number": 358.79999999999995,
+        "monthly_price": 29.9,
+        "currency": "BOB"
+      },
+      {
+        "plan_group": "yearly",
+        "label": "每年",
+        "name": "Ultimate",
+        "original_name": "Platino",
+        "price": "12x Bs36,90/mes",
+        "price_number": 442.79999999999995,
+        "monthly_price": 36.9,
+        "currency": "BOB"
+      }
+    ],
+    "scraped_at": "2025-07-30T21:33:49.423837",
     "attempt": 1,
     "success": true
   },
@@ -1275,7 +1206,76 @@
         "currency": "ARS"
       }
     ],
-    "scraped_at": "2025-07-30T20:50:45.338263",
+    "scraped_at": "2025-07-30T21:33:50.211497",
+    "attempt": 1,
+    "success": true
+  },
+  "EC": {
+    "country_code": "EC",
+    "country_name": "Ecuador",
+    "plans": [
+      {
+        "plan_group": "monthly",
+        "label": "每月",
+        "name": "Basic",
+        "original_name": "Básico con Anuncios",
+        "price": "$6.99/mes",
+        "price_number": 6.99,
+        "monthly_price": 6.99,
+        "currency": "USD"
+      },
+      {
+        "plan_group": "monthly",
+        "label": "每月",
+        "name": "Standard",
+        "original_name": "Estándar",
+        "price": "$8.29/mes",
+        "price_number": 8.29,
+        "monthly_price": 8.29,
+        "currency": "USD"
+      },
+      {
+        "plan_group": "monthly",
+        "label": "每月",
+        "name": "Ultimate",
+        "original_name": "Platino",
+        "price": "$9.99/mes",
+        "price_number": 9.99,
+        "monthly_price": 9.99,
+        "currency": "USD"
+      },
+      {
+        "plan_group": "yearly",
+        "label": "每年",
+        "name": "Basic",
+        "original_name": "Básico con Anuncios",
+        "price": "12x $3.29/mes",
+        "price_number": 39.480000000000004,
+        "monthly_price": 3.29,
+        "currency": "USD"
+      },
+      {
+        "plan_group": "yearly",
+        "label": "每年",
+        "name": "Standard",
+        "original_name": "Estándar",
+        "price": "12x $4.19/mes",
+        "price_number": 50.28,
+        "monthly_price": 4.19,
+        "currency": "USD"
+      },
+      {
+        "plan_group": "yearly",
+        "label": "每年",
+        "name": "Ultimate",
+        "original_name": "Platino",
+        "price": "12x $4.99/mes",
+        "price_number": 59.88,
+        "monthly_price": 4.99,
+        "currency": "USD"
+      }
+    ],
+    "scraped_at": "2025-07-30T21:33:50.472891",
     "attempt": 1,
     "success": true
   },
@@ -1344,145 +1344,7 @@
         "currency": "USD"
       }
     ],
-    "scraped_at": "2025-07-30T20:50:46.824154",
-    "attempt": 1,
-    "success": true
-  },
-  "JM": {
-    "country_code": "JM",
-    "country_name": "Jamaica",
-    "plans": [
-      {
-        "plan_group": "monthly",
-        "label": "每月",
-        "name": "Basic",
-        "original_name": "Basic with Ads",
-        "price": "$890/month",
-        "price_number": 890.0,
-        "monthly_price": 890.0,
-        "currency": "USD"
-      },
-      {
-        "plan_group": "monthly",
-        "label": "每月",
-        "name": "Standard",
-        "original_name": "Standard",
-        "price": "$1,190/month",
-        "price_number": 1190.0,
-        "monthly_price": 1190.0,
-        "currency": "USD"
-      },
-      {
-        "plan_group": "monthly",
-        "label": "每月",
-        "name": "Platinum",
-        "original_name": "Platinum",
-        "price": "$1,490/month",
-        "price_number": 1490.0,
-        "monthly_price": 1490.0,
-        "currency": "USD"
-      },
-      {
-        "plan_group": "yearly",
-        "label": "每年",
-        "name": "Basic",
-        "original_name": "Basic with Ads",
-        "price": "$7,490/year",
-        "price_number": 7490.0,
-        "monthly_price": 7490.0,
-        "currency": "USD"
-      },
-      {
-        "plan_group": "yearly",
-        "label": "每年",
-        "name": "Standard",
-        "original_name": "Standard",
-        "price": "$9,990/year",
-        "price_number": 9990.0,
-        "monthly_price": 9990.0,
-        "currency": "USD"
-      },
-      {
-        "plan_group": "yearly",
-        "label": "每年",
-        "name": "Platinum",
-        "original_name": "Platinum",
-        "price": "$12,490/year",
-        "price_number": 12490.0,
-        "monthly_price": 12490.0,
-        "currency": "USD"
-      }
-    ],
-    "scraped_at": "2025-07-30T20:50:48.819665",
-    "attempt": 1,
-    "success": true
-  },
-  "PY": {
-    "country_code": "PY",
-    "country_name": "Paraguay",
-    "plans": [
-      {
-        "plan_group": "monthly",
-        "label": "每月",
-        "name": "Basic",
-        "original_name": "Básico con Anuncios",
-        "price": "Gs35.900/mes",
-        "price_number": 35900.0,
-        "monthly_price": 35900.0,
-        "currency": "PYG"
-      },
-      {
-        "plan_group": "monthly",
-        "label": "每月",
-        "name": "Standard",
-        "original_name": "Estándar",
-        "price": "Gs45.900/mes",
-        "price_number": 45900.0,
-        "monthly_price": 45900.0,
-        "currency": "PYG"
-      },
-      {
-        "plan_group": "monthly",
-        "label": "每月",
-        "name": "Ultimate",
-        "original_name": "Platino",
-        "price": "Gs55.900/mes",
-        "price_number": 55900.0,
-        "monthly_price": 55900.0,
-        "currency": "PYG"
-      },
-      {
-        "plan_group": "yearly",
-        "label": "每年",
-        "name": "Basic",
-        "original_name": "Básico con Anuncios",
-        "price": "12x Gs24.900/mes",
-        "price_number": 298800.0,
-        "monthly_price": 24900.0,
-        "currency": "PYG"
-      },
-      {
-        "plan_group": "yearly",
-        "label": "每年",
-        "name": "Standard",
-        "original_name": "Estándar",
-        "price": "12x Gs31.600/mes",
-        "price_number": 379200.0,
-        "monthly_price": 31600.0,
-        "currency": "PYG"
-      },
-      {
-        "plan_group": "yearly",
-        "label": "每年",
-        "name": "Ultimate",
-        "original_name": "Platino",
-        "price": "12x Gs39.100/mes",
-        "price_number": 469200.0,
-        "monthly_price": 39100.0,
-        "currency": "PYG"
-      }
-    ],
-    "scraped_at": "2025-07-30T20:50:48.869873",
+    "scraped_at": "2025-07-30T21:33:53.163593",
     "attempt": 1,
     "success": true
   },
@@ -1566,7 +1428,7 @@
         "name": "Solo Tnt Sports",
         "original_name": "Solo TNT Sports",
         "price": "12x $10.990/mes",
-        "price_number": 10990.0,
+        "price_number": 131880.0,
         "monthly_price": 10990.0,
         "currency": "CLP"
       },
@@ -1576,27 +1438,96 @@
         "name": "Ultimate",
         "original_name": "HBO Max Platino + TNT Sports",
         "price": "12x $16.990/mes",
-        "price_number": 16990.0,
+        "price_number": 203880.0,
         "monthly_price": 16990.0,
         "currency": "CLP"
       }
     ],
-    "scraped_at": "2025-07-30T20:50:50.237513",
+    "scraped_at": "2025-07-30T21:33:53.458619",
     "attempt": 1,
     "success": true
   },
-  "AG": {
-    "country_code": "AG",
-    "country_name": "Antigua and Barbuda",
+  "PY": {
+    "country_code": "PY",
+    "country_name": "Paraguay",
+    "plans": [
+      {
+        "plan_group": "monthly",
+        "label": "每月",
+        "name": "Basic",
+        "original_name": "Básico con Anuncios",
+        "price": "Gs35.900/mes",
+        "price_number": 35900.0,
+        "monthly_price": 35900.0,
+        "currency": "PYG"
+      },
+      {
+        "plan_group": "monthly",
+        "label": "每月",
+        "name": "Standard",
+        "original_name": "Estándar",
+        "price": "Gs45.900/mes",
+        "price_number": 45900.0,
+        "monthly_price": 45900.0,
+        "currency": "PYG"
+      },
+      {
+        "plan_group": "monthly",
+        "label": "每月",
+        "name": "Ultimate",
+        "original_name": "Platino",
+        "price": "Gs55.900/mes",
+        "price_number": 55900.0,
+        "monthly_price": 55900.0,
+        "currency": "PYG"
+      },
+      {
+        "plan_group": "yearly",
+        "label": "每年",
+        "name": "Basic",
+        "original_name": "Básico con Anuncios",
+        "price": "12x Gs24.900/mes",
+        "price_number": 298800.0,
+        "monthly_price": 24900.0,
+        "currency": "PYG"
+      },
+      {
+        "plan_group": "yearly",
+        "label": "每年",
+        "name": "Standard",
+        "original_name": "Estándar",
+        "price": "12x Gs31.600/mes",
+        "price_number": 379200.0,
+        "monthly_price": 31600.0,
+        "currency": "PYG"
+      },
+      {
+        "plan_group": "yearly",
+        "label": "每年",
+        "name": "Ultimate",
+        "original_name": "Platino",
+        "price": "12x Gs39.100/mes",
+        "price_number": 469200.0,
+        "monthly_price": 39100.0,
+        "currency": "PYG"
+      }
+    ],
+    "scraped_at": "2025-07-30T21:33:53.757013",
+    "attempt": 1,
+    "success": true
+  },
+  "JM": {
+    "country_code": "JM",
+    "country_name": "Jamaica",
     "plans": [
       {
         "plan_group": "monthly",
         "label": "每月",
         "name": "Basic",
         "original_name": "Basic with Ads",
-        "price": "$5.99/month",
-        "price_number": 5.99,
-        "monthly_price": 5.99,
+        "price": "$890/month",
+        "price_number": 890.0,
+        "monthly_price": 890.0,
         "currency": "USD"
       },
       {
@@ -1604,9 +1535,9 @@
         "label": "每月",
         "name": "Standard",
         "original_name": "Standard",
-        "price": "$7.99/month",
-        "price_number": 7.99,
-        "monthly_price": 7.99,
+        "price": "$1,190/month",
+        "price_number": 1190.0,
+        "monthly_price": 1190.0,
         "currency": "USD"
       },
       {
@@ -1614,9 +1545,9 @@
         "label": "每月",
         "name": "Platinum",
         "original_name": "Platinum",
-        "price": "$9.99/month",
-        "price_number": 9.99,
-        "monthly_price": 9.99,
+        "price": "$1,490/month",
+        "price_number": 1490.0,
+        "monthly_price": 1490.0,
         "currency": "USD"
       },
       {
@@ -1624,9 +1555,9 @@
         "label": "每年",
         "name": "Basic",
         "original_name": "Basic with Ads",
-        "price": "$49.90/year",
-        "price_number": 49.9,
-        "monthly_price": 49.9,
+        "price": "$7,490/year",
+        "price_number": 7490.0,
+        "monthly_price": 7490.0,
         "currency": "USD"
       },
       {
@@ -1634,9 +1565,9 @@
         "label": "每年",
         "name": "Standard",
         "original_name": "Standard",
-        "price": "$65.90/year",
-        "price_number": 65.9,
-        "monthly_price": 65.9,
+        "price": "$9,990/year",
+        "price_number": 9990.0,
+        "monthly_price": 9990.0,
         "currency": "USD"
       },
       {
@@ -1644,82 +1575,13 @@
         "label": "每年",
         "name": "Platinum",
         "original_name": "Platinum",
-        "price": "$79.90/year",
-        "price_number": 79.9,
-        "monthly_price": 79.9,
+        "price": "$12,490/year",
+        "price_number": 12490.0,
+        "monthly_price": 12490.0,
         "currency": "USD"
       }
     ],
-    "scraped_at": "2025-07-30T20:50:52.596950",
-    "attempt": 1,
-    "success": true
-  },
-  "AW": {
-    "country_code": "AW",
-    "country_name": "Aruba",
-    "plans": [
-      {
-        "plan_group": "monthly",
-        "label": "每月",
-        "name": "Basic",
-        "original_name": "Basic with Ads",
-        "price": "$5.99/month",
-        "price_number": 5.99,
-        "monthly_price": 5.99,
-        "currency": "USD"
-      },
-      {
-        "plan_group": "monthly",
-        "label": "每月",
-        "name": "Standard",
-        "original_name": "Standard",
-        "price": "$7.99/month",
-        "price_number": 7.99,
-        "monthly_price": 7.99,
-        "currency": "USD"
-      },
-      {
-        "plan_group": "monthly",
-        "label": "每月",
-        "name": "Platinum",
-        "original_name": "Platinum",
-        "price": "$9.99/month",
-        "price_number": 9.99,
-        "monthly_price": 9.99,
-        "currency": "USD"
-      },
-      {
-        "plan_group": "yearly",
-        "label": "每年",
-        "name": "Basic",
-        "original_name": "Basic with Ads",
-        "price": "$49.90/year",
-        "price_number": 49.9,
-        "monthly_price": 49.9,
-        "currency": "USD"
-      },
-      {
-        "plan_group": "yearly",
-        "label": "每年",
-        "name": "Standard",
-        "original_name": "Standard",
-        "price": "$65.90/year",
-        "price_number": 65.9,
-        "monthly_price": 65.9,
-        "currency": "USD"
-      },
-      {
-        "plan_group": "yearly",
-        "label": "每年",
-        "name": "Platinum",
-        "original_name": "Platinum",
-        "price": "$79.90/year",
-        "price_number": 79.9,
-        "monthly_price": 79.9,
-        "currency": "USD"
-      }
-    ],
-    "scraped_at": "2025-07-30T20:50:54.192025",
+    "scraped_at": "2025-07-30T21:33:54.815060",
     "attempt": 1,
     "success": true
   },
@@ -1788,8 +1650,77 @@
         "currency": "BRL"
       }
     ],
-    "scraped_at": "2025-07-30T20:50:55.440554",
-    "attempt": 2,
+    "scraped_at": "2025-07-30T21:33:54.922318",
+    "attempt": 1,
+    "success": true
+  },
+  "AG": {
+    "country_code": "AG",
+    "country_name": "Antigua and Barbuda",
+    "plans": [
+      {
+        "plan_group": "monthly",
+        "label": "每月",
+        "name": "Basic",
+        "original_name": "Basic with Ads",
+        "price": "$5.99/month",
+        "price_number": 5.99,
+        "monthly_price": 5.99,
+        "currency": "USD"
+      },
+      {
+        "plan_group": "monthly",
+        "label": "每月",
+        "name": "Standard",
+        "original_name": "Standard",
+        "price": "$7.99/month",
+        "price_number": 7.99,
+        "monthly_price": 7.99,
+        "currency": "USD"
+      },
+      {
+        "plan_group": "monthly",
+        "label": "每月",
+        "name": "Platinum",
+        "original_name": "Platinum",
+        "price": "$9.99/month",
+        "price_number": 9.99,
+        "monthly_price": 9.99,
+        "currency": "USD"
+      },
+      {
+        "plan_group": "yearly",
+        "label": "每年",
+        "name": "Basic",
+        "original_name": "Basic with Ads",
+        "price": "$49.90/year",
+        "price_number": 49.9,
+        "monthly_price": 49.9,
+        "currency": "USD"
+      },
+      {
+        "plan_group": "yearly",
+        "label": "每年",
+        "name": "Standard",
+        "original_name": "Standard",
+        "price": "$65.90/year",
+        "price_number": 65.9,
+        "monthly_price": 65.9,
+        "currency": "USD"
+      },
+      {
+        "plan_group": "yearly",
+        "label": "每年",
+        "name": "Platinum",
+        "original_name": "Platinum",
+        "price": "$79.90/year",
+        "price_number": 79.9,
+        "monthly_price": 79.9,
+        "currency": "USD"
+      }
+    ],
+    "scraped_at": "2025-07-30T21:33:57.645939",
+    "attempt": 1,
     "success": true
   },
   "BS": {
@@ -1857,214 +1788,7 @@
         "currency": "USD"
       }
     ],
-    "scraped_at": "2025-07-30T20:51:10.247839",
-    "attempt": 1,
-    "success": true
-  },
-  "BZ": {
-    "country_code": "BZ",
-    "country_name": "Belize",
-    "plans": [
-      {
-        "plan_group": "monthly",
-        "label": "每月",
-        "name": "Basic",
-        "original_name": "Basic with Ads",
-        "price": "$11.99/month",
-        "price_number": 11.99,
-        "monthly_price": 11.99,
-        "currency": "USD"
-      },
-      {
-        "plan_group": "monthly",
-        "label": "每月",
-        "name": "Standard",
-        "original_name": "Standard",
-        "price": "$15.99/month",
-        "price_number": 15.99,
-        "monthly_price": 15.99,
-        "currency": "USD"
-      },
-      {
-        "plan_group": "monthly",
-        "label": "每月",
-        "name": "Platinum",
-        "original_name": "Platinum",
-        "price": "$19.99/month",
-        "price_number": 19.99,
-        "monthly_price": 19.99,
-        "currency": "USD"
-      },
-      {
-        "plan_group": "yearly",
-        "label": "每年",
-        "name": "Basic",
-        "original_name": "Basic with Ads",
-        "price": "$99.90/year",
-        "price_number": 99.9,
-        "monthly_price": 99.9,
-        "currency": "USD"
-      },
-      {
-        "plan_group": "yearly",
-        "label": "每年",
-        "name": "Standard",
-        "original_name": "Standard",
-        "price": "$129.90/year",
-        "price_number": 129.9,
-        "monthly_price": 129.9,
-        "currency": "USD"
-      },
-      {
-        "plan_group": "yearly",
-        "label": "每年",
-        "name": "Platinum",
-        "original_name": "Platinum",
-        "price": "$159.90/year",
-        "price_number": 159.9,
-        "monthly_price": 159.9,
-        "currency": "USD"
-      }
-    ],
-    "scraped_at": "2025-07-30T20:51:19.579410",
-    "attempt": 1,
-    "success": true
-  },
-  "CW": {
-    "country_code": "CW",
-    "country_name": "Curacao",
-    "plans": [
-      {
-        "plan_group": "monthly",
-        "label": "每月",
-        "name": "Basic",
-        "original_name": "Basic with Ads",
-        "price": "$5.99/month",
-        "price_number": 5.99,
-        "monthly_price": 5.99,
-        "currency": "USD"
-      },
-      {
-        "plan_group": "monthly",
-        "label": "每月",
-        "name": "Standard",
-        "original_name": "Standard",
-        "price": "$7.99/month",
-        "price_number": 7.99,
-        "monthly_price": 7.99,
-        "currency": "USD"
-      },
-      {
-        "plan_group": "monthly",
-        "label": "每月",
-        "name": "Platinum",
-        "original_name": "Platinum",
-        "price": "$9.99/month",
-        "price_number": 9.99,
-        "monthly_price": 9.99,
-        "currency": "USD"
-      },
-      {
-        "plan_group": "yearly",
-        "label": "每年",
-        "name": "Basic",
-        "original_name": "Basic with Ads",
-        "price": "$49.90/year",
-        "price_number": 49.9,
-        "monthly_price": 49.9,
-        "currency": "USD"
-      },
-      {
-        "plan_group": "yearly",
-        "label": "每年",
-        "name": "Standard",
-        "original_name": "Standard",
-        "price": "$65.90/year",
-        "price_number": 65.9,
-        "monthly_price": 65.9,
-        "currency": "USD"
-      },
-      {
-        "plan_group": "yearly",
-        "label": "每年",
-        "name": "Platinum",
-        "original_name": "Platinum",
-        "price": "$79.90/year",
-        "price_number": 79.9,
-        "monthly_price": 79.9,
-        "currency": "USD"
-      }
-    ],
-    "scraped_at": "2025-07-30T20:51:19.685667",
-    "attempt": 1,
-    "success": true
-  },
-  "BB": {
-    "country_code": "BB",
-    "country_name": "Barbados",
-    "plans": [
-      {
-        "plan_group": "monthly",
-        "label": "每月",
-        "name": "Basic",
-        "original_name": "Basic with Ads",
-        "price": "$11.99/month",
-        "price_number": 11.99,
-        "monthly_price": 11.99,
-        "currency": "USD"
-      },
-      {
-        "plan_group": "monthly",
-        "label": "每月",
-        "name": "Standard",
-        "original_name": "Standard",
-        "price": "$15.99/month",
-        "price_number": 15.99,
-        "monthly_price": 15.99,
-        "currency": "USD"
-      },
-      {
-        "plan_group": "monthly",
-        "label": "每月",
-        "name": "Platinum",
-        "original_name": "Platinum",
-        "price": "$19.99/month",
-        "price_number": 19.99,
-        "monthly_price": 19.99,
-        "currency": "USD"
-      },
-      {
-        "plan_group": "yearly",
-        "label": "每年",
-        "name": "Basic",
-        "original_name": "Basic with Ads",
-        "price": "$99.90/year",
-        "price_number": 99.9,
-        "monthly_price": 99.9,
-        "currency": "USD"
-      },
-      {
-        "plan_group": "yearly",
-        "label": "每年",
-        "name": "Standard",
-        "original_name": "Standard",
-        "price": "$129.90/year",
-        "price_number": 129.9,
-        "monthly_price": 129.9,
-        "currency": "USD"
-      },
-      {
-        "plan_group": "yearly",
-        "label": "每年",
-        "name": "Platinum",
-        "original_name": "Platinum",
-        "price": "$159.90/year",
-        "price_number": 159.9,
-        "monthly_price": 159.9,
-        "currency": "USD"
-      }
-    ],
-    "scraped_at": "2025-07-30T20:51:22.497250",
+    "scraped_at": "2025-07-30T21:33:57.755331",
     "attempt": 1,
     "success": true
   },
@@ -2133,7 +1857,76 @@
         "currency": "USD"
       }
     ],
-    "scraped_at": "2025-07-30T20:51:22.712315",
+    "scraped_at": "2025-07-30T21:34:16.479715",
+    "attempt": 1,
+    "success": true
+  },
+  "BB": {
+    "country_code": "BB",
+    "country_name": "Barbados",
+    "plans": [
+      {
+        "plan_group": "monthly",
+        "label": "每月",
+        "name": "Basic",
+        "original_name": "Basic with Ads",
+        "price": "$11.99/month",
+        "price_number": 11.99,
+        "monthly_price": 11.99,
+        "currency": "USD"
+      },
+      {
+        "plan_group": "monthly",
+        "label": "每月",
+        "name": "Standard",
+        "original_name": "Standard",
+        "price": "$15.99/month",
+        "price_number": 15.99,
+        "monthly_price": 15.99,
+        "currency": "USD"
+      },
+      {
+        "plan_group": "monthly",
+        "label": "每月",
+        "name": "Platinum",
+        "original_name": "Platinum",
+        "price": "$19.99/month",
+        "price_number": 19.99,
+        "monthly_price": 19.99,
+        "currency": "USD"
+      },
+      {
+        "plan_group": "yearly",
+        "label": "每年",
+        "name": "Basic",
+        "original_name": "Basic with Ads",
+        "price": "$99.90/year",
+        "price_number": 99.9,
+        "monthly_price": 99.9,
+        "currency": "USD"
+      },
+      {
+        "plan_group": "yearly",
+        "label": "每年",
+        "name": "Standard",
+        "original_name": "Standard",
+        "price": "$129.90/year",
+        "price_number": 129.9,
+        "monthly_price": 129.9,
+        "currency": "USD"
+      },
+      {
+        "plan_group": "yearly",
+        "label": "每年",
+        "name": "Platinum",
+        "original_name": "Platinum",
+        "price": "$159.90/year",
+        "price_number": 159.9,
+        "monthly_price": 159.9,
+        "currency": "USD"
+      }
+    ],
+    "scraped_at": "2025-07-30T21:34:18.197641",
     "attempt": 1,
     "success": true
   },
@@ -2202,19 +1995,29 @@
         "currency": "USD"
       }
     ],
-    "scraped_at": "2025-07-30T20:51:24.497254",
+    "scraped_at": "2025-07-30T21:34:19.941893",
     "attempt": 1,
     "success": true
   },
-  "GD": {
-    "country_code": "GD",
-    "country_name": "Grenada",
+  "BZ": {
+    "country_code": "BZ",
+    "country_name": "Belize",
     "plans": [
       {
         "plan_group": "monthly",
         "label": "每月",
         "name": "Basic",
         "original_name": "Basic with Ads",
+        "price": "$11.99/month",
+        "price_number": 11.99,
+        "monthly_price": 11.99,
+        "currency": "USD"
+      },
+      {
+        "plan_group": "monthly",
+        "label": "每月",
+        "name": "Standard",
+        "original_name": "Standard",
         "price": "$15.99/month",
         "price_number": 15.99,
         "monthly_price": 15.99,
@@ -2223,21 +2026,11 @@
       {
         "plan_group": "monthly",
         "label": "每月",
-        "name": "Standard",
-        "original_name": "Standard",
-        "price": "$20.99/month",
-        "price_number": 20.99,
-        "monthly_price": 20.99,
-        "currency": "USD"
-      },
-      {
-        "plan_group": "monthly",
-        "label": "每月",
         "name": "Platinum",
         "original_name": "Platinum",
-        "price": "$25.99/month",
-        "price_number": 25.99,
-        "monthly_price": 25.99,
+        "price": "$19.99/month",
+        "price_number": 19.99,
+        "monthly_price": 19.99,
         "currency": "USD"
       },
       {
@@ -2245,9 +2038,9 @@
         "label": "每年",
         "name": "Basic",
         "original_name": "Basic with Ads",
-        "price": "$134.90/year",
-        "price_number": 134.9,
-        "monthly_price": 134.9,
+        "price": "$99.90/year",
+        "price_number": 99.9,
+        "monthly_price": 99.9,
         "currency": "USD"
       },
       {
@@ -2255,9 +2048,9 @@
         "label": "每年",
         "name": "Standard",
         "original_name": "Standard",
-        "price": "$174.90/year",
-        "price_number": 174.9,
-        "monthly_price": 174.9,
+        "price": "$129.90/year",
+        "price_number": 129.9,
+        "monthly_price": 129.9,
         "currency": "USD"
       },
       {
@@ -2265,88 +2058,19 @@
         "label": "每年",
         "name": "Platinum",
         "original_name": "Platinum",
-        "price": "$214.90/year",
-        "price_number": 214.9,
-        "monthly_price": 214.9,
+        "price": "$159.90/year",
+        "price_number": 159.9,
+        "monthly_price": 159.9,
         "currency": "USD"
       }
     ],
-    "scraped_at": "2025-07-30T20:51:25.376023",
-    "attempt": 1,
+    "scraped_at": "2025-07-30T21:34:22.361764",
+    "attempt": 2,
     "success": true
   },
-  "HT": {
-    "country_code": "HT",
-    "country_name": "Haiti",
-    "plans": [
-      {
-        "plan_group": "monthly",
-        "label": "每月",
-        "name": "Basic",
-        "original_name": "Basic with Ads",
-        "price": "G599/month",
-        "price_number": 599.0,
-        "monthly_price": 599.0,
-        "currency": "USD"
-      },
-      {
-        "plan_group": "monthly",
-        "label": "每月",
-        "name": "Standard",
-        "original_name": "Standard",
-        "price": "G799/month",
-        "price_number": 799.0,
-        "monthly_price": 799.0,
-        "currency": "USD"
-      },
-      {
-        "plan_group": "monthly",
-        "label": "每月",
-        "name": "Platinum",
-        "original_name": "Platinum",
-        "price": "G999/month",
-        "price_number": 999.0,
-        "monthly_price": 999.0,
-        "currency": "USD"
-      },
-      {
-        "plan_group": "yearly",
-        "label": "每年",
-        "name": "Basic",
-        "original_name": "Basic with Ads",
-        "price": "G4 990/year",
-        "price_number": 4990.0,
-        "monthly_price": 4990.0,
-        "currency": "USD"
-      },
-      {
-        "plan_group": "yearly",
-        "label": "每年",
-        "name": "Standard",
-        "original_name": "Standard",
-        "price": "G6 590/year",
-        "price_number": 6590.0,
-        "monthly_price": 6590.0,
-        "currency": "USD"
-      },
-      {
-        "plan_group": "yearly",
-        "label": "每年",
-        "name": "Platinum",
-        "original_name": "Platinum",
-        "price": "G7 990/year",
-        "price_number": 7990.0,
-        "monthly_price": 7990.0,
-        "currency": "USD"
-      }
-    ],
-    "scraped_at": "2025-07-30T20:51:25.859887",
-    "attempt": 1,
-    "success": true
-  },
-  "KN": {
-    "country_code": "KN",
-    "country_name": "Saint Kitts and Nevis",
+  "CW": {
+    "country_code": "CW",
+    "country_name": "Curacao",
     "plans": [
       {
         "plan_group": "monthly",
@@ -2409,76 +2133,7 @@
         "currency": "USD"
       }
     ],
-    "scraped_at": "2025-07-30T20:51:27.403691",
-    "attempt": 1,
-    "success": true
-  },
-  "KY": {
-    "country_code": "KY",
-    "country_name": "Cayman Islands",
-    "plans": [
-      {
-        "plan_group": "monthly",
-        "label": "每月",
-        "name": "Basic",
-        "original_name": "Basic with Ads",
-        "price": "$5.99/month",
-        "price_number": 5.99,
-        "monthly_price": 5.99,
-        "currency": "USD"
-      },
-      {
-        "plan_group": "monthly",
-        "label": "每月",
-        "name": "Standard",
-        "original_name": "Standard",
-        "price": "$7.99/month",
-        "price_number": 7.99,
-        "monthly_price": 7.99,
-        "currency": "USD"
-      },
-      {
-        "plan_group": "monthly",
-        "label": "每月",
-        "name": "Platinum",
-        "original_name": "Platinum",
-        "price": "$9.99/month",
-        "price_number": 9.99,
-        "monthly_price": 9.99,
-        "currency": "USD"
-      },
-      {
-        "plan_group": "yearly",
-        "label": "每年",
-        "name": "Basic",
-        "original_name": "Basic with Ads",
-        "price": "$49.90/year",
-        "price_number": 49.9,
-        "monthly_price": 49.9,
-        "currency": "USD"
-      },
-      {
-        "plan_group": "yearly",
-        "label": "每年",
-        "name": "Standard",
-        "original_name": "Standard",
-        "price": "$65.90/year",
-        "price_number": 65.9,
-        "monthly_price": 65.9,
-        "currency": "USD"
-      },
-      {
-        "plan_group": "yearly",
-        "label": "每年",
-        "name": "Platinum",
-        "original_name": "Platinum",
-        "price": "$79.90/year",
-        "price_number": 79.9,
-        "monthly_price": 79.9,
-        "currency": "USD"
-      }
-    ],
-    "scraped_at": "2025-07-30T20:51:33.925852",
+    "scraped_at": "2025-07-30T21:34:24.957291",
     "attempt": 2,
     "success": true
   },
@@ -2547,22 +2202,22 @@
         "currency": "USD"
       }
     ],
-    "scraped_at": "2025-07-30T20:51:35.394940",
-    "attempt": 2,
+    "scraped_at": "2025-07-30T21:34:28.759788",
+    "attempt": 1,
     "success": true
   },
-  "GY": {
-    "country_code": "GY",
-    "country_name": "Guyana",
+  "HT": {
+    "country_code": "HT",
+    "country_name": "Haiti",
     "plans": [
       {
         "plan_group": "monthly",
         "label": "每月",
         "name": "Basic",
         "original_name": "Basic with Ads",
-        "price": "$1,290/month",
-        "price_number": 1290.0,
-        "monthly_price": 1290.0,
+        "price": "G599/month",
+        "price_number": 599.0,
+        "monthly_price": 599.0,
         "currency": "USD"
       },
       {
@@ -2570,9 +2225,9 @@
         "label": "每月",
         "name": "Standard",
         "original_name": "Standard",
-        "price": "$1,690/month",
-        "price_number": 1690.0,
-        "monthly_price": 1690.0,
+        "price": "G799/month",
+        "price_number": 799.0,
+        "monthly_price": 799.0,
         "currency": "USD"
       },
       {
@@ -2580,9 +2235,9 @@
         "label": "每月",
         "name": "Platinum",
         "original_name": "Platinum",
-        "price": "$2,090/month",
-        "price_number": 2090.0,
-        "monthly_price": 2090.0,
+        "price": "G999/month",
+        "price_number": 999.0,
+        "monthly_price": 999.0,
         "currency": "USD"
       },
       {
@@ -2590,9 +2245,9 @@
         "label": "每年",
         "name": "Basic",
         "original_name": "Basic with Ads",
-        "price": "$10,790/year",
-        "price_number": 10790.0,
-        "monthly_price": 10790.0,
+        "price": "G4 990/year",
+        "price_number": 4990.0,
+        "monthly_price": 4990.0,
         "currency": "USD"
       },
       {
@@ -2600,9 +2255,9 @@
         "label": "每年",
         "name": "Standard",
         "original_name": "Standard",
-        "price": "$13,790/year",
-        "price_number": 13790.0,
-        "monthly_price": 13790.0,
+        "price": "G6 590/year",
+        "price_number": 6590.0,
+        "monthly_price": 6590.0,
         "currency": "USD"
       },
       {
@@ -2610,19 +2265,88 @@
         "label": "每年",
         "name": "Platinum",
         "original_name": "Platinum",
-        "price": "$16,790/year",
-        "price_number": 16790.0,
-        "monthly_price": 16790.0,
+        "price": "G7 990/year",
+        "price_number": 7990.0,
+        "monthly_price": 7990.0,
         "currency": "USD"
       }
     ],
-    "scraped_at": "2025-07-30T20:51:35.631553",
+    "scraped_at": "2025-07-30T21:34:29.441960",
+    "attempt": 1,
+    "success": true
+  },
+  "GD": {
+    "country_code": "GD",
+    "country_name": "Grenada",
+    "plans": [
+      {
+        "plan_group": "monthly",
+        "label": "每月",
+        "name": "Basic",
+        "original_name": "Basic with Ads",
+        "price": "$15.99/month",
+        "price_number": 15.99,
+        "monthly_price": 15.99,
+        "currency": "USD"
+      },
+      {
+        "plan_group": "monthly",
+        "label": "每月",
+        "name": "Standard",
+        "original_name": "Standard",
+        "price": "$20.99/month",
+        "price_number": 20.99,
+        "monthly_price": 20.99,
+        "currency": "USD"
+      },
+      {
+        "plan_group": "monthly",
+        "label": "每月",
+        "name": "Platinum",
+        "original_name": "Platinum",
+        "price": "$25.99/month",
+        "price_number": 25.99,
+        "monthly_price": 25.99,
+        "currency": "USD"
+      },
+      {
+        "plan_group": "yearly",
+        "label": "每年",
+        "name": "Basic",
+        "original_name": "Basic with Ads",
+        "price": "$134.90/year",
+        "price_number": 134.9,
+        "monthly_price": 134.9,
+        "currency": "USD"
+      },
+      {
+        "plan_group": "yearly",
+        "label": "每年",
+        "name": "Standard",
+        "original_name": "Standard",
+        "price": "$174.90/year",
+        "price_number": 174.9,
+        "monthly_price": 174.9,
+        "currency": "USD"
+      },
+      {
+        "plan_group": "yearly",
+        "label": "每年",
+        "name": "Platinum",
+        "original_name": "Platinum",
+        "price": "$214.90/year",
+        "price_number": 214.9,
+        "monthly_price": 214.9,
+        "currency": "USD"
+      }
+    ],
+    "scraped_at": "2025-07-30T21:34:29.808348",
     "attempt": 2,
     "success": true
   },
-  "TC": {
-    "country_code": "TC",
-    "country_name": "Turks and Caicos Islands",
+  "KN": {
+    "country_code": "KN",
+    "country_name": "Saint Kitts and Nevis",
     "plans": [
       {
         "plan_group": "monthly",
@@ -2685,7 +2409,76 @@
         "currency": "USD"
       }
     ],
-    "scraped_at": "2025-07-30T20:51:38.791912",
+    "scraped_at": "2025-07-30T21:34:30.018137",
+    "attempt": 1,
+    "success": true
+  },
+  "VC": {
+    "country_code": "VC",
+    "country_name": "Saint Vincent and the Grenadines",
+    "plans": [
+      {
+        "plan_group": "monthly",
+        "label": "每月",
+        "name": "Basic",
+        "original_name": "Basic with Ads",
+        "price": "$5.99/month",
+        "price_number": 5.99,
+        "monthly_price": 5.99,
+        "currency": "USD"
+      },
+      {
+        "plan_group": "monthly",
+        "label": "每月",
+        "name": "Standard",
+        "original_name": "Standard",
+        "price": "$7.99/month",
+        "price_number": 7.99,
+        "monthly_price": 7.99,
+        "currency": "USD"
+      },
+      {
+        "plan_group": "monthly",
+        "label": "每月",
+        "name": "Platinum",
+        "original_name": "Platinum",
+        "price": "$9.99/month",
+        "price_number": 9.99,
+        "monthly_price": 9.99,
+        "currency": "USD"
+      },
+      {
+        "plan_group": "yearly",
+        "label": "每年",
+        "name": "Basic",
+        "original_name": "Basic with Ads",
+        "price": "$49.90/year",
+        "price_number": 49.9,
+        "monthly_price": 49.9,
+        "currency": "USD"
+      },
+      {
+        "plan_group": "yearly",
+        "label": "每年",
+        "name": "Standard",
+        "original_name": "Standard",
+        "price": "$65.90/year",
+        "price_number": 65.9,
+        "monthly_price": 65.9,
+        "currency": "USD"
+      },
+      {
+        "plan_group": "yearly",
+        "label": "每年",
+        "name": "Platinum",
+        "original_name": "Platinum",
+        "price": "$79.90/year",
+        "price_number": 79.9,
+        "monthly_price": 79.9,
+        "currency": "USD"
+      }
+    ],
+    "scraped_at": "2025-07-30T21:34:32.503176",
     "attempt": 1,
     "success": true
   },
@@ -2754,8 +2547,136 @@
         "currency": "USD"
       }
     ],
-    "scraped_at": "2025-07-30T20:52:01.001764",
+    "scraped_at": "2025-07-30T21:34:37.007218",
+    "attempt": 1,
+    "success": true
+  },
+  "TC": {
+    "country_code": "TC",
+    "country_name": "Turks and Caicos Islands",
+    "plans": [
+      {
+        "plan_group": "monthly",
+        "label": "每月",
+        "name": "Basic",
+        "original_name": "Basic with Ads",
+        "price": "$5.99/month",
+        "price_number": 5.99,
+        "monthly_price": 5.99,
+        "currency": "USD"
+      },
+      {
+        "plan_group": "monthly",
+        "label": "每月",
+        "name": "Standard",
+        "original_name": "Standard",
+        "price": "$7.99/month",
+        "price_number": 7.99,
+        "monthly_price": 7.99,
+        "currency": "USD"
+      },
+      {
+        "plan_group": "monthly",
+        "label": "每月",
+        "name": "Platinum",
+        "original_name": "Platinum",
+        "price": "$9.99/month",
+        "price_number": 9.99,
+        "monthly_price": 9.99,
+        "currency": "USD"
+      },
+      {
+        "plan_group": "yearly",
+        "label": "每年",
+        "name": "Basic",
+        "original_name": "Basic with Ads",
+        "price": "$49.90/year",
+        "price_number": 49.9,
+        "monthly_price": 49.9,
+        "currency": "USD"
+      },
+      {
+        "plan_group": "yearly",
+        "label": "每年",
+        "name": "Standard",
+        "original_name": "Standard",
+        "price": "$65.90/year",
+        "price_number": 65.9,
+        "monthly_price": 65.9,
+        "currency": "USD"
+      },
+      {
+        "plan_group": "yearly",
+        "label": "每年",
+        "name": "Platinum",
+        "original_name": "Platinum",
+        "price": "$79.90/year",
+        "price_number": 79.9,
+        "monthly_price": 79.9,
+        "currency": "USD"
+      }
+    ],
+    "scraped_at": "2025-07-30T21:34:39.214035",
     "attempt": 2,
+    "success": true
+  },
+  "US": {
+    "country_code": "US",
+    "country_name": "United States",
+    "plans": [
+      {
+        "plan_group": "bundle",
+        "label": "每年",
+        "name": "With Ads",
+        "original_name": "With Ads",
+        "price": "$16.99/month",
+        "price_number": 16.99,
+        "monthly_price": 16.99,
+        "currency": "USD"
+      },
+      {
+        "plan_group": "bundle",
+        "label": "每年",
+        "name": "No Ads",
+        "original_name": "No Ads",
+        "price": "$29.99/month",
+        "price_number": 29.99,
+        "monthly_price": 29.99,
+        "currency": "USD"
+      },
+      {
+        "plan_group": "monthly",
+        "label": "每月",
+        "name": "Basic",
+        "original_name": "Basic With Ads",
+        "price": "$9.99/month",
+        "price_number": 9.99,
+        "monthly_price": 9.99,
+        "currency": "USD"
+      },
+      {
+        "plan_group": "monthly",
+        "label": "每月",
+        "name": "Standard",
+        "original_name": "Standard",
+        "price": "$16.99/month",
+        "price_number": 16.99,
+        "monthly_price": 16.99,
+        "currency": "USD"
+      },
+      {
+        "plan_group": "monthly",
+        "label": "每月",
+        "name": "Premium",
+        "original_name": "Premium",
+        "price": "$20.99/month",
+        "price_number": 20.99,
+        "monthly_price": 20.99,
+        "currency": "USD"
+      }
+    ],
+    "scraped_at": "2025-07-30T21:34:46.010321",
+    "attempt": 1,
     "success": true
   },
   "BG": {
@@ -2772,7 +2693,25 @@
         "currency": "BGN"
       }
     ],
-    "scraped_at": "2025-07-30T20:52:09.389792",
+    "scraped_at": "2025-07-30T21:34:47.115387",
+    "attempt": 1,
+    "success": true
+  },
+  "AD": {
+    "country_code": "AD",
+    "country_name": "Andorra",
+    "plans": [
+      {
+        "plan_group": "unknown",
+        "label": "未知周期",
+        "name": "Mobile",
+        "original_name": "HBO Max Plan",
+        "price": "Basic with AdsStream on 2devices at onceFull HDvideo resolutionWant to add live sports?Learn more€6.99/monthSelect PlanOr pay€69.90/yearandsave€13.98* >StandardStream on 2devices at onceFull HDvideo resolution30 downloadsWant to add live sports?Learn more€10.99/monthSelect PlanOr pay€109/yearandsave€22.88* >GREAT FOR FAMILIESPremiumStream on 4devices at once4K UHD & Dolby Atmosas available100 downloads(limits apply)Want to add live sports?Learn more€15.99/monthSelect PlanOr pay€159/yearandsave€32.88* >/monthSelect Plan",
+        "price_number": 69.9,
+        "currency": "EUR"
+      }
+    ],
+    "scraped_at": "2025-07-30T21:34:47.192985",
     "attempt": 1,
     "success": true
   },
@@ -2790,7 +2729,115 @@
         "currency": "BAM"
       }
     ],
-    "scraped_at": "2025-07-30T20:52:10.908779",
+    "scraped_at": "2025-07-30T21:34:47.296862",
+    "attempt": 1,
+    "success": true
+  },
+  "MK": {
+    "country_code": "MK",
+    "country_name": "North Macedonia",
+    "plans": [
+      {
+        "plan_group": "unknown",
+        "label": "未知周期",
+        "name": "Mobile",
+        "original_name": "HBO Max Plan",
+        "price": "Want to add live sports?Learn more/monthSelect PlanOr pay/yearandsave* >StandardStream on 2devices at onceFull HDvideo resolution30 downloadsWant to add live sports?Learn more€7.99/monthSelect PlanOr pay€79.90/yearandsave€15.98* >GREAT FOR FAMILIESPremiumStream on 4devices at once4K UHD & Dolby Atmosas available100 downloads(limits apply)Want to add live sports?Learn more€9.99/monthSelect PlanOr pay€99.90/yearandsave€19.98* >/monthSelect Plan",
+        "price_number": 79.9,
+        "currency": "MKD"
+      }
+    ],
+    "scraped_at": "2025-07-30T21:34:51.336383",
+    "attempt": 1,
+    "success": true
+  },
+  "HR": {
+    "country_code": "HR",
+    "country_name": "Croatia",
+    "plans": [
+      {
+        "plan_group": "unknown",
+        "label": "未知周期",
+        "name": "Mobile",
+        "original_name": "HBO Max Plan",
+        "price": "Want to add live sports?Learn more/monthSelect PlanOr pay/yearandsave* >StandardStream on 2devices at onceFull HDvideo resolution30 downloadsWant to add live sports?Learn more€7.99/monthSelect PlanOr pay€79.90/yearandsave€15.98* >GREAT FOR FAMILIESPremiumStream on 4devices at once4K UHD & Dolby Atmosas available100 downloads(limits apply)Want to add live sports?Learn more€9.99/monthSelect PlanOr pay€99.90/yearandsave€19.98* >/monthSelect Plan",
+        "price_number": 79.9,
+        "currency": "EUR"
+      }
+    ],
+    "scraped_at": "2025-07-30T21:34:52.033328",
+    "attempt": 1,
+    "success": true
+  },
+  "MD": {
+    "country_code": "MD",
+    "country_name": "Moldova",
+    "plans": [
+      {
+        "plan_group": "unknown",
+        "label": "未知周期",
+        "name": "Mobile",
+        "original_name": "HBO Max Plan",
+        "price": "Want to add live sports?Learn more/monthSelect PlanOr pay/yearandsave* >StandardStream on 2devices at onceFull HDvideo resolution30 downloadsWant to add live sports?Learn more€6.99/monthSelect PlanOr pay€69.90/yearandsave€13.98* >GREAT FOR FAMILIESPremiumStream on 4devices at once4K UHD & Dolby Atmosas available100 downloads(limits apply)Want to add live sports?Learn more€9.99/monthSelect PlanOr pay€99.90/yearandsave€19.98* >/monthSelect Plan",
+        "price_number": 69.9,
+        "currency": "MDL"
+      }
+    ],
+    "scraped_at": "2025-07-30T21:34:55.858436",
+    "attempt": 1,
+    "success": true
+  },
+  "RO": {
+    "country_code": "RO",
+    "country_name": "Romania",
+    "plans": [
+      {
+        "plan_group": "unknown",
+        "label": "未知周期",
+        "name": "Mobile",
+        "original_name": "HBO Max Plan",
+        "price": "Basic with AdsStream on 2devices at onceFull HDvideo resolution€4.99/monthSelect PlanOr pay€49.90/yearandsave€9.98* >StandardStream on 2devices at onceFull HDvideo resolution30 downloads€6.99/monthSelect PlanOr pay€69.90/yearandsave€13.98* >GREAT FOR FAMILIESPremiumStream on 4devices at once4K UHD & Dolby Atmosas available100 downloads(limits apply)€9.99/monthSelect PlanOr pay€99.90/yearandsave€19.98* >/monthSelect Plan",
+        "price_number": 49.9,
+        "currency": "RON"
+      }
+    ],
+    "scraped_at": "2025-07-30T21:35:00.751910",
+    "attempt": 1,
+    "success": true
+  },
+  "SK": {
+    "country_code": "SK",
+    "country_name": "Slovakia",
+    "plans": [
+      {
+        "plan_group": "unknown",
+        "label": "未知周期",
+        "name": "Mobile",
+        "original_name": "HBO Max Plan",
+        "price": "Want to add live sports?Learn more/monthSelect PlanOr pay/yearandsave* >StandardStream on 2devices at onceFull HDvideo resolution30 downloadsWant to add live sports?Learn more€7.99/monthSelect PlanOr pay€79.90/yearandsave€15.98* >GREAT FOR FAMILIESPremiumStream on 4devices at once4K UHD & Dolby Atmosas available100 downloads(limits apply)Want to add live sports?Learn more€9.99/monthSelect PlanOr pay€99.90/yearandsave€19.98* >/monthSelect Plan",
+        "price_number": 79.9,
+        "currency": "EUR"
+      }
+    ],
+    "scraped_at": "2025-07-30T21:35:04.699648",
+    "attempt": 1,
+    "success": true
+  },
+  "RS": {
+    "country_code": "RS",
+    "country_name": "Serbia",
+    "plans": [
+      {
+        "plan_group": "unknown",
+        "label": "未知周期",
+        "name": "Mobile",
+        "original_name": "HBO Max Plan",
+        "price": "Want to add live sports?Learn more/monthSelect PlanOr pay/yearandsave* >StandardStream on 2devices at onceFull HDvideo resolution30 downloadsWant to add live sports?Learn more€7.99/monthSelect PlanOr pay€79.90/yearandsave€15.98* >GREAT FOR FAMILIESPremiumStream on 4devices at once4K UHD & Dolby Atmosas available100 downloads(limits apply)Want to add live sports?Learn more€9.99/monthSelect PlanOr pay€99.90/yearandsave€19.98* >/monthSelect Plan",
+        "price_number": 79.9,
+        "currency": "RSD"
+      }
+    ],
+    "scraped_at": "2025-07-30T21:35:04.913503",
     "attempt": 1,
     "success": true
   },
@@ -2859,175 +2906,8 @@
         "currency": "AUD"
       }
     ],
-    "scraped_at": "2025-07-30T20:52:17.046116",
-    "attempt": 1,
-    "success": true
-  },
-  "US": {
-    "country_code": "US",
-    "country_name": "United States",
-    "plans": [
-      {
-        "plan_group": "bundle",
-        "label": "每年",
-        "name": "With Ads",
-        "original_name": "With Ads",
-        "price": "$16.99/month",
-        "price_number": 16.99,
-        "monthly_price": 16.99,
-        "currency": "USD"
-      },
-      {
-        "plan_group": "bundle",
-        "label": "每年",
-        "name": "No Ads",
-        "original_name": "No Ads",
-        "price": "$29.99/month",
-        "price_number": 29.99,
-        "monthly_price": 29.99,
-        "currency": "USD"
-      },
-      {
-        "plan_group": "monthly",
-        "label": "每月",
-        "name": "Basic",
-        "original_name": "Basic With Ads",
-        "price": "$9.99/month",
-        "price_number": 9.99,
-        "monthly_price": 9.99,
-        "currency": "USD"
-      },
-      {
-        "plan_group": "monthly",
-        "label": "每月",
-        "name": "Standard",
-        "original_name": "Standard",
-        "price": "$16.99/month",
-        "price_number": 16.99,
-        "monthly_price": 16.99,
-        "currency": "USD"
-      },
-      {
-        "plan_group": "monthly",
-        "label": "每月",
-        "name": "Premium",
-        "original_name": "Premium",
-        "price": "$20.99/month",
-        "price_number": 20.99,
-        "monthly_price": 20.99,
-        "currency": "USD"
-      }
-    ],
-    "scraped_at": "2025-07-30T20:52:17.457884",
-    "attempt": 1,
-    "success": true
-  },
-  "HR": {
-    "country_code": "HR",
-    "country_name": "Croatia",
-    "plans": [
-      {
-        "plan_group": "unknown",
-        "label": "未知周期",
-        "name": "Mobile",
-        "original_name": "HBO Max Plan",
-        "price": "Want to add live sports?Learn more/monthSelect PlanOr pay/yearandsave* >StandardStream on 2devices at onceFull HDvideo resolution30 downloadsWant to add live sports?Learn more€7.99/monthSelect PlanOr pay€79.90/yearandsave€15.98* >GREAT FOR FAMILIESPremiumStream on 4devices at once4K UHD & Dolby Atmosas available100 downloads(limits apply)Want to add live sports?Learn more€9.99/monthSelect PlanOr pay€99.90/yearandsave€19.98* >/monthSelect Plan",
-        "price_number": 79.9,
-        "currency": "EUR"
-      }
-    ],
-    "scraped_at": "2025-07-30T20:52:18.729984",
-    "attempt": 1,
-    "success": true
-  },
-  "MD": {
-    "country_code": "MD",
-    "country_name": "Moldova",
-    "plans": [
-      {
-        "plan_group": "unknown",
-        "label": "未知周期",
-        "name": "Mobile",
-        "original_name": "HBO Max Plan",
-        "price": "Want to add live sports?Learn more/monthSelect PlanOr pay/yearandsave* >StandardStream on 2devices at onceFull HDvideo resolution30 downloadsWant to add live sports?Learn more€6.99/monthSelect PlanOr pay€69.90/yearandsave€13.98* >GREAT FOR FAMILIESPremiumStream on 4devices at once4K UHD & Dolby Atmosas available100 downloads(limits apply)Want to add live sports?Learn more€9.99/monthSelect PlanOr pay€99.90/yearandsave€19.98* >/monthSelect Plan",
-        "price_number": 69.9,
-        "currency": "MDL"
-      }
-    ],
-    "scraped_at": "2025-07-30T20:52:23.645484",
-    "attempt": 1,
-    "success": true
-  },
-  "MK": {
-    "country_code": "MK",
-    "country_name": "North Macedonia",
-    "plans": [
-      {
-        "plan_group": "unknown",
-        "label": "未知周期",
-        "name": "Mobile",
-        "original_name": "HBO Max Plan",
-        "price": "Want to add live sports?Learn more/monthSelect PlanOr pay/yearandsave* >StandardStream on 2devices at onceFull HDvideo resolution30 downloadsWant to add live sports?Learn more€7.99/monthSelect PlanOr pay€79.90/yearandsave€15.98* >GREAT FOR FAMILIESPremiumStream on 4devices at once4K UHD & Dolby Atmosas available100 downloads(limits apply)Want to add live sports?Learn more€9.99/monthSelect PlanOr pay€99.90/yearandsave€19.98* >/monthSelect Plan",
-        "price_number": 79.9,
-        "currency": "MKD"
-      }
-    ],
-    "scraped_at": "2025-07-30T20:52:29.426930",
-    "attempt": 1,
-    "success": true
-  },
-  "RO": {
-    "country_code": "RO",
-    "country_name": "Romania",
-    "plans": [
-      {
-        "plan_group": "unknown",
-        "label": "未知周期",
-        "name": "Mobile",
-        "original_name": "HBO Max Plan",
-        "price": "Basic with AdsStream on 2devices at onceFull HDvideo resolution€4.99/monthSelect PlanOr pay€49.90/yearandsave€9.98* >StandardStream on 2devices at onceFull HDvideo resolution30 downloads€6.99/monthSelect PlanOr pay€69.90/yearandsave€13.98* >GREAT FOR FAMILIESPremiumStream on 4devices at once4K UHD & Dolby Atmosas available100 downloads(limits apply)€9.99/monthSelect PlanOr pay€99.90/yearandsave€19.98* >/monthSelect Plan",
-        "price_number": 49.9,
-        "currency": "RON"
-      }
-    ],
-    "scraped_at": "2025-07-30T20:52:31.428363",
-    "attempt": 1,
-    "success": true
-  },
-  "RS": {
-    "country_code": "RS",
-    "country_name": "Serbia",
-    "plans": [
-      {
-        "plan_group": "unknown",
-        "label": "未知周期",
-        "name": "Mobile",
-        "original_name": "HBO Max Plan",
-        "price": "Want to add live sports?Learn more/monthSelect PlanOr pay/yearandsave* >StandardStream on 2devices at onceFull HDvideo resolution30 downloadsWant to add live sports?Learn more€7.99/monthSelect PlanOr pay€79.90/yearandsave€15.98* >GREAT FOR FAMILIESPremiumStream on 4devices at once4K UHD & Dolby Atmosas available100 downloads(limits apply)Want to add live sports?Learn more€9.99/monthSelect PlanOr pay€99.90/yearandsave€19.98* >/monthSelect Plan",
-        "price_number": 79.9,
-        "currency": "RSD"
-      }
-    ],
-    "scraped_at": "2025-07-30T20:52:34.027809",
-    "attempt": 1,
-    "success": true
-  },
-  "SK": {
-    "country_code": "SK",
-    "country_name": "Slovakia",
-    "plans": [
-      {
-        "plan_group": "unknown",
-        "label": "未知周期",
-        "name": "Mobile",
-        "original_name": "HBO Max Plan",
-        "price": "Want to add live sports?Learn more/monthSelect PlanOr pay/yearandsave* >StandardStream on 2devices at onceFull HDvideo resolution30 downloadsWant to add live sports?Learn more€7.99/monthSelect PlanOr pay€79.90/yearandsave€15.98* >GREAT FOR FAMILIESPremiumStream on 4devices at once4K UHD & Dolby Atmosas available100 downloads(limits apply)Want to add live sports?Learn more€9.99/monthSelect PlanOr pay€99.90/yearandsave€19.98* >/monthSelect Plan",
-        "price_number": 79.9,
-        "currency": "EUR"
-      }
-    ],
-    "scraped_at": "2025-07-30T20:52:35.552934",
-    "attempt": 1,
+    "scraped_at": "2025-07-30T21:35:05.604330",
+    "attempt": 2,
     "success": true
   },
   "SI": {
@@ -3044,25 +2924,7 @@
         "currency": "EUR"
       }
     ],
-    "scraped_at": "2025-07-30T20:52:37.297692",
-    "attempt": 1,
-    "success": true
-  },
-  "ME": {
-    "country_code": "ME",
-    "country_name": "Montenegro",
-    "plans": [
-      {
-        "plan_group": "unknown",
-        "label": "未知周期",
-        "name": "Mobile",
-        "original_name": "HBO Max Plan",
-        "price": "Want to add live sports?Learn more/monthSelect PlanOr pay/yearandsave* >StandardStream on 2devices at onceFull HDvideo resolution30 downloadsWant to add live sports?Learn more€7.99/monthSelect PlanOr pay€79.90/yearandsave€15.98* >GREAT FOR FAMILIESPremiumStream on 4devices at once4K UHD & Dolby Atmosas available100 downloads(limits apply)Want to add live sports?Learn more€9.99/monthSelect PlanOr pay€99.90/yearandsave€19.98* >/monthSelect Plan",
-        "price_number": 79.9,
-        "currency": "EUR"
-      }
-    ],
-    "scraped_at": "2025-07-30T20:53:01.183151",
+    "scraped_at": "2025-07-30T21:35:23.132098",
     "attempt": 1,
     "success": true
   },
@@ -3080,7 +2942,7 @@
         "currency": "EUR"
       }
     ],
-    "scraped_at": "2025-07-30T20:53:12.670548",
+    "scraped_at": "2025-07-30T21:35:33.686279",
     "attempt": 1,
     "success": true
   },
@@ -3098,43 +2960,7 @@
         "currency": "EUR"
       }
     ],
-    "scraped_at": "2025-07-30T20:53:16.555727",
-    "attempt": 1,
-    "success": true
-  },
-  "BE": {
-    "country_code": "BE",
-    "country_name": "Belgium",
-    "plans": [
-      {
-        "plan_group": "unknown",
-        "label": "未知周期",
-        "name": "Mobile",
-        "original_name": "HBO Max Plan",
-        "price": "Basic with AdsStream on 2devices at onceFull HDvideo resolution€5.99/monthSelect PlanOr pay€59.90/yearandsave€11.98* >StandardStream on 2devices at onceFull HDvideo resolution30 downloads€9.99/monthSelect PlanOr pay€99.90/yearandsave€19.98* >GREAT FOR FAMILIESPremiumStream on 4devices at once4K UHD & Dolby Atmosas available100 downloads(limits apply)€13.99/monthSelect PlanOr pay€139/yearandsave€28.88* >/monthSelect Plan",
-        "price_number": 59.9,
-        "currency": "EUR"
-      }
-    ],
-    "scraped_at": "2025-07-30T20:53:25.777224",
-    "attempt": 1,
-    "success": true
-  },
-  "PT": {
-    "country_code": "PT",
-    "country_name": "Portugal",
-    "plans": [
-      {
-        "plan_group": "unknown",
-        "label": "未知周期",
-        "name": "Mobile",
-        "original_name": "HBO Max Plan",
-        "price": "Basic with AdsStream on 2devices at onceFull HDvideo resolutionWant to add live sports?Learn more€5.99/monthSelect PlanOr pay€59.90/yearandsave€11.98* >StandardStream on 2devices at onceFull HDvideo resolution30 downloadsWant to add live sports?Learn more€9.99/monthSelect PlanOr pay€99.90/yearandsave€19.98* >GREAT FOR FAMILIESPremiumStream on 4devices at once4K UHD & Dolby Atmosas available100 downloads(limits apply)Want to add live sports?Learn more€13.99/monthSelect PlanOr pay€139/yearandsave€28.88* >/monthSelect Plan",
-        "price_number": 59.9,
-        "currency": "EUR"
-      }
-    ],
-    "scraped_at": "2025-07-30T20:53:26.299595",
+    "scraped_at": "2025-07-30T21:35:37.339093",
     "attempt": 1,
     "success": true
   },
@@ -3152,7 +2978,7 @@
         "currency": "EUR"
       }
     ],
-    "scraped_at": "2025-07-30T20:53:26.572845",
+    "scraped_at": "2025-07-30T21:35:43.817137",
     "attempt": 2,
     "success": true
   },
@@ -3170,7 +2996,43 @@
         "currency": "EUR"
       }
     ],
-    "scraped_at": "2025-07-30T20:53:30.474968",
+    "scraped_at": "2025-07-30T21:35:44.630207",
+    "attempt": 1,
+    "success": true
+  },
+  "PT": {
+    "country_code": "PT",
+    "country_name": "Portugal",
+    "plans": [
+      {
+        "plan_group": "unknown",
+        "label": "未知周期",
+        "name": "Mobile",
+        "original_name": "HBO Max Plan",
+        "price": "Basic with AdsStream on 2devices at onceFull HDvideo resolutionWant to add live sports?Learn more€5.99/monthSelect PlanOr pay€59.90/yearandsave€11.98* >StandardStream on 2devices at onceFull HDvideo resolution30 downloadsWant to add live sports?Learn more€9.99/monthSelect PlanOr pay€99.90/yearandsave€19.98* >GREAT FOR FAMILIESPremiumStream on 4devices at once4K UHD & Dolby Atmosas available100 downloads(limits apply)Want to add live sports?Learn more€13.99/monthSelect PlanOr pay€139/yearandsave€28.88* >/monthSelect Plan",
+        "price_number": 59.9,
+        "currency": "EUR"
+      }
+    ],
+    "scraped_at": "2025-07-30T21:35:46.268399",
+    "attempt": 1,
+    "success": true
+  },
+  "BE": {
+    "country_code": "BE",
+    "country_name": "Belgium",
+    "plans": [
+      {
+        "plan_group": "unknown",
+        "label": "未知周期",
+        "name": "Mobile",
+        "original_name": "HBO Max Plan",
+        "price": "Basic with AdsStream on 2devices at onceFull HDvideo resolution€5.99/monthSelect PlanOr pay€59.90/yearandsave€11.98* >StandardStream on 2devices at onceFull HDvideo resolution30 downloads€9.99/monthSelect PlanOr pay€99.90/yearandsave€19.98* >GREAT FOR FAMILIESPremiumStream on 4devices at once4K UHD & Dolby Atmosas available100 downloads(limits apply)€13.99/monthSelect PlanOr pay€139/yearandsave€28.88* >/monthSelect Plan",
+        "price_number": 59.9,
+        "currency": "EUR"
+      }
+    ],
+    "scraped_at": "2025-07-30T21:35:48.245342",
     "attempt": 1,
     "success": true
   }
