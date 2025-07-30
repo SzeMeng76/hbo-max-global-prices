@@ -169,12 +169,15 @@ async def fetch_max_page(country_code: str, proxies: Dict[str, str], headers: Di
     cc = country_code.lower()
     paths = REGION_PATHS.get(cc)
     
+    # 获取代理URL
+    proxy_url = proxies.get('http://')
+    
     # 优先使用静态映射
     if paths:
         for path in paths:
             url = MAX_URL + path
             try:
-                async with httpx.AsyncClient(proxies=proxies, headers=headers, follow_redirects=True, timeout=45.0) as client:
+                async with httpx.AsyncClient(headers=headers, follow_redirects=True, timeout=45.0, proxy=proxy_url) as client:
                     print(f"🌐 {country_code}: 访问 {url}")
                     r = await client.get(url)
                     print(f"📊 {country_code}: 响应 {r.status_code} -> {r.url}")
@@ -191,7 +194,7 @@ async def fetch_max_page(country_code: str, proxies: Dict[str, str], headers: Di
     # 无映射时的通用逻辑
     default_url = f"{MAX_URL}/{cc}/"
     try:
-        async with httpx.AsyncClient(proxies=proxies, headers=headers, follow_redirects=True, timeout=45.0) as client:
+        async with httpx.AsyncClient(headers=headers, follow_redirects=True, timeout=45.0, proxy=proxy_url) as client:
             print(f"🌐 {country_code}: 访问 {default_url}")
             r = await client.get(default_url)
             print(f"📊 {country_code}: 响应 {r.status_code} -> {r.url}")
@@ -202,7 +205,7 @@ async def fetch_max_page(country_code: str, proxies: Dict[str, str], headers: Di
         if e.response.status_code == 404:
             fallback = f"{MAX_URL}/{cc}/es"
             try:
-                async with httpx.AsyncClient(proxies=proxies, headers=headers, follow_redirects=True, timeout=30.0) as client:
+                async with httpx.AsyncClient(headers=headers, follow_redirects=True, timeout=30.0, proxy=proxy_url) as client:
                     print(f"🔄 {country_code}: 西语回退 {fallback}")
                     r2 = await client.get(fallback)
                     print(f"📊 {country_code}: 回退响应 {r2.status_code} -> {r2.url}")
