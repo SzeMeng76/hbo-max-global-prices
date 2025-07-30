@@ -1,0 +1,254 @@
+name: Weekly HBO Max Price Scraper
+
+on:
+  schedule:
+    # 每周一 UTC 时间 2:00 执行（北京时间周一上午10点）
+    - cron: '0 2 * * 1'
+  workflow_dispatch: # 允许手动触发
+
+# 添加写入权限以允许推送到仓库
+permissions:
+  contents: write
+  actions: read
+  id-token: write
+
+env:
+  TZ: Asia/Shanghai
+
+jobs:
+  scrape-and-update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90  # HBO Max抓取可能需要更长时间
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+        
+    - name: Cache pip dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        
+    - name: Create output directory
+      run: mkdir -p output
+        
+    - name: Run HBO Max scraper
+      id: scraper
+      env:
+        # 代理API配置
+        PROXY_API_TEMPLATE: ${{ secrets.PROXY_API_TEMPLATE }}
+      run: |
+        echo "开始抓取HBO Max价格数据..."
+        echo "当前时间: $(date +'%Y-%m-%d %H:%M:%S %Z')"
+        
+        # 运行爬虫
+        python max_scraper.py
+        echo "scraper_status=success" >> $GITHUB_OUTPUT
+      continue-on-error: true
+        
+    - name: Check scraper output
+      run: |
+        if [ -f "max_prices_all_countries.json" ]; then
+          echo "✅ 爬虫数据文件生成成功"
+          ls -la max_prices_all_countries*.json
+          
+          # 显示文件大小和基本统计
+          file_size=$(du -h max_prices_all_countries.json | cut -f1)
+          echo "📁 数据文件大小: $file_size"
+          
+          # 统计成功抓取的国家数量
+          country_count=$(python -c "
+import json
+try:
+    with open('max_prices_all_countries.json', 'r') as f:
+        data = json.load(f)
+    print(f'成功抓取的国家数量: {len(data)}')
+    
+    # 显示前几个国家作为样本
+    sample_countries = list(data.keys())[:3]
+    for country in sample_countries:
+        plans = data[country].get('plans', [])
+        print(f'{country}: {len(plans)} 个套餐')
+except Exception as e:
+    print(f'数据统计失败: {e}')
+")
+          echo "$country_count"
+        else
+          echo "❌ 爬虫数据文件未生成"
+          exit 1
+        fi
+        
+    - name: Run rate converter
+      id: converter
+      env:
+        API_KEY: ${{ secrets.EXCHANGE_API_KEY }}
+      run: |
+        echo "开始汇率转换..."
+        python max_rate_converter.py
+        echo "converter_status=success" >> $GITHUB_OUTPUT
+      continue-on-error: true
+        
+    - name: Check converter output
+      run: |
+        if [ -f "max_prices_cny_sorted.json" ]; then
+          echo "✅ 汇率转换文件生成成功"
+          ls -la max_prices_cny_sorted.json
+          
+          # 显示文件大小
+          file_size=$(du -h max_prices_cny_sorted.json | cut -f1)
+          echo "📁 转换后文件大小: $file_size"
+          
+          # 显示最便宜的前3个套餐
+          echo "🏆 最便宜的前三名:"
+          python -c "
+import json
+try:
+    with open('max_prices_cny_sorted.json', 'r') as f:
+        data = json.load(f)
+    
+    top_plans = data.get('_top_10_cheapest_all', {}).get('data', [])
+    for i, plan in enumerate(top_plans[:3]):
+        country = plan.get('country_name_cn', plan.get('country_name', 'Unknown'))
+        name = plan.get('plan_name', 'Unknown')
+        price = plan.get('price_cny', 0)
+        print(f'{i+1}. {country} - {name}: ¥{price}')
+except Exception as e:
+    print(f'排行榜显示失败: {e}')
+"
+        else
+          echo "❌ 汇率转换文件未生成"
+          exit 1
+        fi
+        
+    - name: Check for changes
+      id: check_changes
+      run: |
+        git diff --name-only
+        if [ -n "$(git status --porcelain)" ]; then
+          echo "changes=true" >> $GITHUB_OUTPUT
+          echo "检测到文件变化"
+          
+          # 显示变化的文件
+          echo "变化的文件:"
+          git status --porcelain
+        else
+          echo "changes=false" >> $GITHUB_OUTPUT
+          echo "没有文件变化"
+        fi
+        
+    - name: Display summary
+      run: |
+        echo "=== HBO Max 价格抓取执行摘要 ==="
+        echo "执行时间: $(date +'%Y-%m-%d %H:%M:%S %Z')"
+        echo "抓取状态: ${{ steps.scraper.outputs.scraper_status || '失败' }}"
+        echo "转换状态: ${{ steps.converter.outputs.converter_status || '失败' }}"
+        echo "文件变化: ${{ steps.check_changes.outputs.changes || '否' }}"
+        
+        if [ -f "max_prices_cny_sorted.json" ]; then
+          echo "输出文件大小: $(du -h max_prices_cny_sorted.json | cut -f1)"
+        fi
+        
+        # 显示磁盘使用情况
+        echo "磁盘使用:"
+        df -h . | head -2
+        
+    - name: Commit and push changes
+      if: steps.check_changes.outputs.changes == 'true'
+      run: |
+        git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git config --local user.name "github-actions[bot]"
+        
+        # 添加所有JSON文件和归档文件
+        git add *.json
+        git add archive/
+        
+        # 创建提交信息
+        commit_msg="Weekly update: HBO Max prices - $(date +'%Y-%m-%d %H:%M:%S %Z')
+
+📊 抓取统计:
+- 抓取状态: ${{ steps.scraper.outputs.scraper_status || '失败' }}
+- 转换状态: ${{ steps.converter.outputs.converter_status || '失败' }}
+- 执行时间: $(date +'%Y-%m-%d %H:%M:%S %Z')
+
+🤖 Generated by GitHub Actions"
+        
+        git commit -m "$commit_msg"
+        git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:main
+        echo "✅ 数据已提交到仓库"
+        
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: hbo-max-price-data-${{ github.run_number }}
+        path: |
+          max_prices_all_countries*.json
+          max_prices_cny_sorted.json
+          archive/
+        retention-days: 30
+        
+    - name: Cleanup old artifacts (keep last 5)
+      if: always()
+      run: |
+        echo "清理旧的构建产物..."
+        # GitHub会自动清理超过retention-days的artifacts
+        # 这里可以添加额外的清理逻辑
+        
+    - name: Job summary
+      if: always()
+      run: |
+        echo "## 🎬 HBO Max 价格抓取执行报告" >> $GITHUB_STEP_SUMMARY
+        echo "**执行时间:** $(date +'%Y-%m-%d %H:%M:%S %Z')" >> $GITHUB_STEP_SUMMARY
+        echo "**抓取状态:** ${{ steps.scraper.outputs.scraper_status || '❌ 失败' }}" >> $GITHUB_STEP_SUMMARY
+        echo "**转换状态:** ${{ steps.converter.outputs.converter_status || '❌ 失败' }}" >> $GITHUB_STEP_SUMMARY
+        echo "**文件变化:** ${{ steps.check_changes.outputs.changes || '❌ 否' }}" >> $GITHUB_STEP_SUMMARY
+        
+        if [ -f "max_prices_cny_sorted.json" ]; then
+          echo "**输出文件大小:** $(du -h max_prices_cny_sorted.json | cut -f1)" >> $GITHUB_STEP_SUMMARY
+          
+          # 添加最便宜的前5名到摘要
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 🏆 最便宜的HBO Max套餐 Top 5" >> $GITHUB_STEP_SUMMARY
+          python -c "
+import json
+try:
+    with open('max_prices_cny_sorted.json', 'r') as f:
+        data = json.load(f)
+    
+    top_plans = data.get('_top_10_cheapest_all', {}).get('data', [])
+    for i, plan in enumerate(top_plans[:5]):
+        country = plan.get('country_name_cn', plan.get('country_name', 'Unknown'))
+        name = plan.get('plan_name', 'Unknown')
+        price = plan.get('price_cny', 0)
+        original = plan.get('original_price', 'N/A')
+        print(f'{i+1}. **{country}** - {name}: ¥{price} (原价: {original})')
+except Exception as e:
+    print(f'摘要生成失败: {e}')
+" >> $GITHUB_STEP_SUMMARY
+        fi
+        
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "---" >> $GITHUB_STEP_SUMMARY
+        echo "*自动生成时间: $(date +'%Y-%m-%d %H:%M:%S %Z')*" >> $GITHUB_STEP_SUMMARY
+        
+    - name: Notify on failure
+      if: failure()
+      run: |
+        echo "❌ 工作流执行失败"
+        echo "检查日志以获取详细错误信息"
+        
+        # 可以在这里添加通知逻辑，如发送邮件、Slack消息等
+        # 例如：curl -X POST -H 'Content-type: application/json' --data '{"text":"HBO Max价格抓取失败"}' $SLACK_WEBHOOK

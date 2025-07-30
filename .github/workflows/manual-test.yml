@@ -1,0 +1,174 @@
+name: Manual HBO Max Test
+
+on:
+  workflow_dispatch:
+    inputs:
+      test_countries:
+        description: '测试的国家代码 (用逗号分隔，如: us,sg,my)'
+        required: false
+        default: 'us,sg,my'
+      max_concurrent:
+        description: '最大并发数'
+        required: false
+        default: '3'
+
+permissions:
+  contents: write
+  actions: read
+
+env:
+  TZ: Asia/Shanghai
+
+jobs:
+  test-scraper:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        
+    - name: Test HBO Max scraper
+      env:
+        PROXY_API_TEMPLATE: ${{ secrets.PROXY_API_TEMPLATE }}
+        TEST_COUNTRIES: ${{ github.event.inputs.test_countries || 'us,sg,my' }}
+        MAX_CONCURRENT: ${{ github.event.inputs.max_concurrent || '3' }}
+      run: |
+        echo "开始测试 HBO Max 抓取..."
+        echo "测试国家: $TEST_COUNTRIES"
+        echo "最大并发: $MAX_CONCURRENT"
+        
+        # 创建简化的测试脚本
+        cat > test_scraper.py << 'EOF'
+import asyncio
+import os
+from max_scraper import get_max_prices_for_country, COUNTRY_NAMES
+
+async def test_countries():
+    test_countries = os.getenv('TEST_COUNTRIES', 'us,sg,my').split(',')
+    max_concurrent = int(os.getenv('MAX_CONCURRENT', '3'))
+    
+    print(f"🧪 测试国家: {test_countries}")
+    print(f"📊 最大并发数: {max_concurrent}")
+    
+    semaphore = asyncio.Semaphore(max_concurrent)
+    results = {}
+    
+    async def test_country(country_code):
+        async with semaphore:
+            print(f"\n🔍 测试 {country_code.upper()}...")
+            result = await get_max_prices_for_country(country_code.strip(), max_retries=1)
+            return country_code.strip().upper(), result
+    
+    tasks = [test_country(cc) for cc in test_countries]
+    test_results = await asyncio.gather(*tasks, return_exceptions=True)
+    
+    success_count = 0
+    for result in test_results:
+        if isinstance(result, Exception):
+            print(f"❌ 测试异常: {result}")
+        elif isinstance(result, tuple):
+            country_code, data = result
+            if data:
+                results[country_code] = data
+                success_count += 1
+                print(f"✅ {country_code}: 成功获取 {len(data.get('plans', []))} 个套餐")
+            else:
+                print(f"❌ {country_code}: 未获取到数据")
+    
+    print(f"\n📊 测试结果: {success_count}/{len(test_countries)} 成功")
+    return results
+
+if __name__ == '__main__':
+    results = asyncio.run(test_countries())
+    
+    if results:
+        import json
+        with open('test_results.json', 'w', encoding='utf-8') as f:
+            json.dump(results, f, ensure_ascii=False, indent=2)
+        print("📁 测试结果已保存到 test_results.json")
+        
+        # 显示详细结果
+        for country, data in results.items():
+            print(f"\n🌍 {country} ({data.get('country_name', 'Unknown')}):")
+            for plan in data.get('plans', []):
+                print(f"  📦 {plan.get('name', 'Unknown')}: {plan.get('price', 'N/A')}")
+    else:
+        print("❌ 没有成功的测试结果")
+EOF
+        
+        python test_scraper.py
+        
+    - name: Test rate converter
+      if: hashFiles('test_results.json') != ''
+      env:
+        API_KEY: ${{ secrets.EXCHANGE_API_KEY }}
+      run: |
+        echo "测试汇率转换..."
+        
+        # 将测试结果重命名为标准输入文件
+        cp test_results.json max_prices_all_countries.json
+        
+        # 运行汇率转换
+        python max_rate_converter.py
+        
+    - name: Show test results
+      if: always()
+      run: |
+        echo "=== 测试结果摘要 ==="
+        
+        if [ -f "test_results.json" ]; then
+          echo "✅ 抓取测试: 成功"
+          echo "📊 测试数据:"
+          python -c "
+import json
+with open('test_results.json', 'r') as f:
+    data = json.load(f)
+for country, info in data.items():
+    plans = info.get('plans', [])
+    print(f'  {country}: {len(plans)} 个套餐')
+"
+        else
+          echo "❌ 抓取测试: 失败"
+        fi
+        
+        if [ -f "max_prices_cny_sorted.json" ]; then
+          echo "✅ 汇率转换: 成功"
+          echo "🏆 最便宜的套餐:"
+          python -c "
+import json
+try:
+    with open('max_prices_cny_sorted.json', 'r') as f:
+        data = json.load(f)
+    top_plans = data.get('_top_10_cheapest_all', {}).get('data', [])
+    for plan in top_plans[:3]:
+        country = plan.get('country_name_cn', plan.get('country_name', 'Unknown'))
+        name = plan.get('plan_name', 'Unknown')
+        price = plan.get('price_cny', 0)
+        print(f'  {country} - {name}: ¥{price}')
+except:
+    print('  解析失败')
+"
+        else
+          echo "❌ 汇率转换: 失败"
+        fi
+        
+    - name: Upload test artifacts
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: test-results-${{ github.run_number }}
+        path: |
+          test_results.json
+          max_prices_cny_sorted.json
+        retention-days: 7
