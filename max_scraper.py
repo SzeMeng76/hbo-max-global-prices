@@ -280,7 +280,8 @@ HBO_PLAN_NAME_MAP = {
     "prem": "Premium",
     "ult": "Ultimate",
     "bas": "Basic",
-    "max": "Max"
+    "max": "Max",
+    "platinum": "Platinum"
 }
 
 def normalize_plan_name(plan_name: str) -> str:
@@ -724,8 +725,8 @@ def detect_currency(price_str: str, country_code: str = None) -> str:
         
         # 缺失国家的货币映射
         'ai': 'XCD',     # Anguilla - East Caribbean Dollar
-        'aw': 'AWG',     # Aruba - Aruban Florin
-        'cw': 'ANG',     # Curaçao - Netherlands Antillean Guilder
+        'aw': 'USD',     # Aruba - USD (实际使用美元定价)
+        'cw': 'USD',     # Curaçao - USD (实际使用美元定价)
         'gd': 'XCD',     # Grenada - East Caribbean Dollar  
         'gp': 'EUR',     # Guadeloupe - Euro
         'ht': 'HTG',     # Haiti - Haitian Gourde
