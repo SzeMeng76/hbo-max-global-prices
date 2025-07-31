@@ -42,6 +42,11 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         
+    - name: Install Playwright browsers
+      run: |
+        playwright install chromium
+        playwright install-deps
+        
     - name: Create output directory
       run: mkdir -p output
         
@@ -50,21 +55,23 @@ jobs:
       env:
         PROXY_API_TEMPLATE: ${{ secrets.PROXY_API_TEMPLATE }}
       run: |
-        echo "开始抓取HBO Max价格数据..."
+        echo "开始抓取HBO Max价格数据 (Playwright版本)..."
         echo "当前时间: $(date +'%Y-%m-%d %H:%M:%S %Z')"
-        python max_scraper.py
+        python max_scraper_playwright.py
         echo "scraper_status=success" >> $GITHUB_OUTPUT
       continue-on-error: true
         
     - name: Check scraper output
       run: |
-        if [ -f "max_prices_all_countries.json" ]; then
-          echo "✅ 爬虫数据文件生成成功"
-          ls -la max_prices_all_countries*.json
-          file_size=$(du -h max_prices_all_countries.json | cut -f1)
+        if [ -f "max_prices_all_countries_playwright.json" ]; then
+          echo "✅ Playwright 爬虫数据文件生成成功"
+          ls -la max_prices_all_countries_playwright*.json
+          file_size=$(du -h max_prices_all_countries_playwright.json | cut -f1)
           echo "📁 数据文件大小: $file_size"
+          # 创建兼容性链接，供后续脚本使用
+          cp max_prices_all_countries_playwright.json max_prices_all_countries.json
         else
-          echo "❌ 爬虫数据文件未生成"
+          echo "❌ Playwright 爬虫数据文件未生成"
           exit 1
         fi
         
