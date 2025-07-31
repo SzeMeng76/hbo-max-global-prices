@@ -349,42 +349,58 @@ async def fetch_max_page_playwright(country_code: str, proxy_config: Dict[str, s
         browser, context = await playwright_manager.create_browser_context(proxy_config)
         page = await context.new_page()
         
-        # 设置页面超时
-        page.set_default_timeout(30000)
-        page.set_default_navigation_timeout(30000)
+        # 设置页面超时 - 大幅增加超时时间
+        page.set_default_timeout(90000)  # 90秒
+        page.set_default_navigation_timeout(90000)  # 90秒
         
         async def try_fetch_url(url: str, description: str = "") -> Optional[str]:
             """尝试访问URL并获取内容"""
             try:
                 print(f"🌐 {country_code}: Playwright {description}访问 {url}")
                 
-                # 导航到页面，等待网络空闲
-                response = await page.goto(url, wait_until='networkidle', timeout=30000)
+                # 导航到页面，使用更宽松的等待条件
+                response = await page.goto(url, wait_until='domcontentloaded', timeout=90000)
                 
                 if response and response.status >= 400:
                     print(f"⚠️ {country_code}: HTTP {response.status} - {description}")
                     return None
                 
-                # 等待页面完全加载，尝试等待价格相关元素
-                price_selectors = [
-                    '.max-plan-picker-group__card',
-                    '[data-plan-group]',
-                    '.max-plan-picker-group-monthly',
-                    '.max-plan-picker-group-yearly'
-                ]
-                
-                # 尝试等待任一价格元素出现
-                for selector in price_selectors:
+                # 等待页面稳定，使用更宽松的策略
+                try:
+                    # 首先等待基本DOM加载
+                    await asyncio.sleep(3)
+                    
+                    # 尝试等待价格相关元素出现，但不强制要求
+                    price_selectors = [
+                        '.max-plan-picker-group__card',
+                        '[data-plan-group]',
+                        '.max-plan-picker-group-monthly',
+                        '.max-plan-picker-group-yearly'
+                    ]
+                    
+                    # 尝试等待任一价格元素出现，但使用较短超时
+                    for selector in price_selectors:
+                        try:
+                            await page.wait_for_selector(selector, timeout=8000)
+                            print(f"✅ {country_code}: 找到价格元素 {selector}")
+                            break
+                        except:
+                            continue
+                    else:
+                        # 如果没有找到标准价格元素，再等待一下让页面稳定
+                        print(f"⚠️ {country_code}: 未找到标准价格元素，等待页面稳定...")
+                        await asyncio.sleep(5)
+                    
+                    # 尝试等待网络空闲，但不强制要求
                     try:
-                        await page.wait_for_selector(selector, timeout=5000)
-                        print(f"✅ {country_code}: 找到价格元素 {selector}")
-                        break
+                        await page.wait_for_load_state('networkidle', timeout=15000)
+                        print(f"✅ {country_code}: 网络已空闲")
                     except:
-                        continue
-                else:
-                    # 如果没有找到标准价格元素，等待页面稳定
-                    print(f"⚠️ {country_code}: 未找到标准价格元素，等待页面稳定...")
-                    await asyncio.sleep(2)
+                        print(f"⚠️ {country_code}: 网络未完全空闲，继续处理...")
+                        
+                except Exception as wait_error:
+                    print(f"⚠️ {country_code}: 等待过程中出现问题: {wait_error}")
+                    # 继续处理，不中断
                 
                 # 获取页面HTML
                 html = await page.content()
@@ -810,7 +826,7 @@ async def main():
     # 获取所有国家代码
     all_countries = list(REGION_PATHS.keys())
     total_countries = len(all_countries)
-    max_concurrent = 3  # 降低并发数，Playwright 更消耗资源
+    max_concurrent = 2  # 进一步降低并发数，提高稳定性
     
     print(f"📊 准备处理 {total_countries} 个国家/地区（Playwright 模式）")
     
@@ -847,7 +863,7 @@ async def main():
             tasks.append(task)
         
         # 分批处理以避免过载
-        batch_size = 10  # 降低批处理大小，Playwright 需要更多资源
+        batch_size = 5  # 进一步降低批处理大小
         
         print(f"🚀 开始 Playwright 并发处理（最大并发数: {max_concurrent}，批处理大小: {batch_size}）...")
         
@@ -874,7 +890,7 @@ async def main():
             
             # 批次间添加延迟
             if i + batch_size < len(tasks):
-                delay = random.uniform(5, 10)  # 增加延迟
+                delay = random.uniform(8, 15)  # 增加批次间延迟
                 print(f"⏱️  批次间等待 {delay:.1f} 秒...")
                 await asyncio.sleep(delay)
     
