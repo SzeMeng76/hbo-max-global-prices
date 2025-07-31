@@ -391,6 +391,19 @@ async def get_proxy(country_code: str) -> Optional[Dict[str, str]]:
         print(f"❌ {country_code}: 代理获取失败 - {e}")
         return None
 
+async def get_proxy_with_retry(country_code: str, max_proxy_attempts: int = 3) -> Optional[Dict[str, str]]:
+    """获取指定国家的代理，支持多次重试不同代理"""
+    for attempt in range(max_proxy_attempts):
+        proxy = await get_proxy(country_code)
+        if proxy:
+            return proxy
+        if attempt < max_proxy_attempts - 1:
+            delay = random.uniform(1, 3)
+            print(f"🔄 {country_code}: 代理获取失败，{delay:.1f}秒后重试...")
+            await asyncio.sleep(delay)
+    print(f"❌ {country_code}: 所有代理获取尝试都失败")
+    return None
+
 async def fetch_max_page(country_code: str, proxies: Dict[str, str], headers: Dict[str, str]) -> Optional[str]:
     """获取HBO Max页面内容，支持HTTPS/HTTP fallback"""
     cc = country_code.lower()
@@ -748,7 +761,7 @@ def detect_currency(price_str: str, country_code: str = None) -> str:
         'ht': 'HTG',     # Haiti - Haitian Gourde
         'ms': 'XCD',     # Montserrat - East Caribbean Dollar
         'ni': 'NIO',     # Nicaragua - Nicaraguan Córdoba
-        'vc': 'XCD',     # Saint Vincent and the Grenadines - East Caribbean Dollar
+        'vc': 'USD',     # Saint Vincent and the Grenadines - 实际使用美元定价
         've': 'VES',     # Venezuela - Venezuelan Bolívar
     }
     
@@ -980,6 +993,13 @@ async def parse_max_prices(html: str, country_code: str) -> Tuple[List[Dict[str,
                             # Use global billing cycle detection for better accuracy
                             detected_cycle, cycle_label = detect_billing_cycle_globally(price, price_number, country_code)
                             
+                            # Calculate correct monthly_price based on detected cycle
+                            if detected_cycle == 'yearly':
+                                monthly_equivalent_price = round(price_number / 12, 2)
+                                print(f"    💰 {country_code}: 月付区域年付套餐 - 年总价: {price_number}, 月等价: {monthly_equivalent_price}")
+                            else:
+                                monthly_equivalent_price = price_number
+                            
                             plan_data = {
                                 "plan_group": detected_cycle,
                                 "label": cycle_label,
@@ -987,7 +1007,7 @@ async def parse_max_prices(html: str, country_code: str) -> Tuple[List[Dict[str,
                                 "original_name": name,
                                 "price": price,
                                 "price_number": price_number,
-                                "monthly_price": price_number,
+                                "monthly_price": monthly_equivalent_price,
                                 "currency": currency
                             }
                             plans.append(plan_data)
@@ -1031,6 +1051,13 @@ async def parse_max_prices(html: str, country_code: str) -> Tuple[List[Dict[str,
                             # Use global billing cycle detection for better accuracy
                             detected_cycle, cycle_label = detect_billing_cycle_globally(price, price_number, country_code)
                             
+                            # Calculate correct monthly_price based on detected cycle
+                            if detected_cycle == 'yearly':
+                                monthly_equivalent_price = round(price_number / 12, 2)
+                                print(f"    💰 {country_code}: 年付区域年付套餐 - 年总价: {price_number}, 月等价: {monthly_equivalent_price}")
+                            else:
+                                monthly_equivalent_price = price_number
+                            
                             plan_data = {
                                 "plan_group": detected_cycle,
                                 "label": cycle_label,
@@ -1038,7 +1065,7 @@ async def parse_max_prices(html: str, country_code: str) -> Tuple[List[Dict[str,
                                 "original_name": name,
                                 "price": price,
                                 "price_number": price_number,
-                                "monthly_price": price_number,
+                                "monthly_price": monthly_equivalent_price,
                                 "currency": currency
                             }
                             plans.append(plan_data)
@@ -1138,6 +1165,13 @@ async def parse_max_prices(html: str, country_code: str) -> Tuple[List[Dict[str,
                                 # 使用全局周期检测
                                 plan_group, label = detect_billing_cycle_globally(price_text, price_number, country_code)
                                 
+                                # Calculate correct monthly_price based on detected cycle
+                                if plan_group == 'yearly':
+                                    monthly_equivalent_price = round(price_number / 12, 2)
+                                    print(f"    💰 {country_code}: 备用解析年付套餐 - 年总价: {price_number}, 月等价: {monthly_equivalent_price}")
+                                else:
+                                    monthly_equivalent_price = price_number
+                                
                                 # 使用 seen 集合去重
                                 key = (normalized_name, price_text, currency)
                                 if key in seen:
@@ -1151,6 +1185,7 @@ async def parse_max_prices(html: str, country_code: str) -> Tuple[List[Dict[str,
                                     "original_name": plan_name,
                                     "price": price_text,
                                     "price_number": price_number,
+                                    "monthly_price": monthly_equivalent_price,
                                     "currency": currency
                                 })
                                 print(f"✅ {country_code}: 备用解析 - {normalized_name}: {price_text} ({currency})")
@@ -1165,6 +1200,13 @@ async def parse_max_prices(html: str, country_code: str) -> Tuple[List[Dict[str,
                                 # 使用全局周期检测
                                 plan_group, label = detect_billing_cycle_globally(text, price_number, country_code)
                                 
+                                # Calculate correct monthly_price based on detected cycle
+                                if plan_group == 'yearly':
+                                    monthly_equivalent_price = round(price_number / 12, 2)
+                                    print(f"    💰 {country_code}: 备用解析2年付套餐 - 年总价: {price_number}, 月等价: {monthly_equivalent_price}")
+                                else:
+                                    monthly_equivalent_price = price_number
+                                
                                 # 使用 seen 集合去重
                                 key = (normalized_name, text, currency)
                                 if key in seen:
@@ -1178,6 +1220,7 @@ async def parse_max_prices(html: str, country_code: str) -> Tuple[List[Dict[str,
                                     "original_name": "HBO Max Plan",
                                     "price": text,
                                     "price_number": price_number,
+                                    "monthly_price": monthly_equivalent_price,
                                     "currency": currency
                                 })
                                 print(f"✅ {country_code}: 备用解析 - {text} ({currency})")
@@ -1212,8 +1255,8 @@ async def _get_max_prices_for_country_impl(country_code: str, max_retries: int) 
         try:
             print(f"\n🌍 {country_code} ({country_name}) - 尝试 {attempt + 1}/{max_retries}")
             
-            # 获取代理
-            proxies = await get_proxy(country_code)
+            # 获取代理（使用重试机制）
+            proxies = await get_proxy_with_retry(country_code)
             if not proxies:
                 print(f"❌ {country_code}: 无法获取代理，尝试下一次")
                 if attempt < max_retries - 1:
