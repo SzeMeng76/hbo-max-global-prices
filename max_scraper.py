@@ -444,8 +444,129 @@ async def fetch_max_page(country_code: str, proxies: Dict[str, str], headers: Di
         print(f"❌ {country_code}: 访问出错 - {e}")
         return None
 
+def detect_billing_cycle_globally(price_text: str, price_number: float, country_code: str) -> Tuple[str, str]:
+    """
+    全局周期检测逻辑 - 根据文本内容、价格数值和国家上下文推断计费周期
+    返回 (plan_group, label)
+    """
+    country_lower = country_code.lower()
+    
+    # 1. 首先检查文本中的明确周期标记
+    text_lower = price_text.lower()
+    
+    # 月付标记（多语言）
+    monthly_keywords = [
+        'month', '/month', 'monthly', 'per month',  # English
+        'mes', '/mes', 'mensual', 'por mes',        # Spanish  
+        'mês', '/mês', 'mensal', 'por mês',         # Portuguese
+        'mois', '/mois', 'mensuel', 'par mois',     # French
+        'mese', '/mese', 'mensile', 'al mese',      # Italian
+        'monat', '/monat', 'monatlich', 'pro monat', # German
+        'maand', '/maand', 'maandelijks', 'per maand', # Dutch
+        'miesiąc', '/miesiąc', 'miesięczny',        # Polish
+        'måned', '/måned', 'månedlig', 'pr måned',  # Danish/Norwegian
+        'månad', '/månad', 'månadsvis', 'per månad', # Swedish
+        'kuu', '/kuu', 'kuukausittain',             # Finnish
+        'ay', '/ay', 'aylık', 'ayda',               # Turkish
+        'mies', '/mies', 'miesięcznie',             # Polish alt
+        'месяц', '/месяц', 'в месяц',               # Russian
+    ]
+    
+    # 年付标记（多语言）
+    yearly_keywords = [
+        'year', '/year', 'yearly', 'annual', 'per year', 'annually',  # English
+        'año', '/año', 'anual', 'por año', 'anualmente',              # Spanish
+        'ano', '/ano', 'anual', 'por ano', 'anualmente',              # Portuguese  
+        'an', '/an', 'année', '/année', 'annuel', 'par an',           # French
+        'anno', '/anno', 'annuale', 'all\'anno',                      # Italian
+        'jahr', '/jahr', 'jährlich', 'pro jahr',                      # German
+        'jaar', '/jaar', 'jaarlijks', 'per jaar',                     # Dutch
+        'rok', '/rok', 'roczny', 'rocznie',                           # Polish
+        'år', '/år', 'årlig', 'pr år', 'om året',                     # Danish/Norwegian/Swedish
+        'vuosi', '/vuosi', 'vuosittain',                              # Finnish
+        'yıl', '/yıl', 'yıllık', 'yılda',                            # Turkish
+        'год', '/год', 'в год', 'годовой',                            # Russian
+    ]
+    
+    # 检查文本标记
+    for keyword in monthly_keywords:
+        if keyword in text_lower:
+            return "monthly", "每月"
+    
+    for keyword in yearly_keywords:
+        if keyword in text_lower:
+            return "yearly", "每年"
+    
+    # 2. 基于价格数值和国家上下文推断周期
+    # 定义各国的价格范围（基于现有数据分析）
+    price_ranges = {
+        # 欧洲高价值货币国家
+        'tr': {'monthly_max': 500, 'yearly_min': 1500},       # Turkish Lira
+        'hu': {'monthly_max': 1000, 'yearly_min': 5000},      # Hungarian Forint  
+        'cz': {'monthly_max': 500, 'yearly_min': 2000},       # Czech Koruna
+        'pl': {'monthly_max': 100, 'yearly_min': 200},        # Polish Zloty
+        
+        # 北欧克朗国家
+        'dk': {'monthly_max': 200, 'yearly_min': 800},        # Danish Krone
+        'no': {'monthly_max': 200, 'yearly_min': 800},        # Norwegian Krone  
+        'se': {'monthly_max': 200, 'yearly_min': 800},        # Swedish Krona
+        
+        # 其他欧洲国家
+        'bg': {'monthly_max': 30, 'yearly_min': 200},         # Bulgarian Lev
+        'ro': {'monthly_max': 50, 'yearly_min': 400},         # Romanian Leu
+        'hr': {'monthly_max': 15, 'yearly_min': 100},         # Croatian Kuna/Euro
+        
+        # 默认范围（EUR, USD等）
+        'default': {'monthly_max': 30, 'yearly_min': 200},
+    }
+    
+    # 获取该国家的价格范围，如果没有则使用默认值
+    ranges = price_ranges.get(country_lower, price_ranges['default'])
+    
+    if price_number <= ranges['monthly_max']:
+        return "monthly", "每月"
+    elif price_number >= ranges['yearly_min']:
+        return "yearly", "每年"
+    
+    # 3. 对于中等价格，尝试更复杂的推断
+    # 如果价格在月付最大值和年付最小值之间，使用更多启发式规则
+    
+    # 检查价格是否明显是年付（通常是月付的10-12倍）
+    if price_number > ranges['monthly_max'] * 8:
+        return "yearly", "每年"
+    
+    # 4. 最后的启发式规则
+    # 对于某些国家，基于具体价格点进行判断
+    if country_lower == 'tr':
+        if 200 <= price_number <= 400:
+            return "monthly", "每月"
+        elif 2000 <= price_number <= 4000:
+            return "yearly", "每年"
+    elif country_lower in ['hu']:
+        if 500 <= price_number <= 4000:
+            return "monthly", "每月"
+        elif price_number >= 5000:
+            return "yearly", "每年"
+    elif country_lower in ['cz']:
+        if 100 <= price_number <= 600:
+            return "monthly", "每月"
+        elif price_number >= 1500:
+            return "yearly", "每年"
+    elif country_lower in ['pl']:
+        if 20 <= price_number <= 80:
+            return "monthly", "每月"
+        elif price_number >= 200:
+            return "yearly", "每年"
+    elif country_lower in ['dk', 'no', 'se']:
+        if 50 <= price_number <= 200:
+            return "monthly", "每月"
+        elif price_number >= 500:
+            return "yearly", "每年"
+    
+    # 如果都无法确定，返回unknown
+    return "unknown", "未知周期"
+
 def extract_price_number(price_str: str) -> float:
-    """从价格字符串中提取数值（参考Spotify项目的逻辑）"""
     if not price_str:
         return 0.0
     
@@ -649,12 +770,14 @@ async def parse_max_prices(html: str, country_code: str) -> Tuple[List[Dict[str,
     
     try:
         soup = BeautifulSoup(html, 'html.parser')
-        sections = soup.find_all('section', {'data-plan-group': True})
         plans: List[Dict[str, Any]] = []
         seen: set = set()
         
+        # 方法1: 寻找带data-plan-group属性的标准结构
+        sections = soup.find_all('section', {'data-plan-group': True})
+        
         if sections:
-            print(f"📊 {country_code}: 找到 {len(sections)} 个价格区域")
+            print(f"📊 {country_code}: 找到 {len(sections)} 个标准价格区域 (data-plan-group)")
             for sec in sections:
                 p = sec['data-plan-group']
                 label = '每月' if p == 'monthly' else '每年'
@@ -713,6 +836,122 @@ async def parse_max_prices(html: str, country_code: str) -> Tuple[List[Dict[str,
                         continue
             
             # 构建输出文本
+            if plans:
+                out = [f"**HBO Max {country_code.upper()} 订阅价格:**"]
+                for item in plans:
+                    out.append(f"✅ {item['name']} ({item['label']}): **{item['price']}**")
+                return plans, "\n".join(out)
+        
+        # 方法2: 寻找基于class的结构（如土耳其、波兰等）
+        monthly_sections = soup.find_all('section', class_=re.compile(r'max-plan-picker-group-monthly', re.I))
+        yearly_sections = soup.find_all('section', class_=re.compile(r'max-plan-picker-group-yearly', re.I))
+        
+        if monthly_sections or yearly_sections:
+            print(f"📊 {country_code}: 找到基于class的价格区域 (月付:{len(monthly_sections)}, 年付:{len(yearly_sections)})")
+            
+            # 处理月付区域
+            for sec in monthly_sections:
+                cards = sec.find_all('div', class_='max-plan-picker-group__card')
+                print(f"📦 {country_code}: 月付区域找到 {len(cards)} 个套餐")
+                
+                for card in cards:
+                    try:
+                        name_elem = card.find('h3')
+                        price_elem = card.find('h4')
+                        
+                        if not name_elem or not price_elem:
+                            continue
+                            
+                        name = name_elem.get_text(strip=True)
+                        price = price_elem.get_text(strip=True)
+                        
+                        # 跳过空的套餐名
+                        if not name or name.isspace():
+                            continue
+                        
+                        normalized_name = normalize_plan_name(name)
+                        
+                        key = ('monthly', normalized_name, price)
+                        if key in seen:
+                            continue
+                        seen.add(key)
+                        
+                        price_number = extract_price_number(price)
+                        currency = detect_currency(price, country_code)
+                        
+                        if price_number > 0:
+                            # Use global billing cycle detection for better accuracy
+                            detected_cycle, cycle_label = detect_billing_cycle_globally(price, price_number, country_code)
+                            
+                            plan_data = {
+                                "plan_group": detected_cycle,
+                                "label": cycle_label,
+                                "name": normalized_name,
+                                "original_name": name,
+                                "price": price,
+                                "price_number": price_number,
+                                "monthly_price": price_number,
+                                "currency": currency
+                            }
+                            plans.append(plan_data)
+                            print(f"✅ {country_code}: {normalized_name} ({cycle_label}) - {price} ({currency})")
+                    
+                    except Exception as e:
+                        print(f"⚠️ {country_code}: 解析月付套餐失败 - {e}")
+                        continue
+            
+            # 处理年付区域  
+            for sec in yearly_sections:
+                cards = sec.find_all('div', class_='max-plan-picker-group__card')
+                print(f"📦 {country_code}: 年付区域找到 {len(cards)} 个套餐")
+                
+                for card in cards:
+                    try:
+                        name_elem = card.find('h3')
+                        price_elem = card.find('h4')
+                        
+                        if not name_elem or not price_elem:
+                            continue
+                            
+                        name = name_elem.get_text(strip=True)
+                        price = price_elem.get_text(strip=True)
+                        
+                        # 跳过空的套餐名
+                        if not name or name.isspace():
+                            continue
+                        
+                        normalized_name = normalize_plan_name(name)
+                        
+                        key = ('yearly', normalized_name, price)
+                        if key in seen:
+                            continue
+                        seen.add(key)
+                        
+                        price_number = extract_price_number(price)
+                        currency = detect_currency(price, country_code)
+                        
+                        if price_number > 0:
+                            # Use global billing cycle detection for better accuracy
+                            detected_cycle, cycle_label = detect_billing_cycle_globally(price, price_number, country_code)
+                            
+                            plan_data = {
+                                "plan_group": detected_cycle,
+                                "label": cycle_label,
+                                "name": normalized_name,
+                                "original_name": name,
+                                "price": price,
+                                "price_number": price_number,
+                                "monthly_price": price_number,
+                                "currency": currency
+                            }
+                            plans.append(plan_data)
+                            print(f"✅ {country_code}: {normalized_name} ({cycle_label}) - {price} ({currency})")
+                    
+                    except Exception as e:
+                        print(f"⚠️ {country_code}: 解析年付套餐失败 - {e}")
+                        continue
+            
+            # 如果找到了计划，返回结果
             if plans:
                 out = [f"**HBO Max {country_code.upper()} 订阅价格:**"]
                 for item in plans:
@@ -799,25 +1038,8 @@ async def parse_max_prices(html: str, country_code: str) -> Tuple[List[Dict[str,
                                 
                                 normalized_name = normalize_plan_name(plan_name)
                                 
-                                # 识别周期类型
-                                plan_group = "unknown"
-                                label = "未知周期"
-                                if any(period in price_text.lower() for period in ['month', 'mes', 'mies', 'mês']):
-                                    plan_group = "monthly"
-                                    label = "每月"
-                                elif any(period in price_text.lower() for period in ['year', 'año', 'rok', 'år']):
-                                    plan_group = "yearly"
-                                    label = "每年"
-                                elif price_number > 1000 and country_code.lower() in ['tr', 'pl', 'se', 'no', 'dk']:
-                                    # 基于价格推断年付（欧洲国家大额通常是年付）
-                                    plan_group = "yearly"
-                                    label = "每年"
-                                    print(f"    📅 {country_code}: 基于价格推断年付: {price_number}")
-                                elif price_number < 100 and country_code.lower() in ['tr', 'pl', 'se', 'no', 'dk']:
-                                    # 基于价格推断月付（欧洲国家小额通常是月付）
-                                    plan_group = "monthly"
-                                    label = "每月"
-                                    print(f"    📅 {country_code}: 基于价格推断月付: {price_number}")
+                                # 使用全局周期检测
+                                plan_group, label = detect_billing_cycle_globally(price_text, price_number, country_code)
                                 
                                 # 使用 seen 集合去重
                                 key = (normalized_name, price_text, currency)
@@ -843,25 +1065,8 @@ async def parse_max_prices(html: str, country_code: str) -> Tuple[List[Dict[str,
                             if price_number > 0:
                                 normalized_name = normalize_plan_name("HBO Max Plan")
                                 
-                                # 识别周期类型
-                                plan_group = "unknown"
-                                label = "未知周期"
-                                if any(period in text.lower() for period in ['month', 'mes', 'mies', 'mês']):
-                                    plan_group = "monthly"
-                                    label = "每月"
-                                elif any(period in text.lower() for period in ['year', 'año', 'rok', 'år']):
-                                    plan_group = "yearly"
-                                    label = "每年"
-                                elif price_number > 1000 and country_code.lower() in ['tr', 'pl', 'se', 'no', 'dk']:
-                                    # 基于价格推断年付（欧洲国家大额通常是年付）
-                                    plan_group = "yearly"
-                                    label = "每年"
-                                    print(f"    📅 {country_code}: 基于价格推断年付: {price_number}")
-                                elif price_number < 100 and country_code.lower() in ['tr', 'pl', 'se', 'no', 'dk']:
-                                    # 基于价格推断月付（欧洲国家小额通常是月付）
-                                    plan_group = "monthly"
-                                    label = "每月"
-                                    print(f"    📅 {country_code}: 基于价格推断月付: {price_number}")
+                                # 使用全局周期检测
+                                plan_group, label = detect_billing_cycle_globally(text, price_number, country_code)
                                 
                                 # 使用 seen 集合去重
                                 key = (normalized_name, text, currency)
