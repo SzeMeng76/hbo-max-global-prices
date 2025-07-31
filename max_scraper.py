@@ -879,14 +879,39 @@ async def parse_max_prices(html: str, country_code: str) -> Tuple[List[Dict[str,
                             final_plan_group = p
                             final_label = label
                         
-                        # 处理年付价格：如果是年付或bundle且价格格式为"12x $X.XX/mes"，计算年度总价
-                        annual_total_price = price_number
-                        if (final_plan_group == 'yearly' or p == 'bundle') and price_number > 0:
-                            # 检查是否是"12x"格式
-                            if '12x' in price or '12 x' in price:
-                                # 年付价格 = 月价格 × 12
-                                annual_total_price = price_number * 12
-                                print(f"    💰 {country_code}: 年付价格计算: {price_number}/月 × 12 = {annual_total_price}/年")
+                        # 检查是否是"12x"格式
+                        is_twelve_month_plan = '12x' in price or '12 x' in price
+                        
+                        # 对于bundle类型，特别处理12x格式的分类
+                        if p == 'bundle' and is_twelve_month_plan:
+                            # 12x格式的bundle应该标记为年付
+                            final_plan_group = 'bundle'
+                            final_label = '每年'
+                            print(f"    🔍 {country_code}: Bundle套餐12x格式标记为年付: {price}")
+                        elif p == 'bundle':
+                            detected_cycle, cycle_label = detect_billing_cycle_globally(price, price_number, country_code)
+                            final_plan_group = 'bundle'  # 保持bundle分类
+                            final_label = cycle_label
+                            print(f"    🔍 {country_code}: Bundle套餐周期检测: {price} -> {cycle_label}")
+                        else:
+                            final_plan_group = p
+                            final_label = label
+                        
+                        # 计算正确的价格字段
+                        if is_twelve_month_plan:
+                            # 12x格式：price_number是月价格，年度总价需要乘以12
+                            annual_total_price = price_number * 12
+                            monthly_equivalent_price = price_number
+                            print(f"    💰 {country_code}: 12x格式 - 月价: {price_number}, 年总价: {annual_total_price}")
+                        elif final_plan_group == 'yearly' or p == 'yearly':
+                            # 标准年付：price_number是年度总价，月等价需要除以12
+                            annual_total_price = price_number
+                            monthly_equivalent_price = round(price_number / 12, 2)
+                            print(f"    💰 {country_code}: 年付套餐 - 年总价: {annual_total_price}, 月等价: {monthly_equivalent_price}")
+                        else:
+                            # 月付：保持原价格
+                            annual_total_price = price_number
+                            monthly_equivalent_price = price_number
                         
                         plan_data = {
                             "plan_group": final_plan_group,
@@ -894,8 +919,8 @@ async def parse_max_prices(html: str, country_code: str) -> Tuple[List[Dict[str,
                             "name": normalized_name,  # 使用统一后的套餐名
                             "original_name": name,    # 保留原始套餐名用于调试
                             "price": price,
-                            "price_number": annual_total_price,  # 使用计算后的年度价格
-                            "monthly_price": price_number,       # 保留原始月价格用于显示
+                            "price_number": annual_total_price,      # 年付显示年度总价，月付显示月价格
+                            "monthly_price": monthly_equivalent_price, # 正确的月等价价格
                             "currency": currency
                         }
                         plans.append(plan_data)
