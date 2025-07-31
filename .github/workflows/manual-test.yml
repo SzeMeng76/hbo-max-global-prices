@@ -95,9 +95,9 @@ jobs:
             results = asyncio.run(test_countries())
             
             if results:
-                with open('max_prices_all_countries_playwright.json', 'w', encoding='utf-8') as f:
+                with open('test_results_playwright.json', 'w', encoding='utf-8') as f:
                     json.dump(results, f, ensure_ascii=False, indent=2)
-                print("📁 Playwright 测试结果已保存到 max_prices_all_countries_playwright.json")
+                print("📁 Playwright 测试结果已保存到 test_results_playwright.json")
                 
                 # 显示详细结果
                 for country, data in results.items():
@@ -120,12 +120,14 @@ jobs:
         python test_max_playwright.py
         
     - name: Test rate converter
-      if: hashFiles('max_prices_all_countries_playwright.json') != ''
+      if: hashFiles('test_results_playwright.json') != ''
       env:
         API_KEY: ${{ secrets.EXCHANGE_API_KEY }}
       run: |
-        echo "测试汇率转换 (自动检测输入文件)..."
-        # rate converter 现在可以自动检测 Playwright 版本的文件
+        echo "测试汇率转换..."
+        # 将 Playwright 测试结果重命名为标准输入文件
+        cp test_results_playwright.json max_prices_all_countries.json
+        # 运行汇率转换
         python max_rate_converter.py
         
     - name: Show test results
@@ -133,10 +135,10 @@ jobs:
       run: |
         echo "=== Playwright 测试结果摘要 ==="
         
-        if [ -f "max_prices_all_countries_playwright.json" ]; then
+        if [ -f "test_results_playwright.json" ]; then
           echo "✅ Playwright 抓取测试: 成功"
           echo "📊 测试数据:"
-          echo "文件大小: $(du -h max_prices_all_countries_playwright.json | cut -f1)"
+          echo "文件大小: $(du -h test_results_playwright.json | cut -f1)"
         else
           echo "❌ Playwright 抓取测试: 失败"
         fi
@@ -154,6 +156,6 @@ jobs:
       with:
         name: playwright-test-results-${{ github.run_number }}
         path: |
-          max_prices_all_countries_playwright.json
+          test_results_playwright.json
           max_prices_cny_sorted.json
         retention-days: 7

@@ -18,39 +18,24 @@ API_KEY = os.getenv('API_KEY', '')  # OpenExchangeRates API Key
 BASE_CURRENCY = 'USD'  # 基础货币
 TARGET_CURRENCY = 'CNY'  # 目标货币（人民币）
 
-# 输入输出文件配置 - 支持多种输入文件名
-POSSIBLE_INPUT_FILES = [
-    'max_prices_all_countries_playwright.json',  # Playwright 版本优先
-    'max_prices_all_countries.json',            # 原版本作为备用
-]
+# 输入输出文件配置
+INPUT_FILE = 'max_prices_all_countries.json'
 OUTPUT_FILE = 'max_prices_cny_sorted.json'
 
 # API配置
 EXCHANGE_API_URL = f'https://openexchangerates.org/api/latest.json'
 
-def find_input_file() -> Optional[str]:
-    """查找可用的输入文件，按优先级顺序"""
-    for filename in POSSIBLE_INPUT_FILES:
-        if os.path.exists(filename):
-            print(f"📁 找到输入文件: {filename}")
-            return filename
-    
-    print(f"❌ 未找到任何输入文件，尝试过的文件:")
-    for filename in POSSIBLE_INPUT_FILES:
-        print(f"   - {filename}")
-    return None
-
 def load_max_prices() -> Dict[str, Any]:
     """加载HBO Max价格数据"""
     try:
-        input_file = find_input_file()
-        if not input_file:
+        if not os.path.exists(INPUT_FILE):
+            print(f"❌ 输入文件不存在: {INPUT_FILE}")
             return {}
         
-        with open(input_file, 'r', encoding='utf-8') as f:
+        with open(INPUT_FILE, 'r', encoding='utf-8') as f:
             data = json.load(f)
         
-        print(f"📊 成功加载 {len(data)} 个国家的HBO Max价格数据 (来源: {input_file})")
+        print(f"📊 成功加载 {len(data)} 个国家的HBO Max价格数据")
         return data
     except Exception as e:
         print(f"❌ 加载数据失败: {e}")
@@ -380,7 +365,6 @@ def generate_top_cheapest(all_plans: List[Dict[str, Any]], plan_type: str = "all
 def main():
     """主函数"""
     print("🎬 HBO Max 价格汇率转换器启动...")
-    print("🔍 支持自动检测 Playwright 和传统版本的输入文件")
     
     # 加载价格数据
     price_data = load_max_prices()
