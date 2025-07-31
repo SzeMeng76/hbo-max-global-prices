@@ -417,7 +417,7 @@ async def fetch_max_page(country_code: str, proxies: Dict[str, str], headers: Di
                 print(f"📊 {country_code}: 响应 {r.status_code} -> {r.url}")
                 r.raise_for_status()
                 return r.text
-        except (httpx.SSLError, httpx.ConnectError, httpx.ReadError) as ssl_error:
+        except (httpx.ConnectError, httpx.ReadError, httpx.TimeoutException, httpx.RequestError) as ssl_error:
             print(f"🔒 {country_code}: HTTPS连接失败({type(ssl_error).__name__}), 尝试HTTP - {ssl_error}")
             
             # 如果HTTPS失败，尝试HTTP
@@ -696,6 +696,7 @@ def detect_currency(price_str: str, country_code: str = None) -> str:
         'py': 'PYG',     # Paraguay - Gs
         'cl': 'CLP',     # Chile - $
         'br': 'BRL',     # Brazil - R$
+        'gy': 'GYD',     # Guyana - G$ (Guyanese Dollar)
         'pl': 'PLN',     # Poland - zł
         'cz': 'CZK',     # Czech Republic - Kč
         'hu': 'HUF',     # Hungary - Ft
@@ -720,6 +721,19 @@ def detect_currency(price_str: str, country_code: str = None) -> str:
         'si': 'EUR',     # Slovenia - €
         'ba': 'BAM',     # Bosnia and Herzegovina - KM
         'ad': 'EUR',     # Andorra - €
+        
+        # 缺失国家的货币映射
+        'ai': 'XCD',     # Anguilla - East Caribbean Dollar
+        'aw': 'AWG',     # Aruba - Aruban Florin
+        'cw': 'ANG',     # Curaçao - Netherlands Antillean Guilder
+        'gd': 'XCD',     # Grenada - East Caribbean Dollar  
+        'gp': 'EUR',     # Guadeloupe - Euro
+        'ht': 'HTG',     # Haiti - Haitian Gourde
+        'ky': 'KYD',     # Cayman Islands - Cayman Islands Dollar
+        'ms': 'XCD',     # Montserrat - East Caribbean Dollar
+        'ni': 'NIO',     # Nicaragua - Nicaraguan Córdoba
+        'vc': 'XCD',     # Saint Vincent and the Grenadines - East Caribbean Dollar
+        've': 'VES',     # Venezuela - Venezuelan Bolívar
     }
     
     # 优先使用国家上下文（最重要的修复）
@@ -839,12 +853,12 @@ async def parse_max_prices(html: str, country_code: str) -> Tuple[List[Dict[str,
                         price_number = extract_price_number(price)
                         currency = detect_currency(price, country_code)
                         
-                        # 对于bundle类型，使用全球周期检测来确定正确的周期
+                        # 对于bundle类型，保持bundle分类并添加周期信息
                         if p == 'bundle':
                             detected_cycle, cycle_label = detect_billing_cycle_globally(price, price_number, country_code)
-                            final_plan_group = detected_cycle
+                            final_plan_group = 'bundle'  # 保持bundle分类
                             final_label = cycle_label
-                            print(f"    🔍 {country_code}: Bundle套餐周期检测: {price} -> {cycle_label}")
+                            print(f"    🔍 {country_code}: Bundle套餐周期检测: {price} -> {cycle_label} (保持bundle类型)")
                         else:
                             final_plan_group = p
                             final_label = label
