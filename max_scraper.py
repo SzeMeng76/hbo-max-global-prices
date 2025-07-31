@@ -734,10 +734,18 @@ def detect_currency(price_str: str, country_code: str = None) -> str:
         'md': 'EUR',     # Moldova - 实际使用欧元定价
         'bg': 'EUR',     # Bulgaria - 实际使用欧元定价
         'ro': 'EUR',     # Romania - 实际使用欧元定价
-        'gd': 'XCD',     # Grenada - East Caribbean Dollar  
+        
+        # 加勒比海国家实际使用USD定价的修正
+        'ky': 'USD',     # Cayman Islands - 实际使用美元定价
+        'gd': 'USD',     # Grenada - 实际使用美元定价
+        
+        # 加勒比海国家使用本地货币的修正
+        'jm': 'JMD',     # Jamaica - 牙买加元 (价格$890实际为JMD)
+        'sr': 'SRD',     # Suriname - 苏里南元 (价格$229实际为SRD)
+        'tt': 'TTD',     # Trinidad and Tobago - 特立尼达多巴哥元 (价格$39.99实际为TTD)
+        
         'gp': 'EUR',     # Guadeloupe - Euro
         'ht': 'HTG',     # Haiti - Haitian Gourde
-        'ky': 'KYD',     # Cayman Islands - Cayman Islands Dollar
         'ms': 'XCD',     # Montserrat - East Caribbean Dollar
         'ni': 'NIO',     # Nicaragua - Nicaraguan Córdoba
         'vc': 'XCD',     # Saint Vincent and the Grenadines - East Caribbean Dollar

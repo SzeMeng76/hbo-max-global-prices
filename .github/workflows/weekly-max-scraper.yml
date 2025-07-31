@@ -2,8 +2,8 @@ name: Weekly HBO Max Price Scraper
 
 on:
   schedule:
-    # 每季度首月1号 UTC 时间 2:00 执行（1月、4月、7月、10月）
-    - cron: '0 2 1 1,4,7,10 *'
+    # 每周日 UTC 时间 2:00 执行（北京时间周日 10:00）
+    - cron: '0 2 * * 0'
   workflow_dispatch: # 允许手动触发
 
 # 添加写入权限以允许推送到仓库
