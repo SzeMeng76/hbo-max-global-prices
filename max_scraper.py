@@ -27,7 +27,7 @@ except ImportError:
     exit(1)
 
 # --- 常量定义 ---
-MAX_URL = "https://www.max.com"
+MAX_URL = "https://www.hbomax.com"
 
 # 静态区域映射：国家代码 -> 多语言 URL 路径列表（基于原有max.py）
 REGION_PATHS: Dict[str, List[str]] = {
@@ -391,58 +391,79 @@ async def get_proxy(country_code: str) -> Optional[Dict[str, str]]:
         return None
 
 async def fetch_max_page(country_code: str, proxies: Dict[str, str], headers: Dict[str, str]) -> Optional[str]:
-    """获取HBO Max页面内容"""
+    """获取HBO Max页面内容，支持HTTPS/HTTP fallback"""
     cc = country_code.lower()
     paths = REGION_PATHS.get(cc)
     
     # 获取代理URL
     proxy_url = proxies.get('http://')
     
+    async def try_fetch_url(url: str, description: str = "") -> Optional[str]:
+        """尝试访问URL，支持HTTPS->HTTP fallback"""
+        # 首先尝试HTTPS
+        https_url = url.replace("http://", "https://") if not url.startswith("https://") else url
+        
+        try:
+            # 创建支持SSL错误的客户端配置
+            async with httpx.AsyncClient(
+                headers=headers, 
+                follow_redirects=True, 
+                timeout=45.0, 
+                proxy=proxy_url,
+                verify=False  # 忽略SSL证书验证问题
+            ) as client:
+                print(f"🌐 {country_code}: {description}访问 {https_url}")
+                r = await client.get(https_url)
+                print(f"📊 {country_code}: 响应 {r.status_code} -> {r.url}")
+                r.raise_for_status()
+                return r.text
+        except (httpx.SSLError, httpx.ConnectError, httpx.ReadError) as ssl_error:
+            print(f"🔒 {country_code}: HTTPS连接失败({type(ssl_error).__name__}), 尝试HTTP - {ssl_error}")
+            
+            # 如果HTTPS失败，尝试HTTP
+            http_url = https_url.replace("https://", "http://")
+            try:
+                async with httpx.AsyncClient(
+                    headers=headers, 
+                    follow_redirects=True, 
+                    timeout=45.0, 
+                    proxy=proxy_url
+                ) as client:
+                    print(f"🌐 {country_code}: {description}HTTP fallback {http_url}")
+                    r = await client.get(http_url)
+                    print(f"📊 {country_code}: HTTP响应 {r.status_code} -> {r.url}")
+                    r.raise_for_status()
+                    return r.text
+            except Exception as http_error:
+                print(f"❌ {country_code}: HTTP fallback也失败 - {http_error}")
+                return None
+        except httpx.HTTPStatusError as e:
+            print(f"⚠️ {country_code}: HTTP {e.response.status_code} - {description}")
+            return None
+        except Exception as e:
+            print(f"❌ {country_code}: 访问失败 - {e}")
+            return None
+    
     # 优先使用静态映射
     if paths:
         for path in paths:
             url = MAX_URL + path
-            try:
-                async with httpx.AsyncClient(headers=headers, follow_redirects=True, timeout=45.0, proxy=proxy_url) as client:
-                    print(f"🌐 {country_code}: 访问 {url}")
-                    r = await client.get(url)
-                    print(f"📊 {country_code}: 响应 {r.status_code} -> {r.url}")
-                    r.raise_for_status()
-                    return r.text
-            except httpx.HTTPStatusError as e:
-                print(f"⚠️ {country_code}: HTTP {e.response.status_code} - 尝试下一个路径")
-                continue
-            except Exception as e:
-                print(f"❌ {country_code}: 访问失败 - {e}")
-                continue
+            result = await try_fetch_url(url, f"静态路径({path}) ")
+            if result:
+                return result
         return None
     
     # 无映射时的通用逻辑
     default_url = f"{MAX_URL}/{cc}/"
-    try:
-        async with httpx.AsyncClient(headers=headers, follow_redirects=True, timeout=45.0, proxy=proxy_url) as client:
-            print(f"🌐 {country_code}: 访问 {default_url}")
-            r = await client.get(default_url)
-            print(f"📊 {country_code}: 响应 {r.status_code} -> {r.url}")
-            r.raise_for_status()
-            return r.text
-    except httpx.HTTPStatusError as e:
-        # 404时回退到西班牙语
-        if e.response.status_code == 404:
-            fallback = f"{MAX_URL}/{cc}/es"
-            try:
-                async with httpx.AsyncClient(headers=headers, follow_redirects=True, timeout=30.0, proxy=proxy_url) as client:
-                    print(f"🔄 {country_code}: 西语回退 {fallback}")
-                    r2 = await client.get(fallback)
-                    print(f"📊 {country_code}: 回退响应 {r2.status_code} -> {r2.url}")
-                    r2.raise_for_status()
-                    return r2.text
-            except Exception:
-                pass
-        return None
-    except Exception as e:
-        print(f"❌ {country_code}: 访问出错 - {e}")
-        return None
+    result = await try_fetch_url(default_url, "默认路径 ")
+    if result:
+        return result
+    
+    # 404时回退到西班牙语
+    fallback_url = f"{MAX_URL}/{cc}/es"
+    print(f"🔄 {country_code}: 尝试西语回退")
+    result = await try_fetch_url(fallback_url, "西语回退 ")
+    return result
 
 def detect_billing_cycle_globally(price_text: str, price_number: float, country_code: str) -> Tuple[str, str]:
     """
