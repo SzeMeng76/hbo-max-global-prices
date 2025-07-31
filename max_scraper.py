@@ -727,6 +727,13 @@ def detect_currency(price_str: str, country_code: str = None) -> str:
         'ai': 'XCD',     # Anguilla - East Caribbean Dollar
         'aw': 'USD',     # Aruba - USD (实际使用美元定价)
         'cw': 'USD',     # Curaçao - USD (实际使用美元定价)
+        
+        # 欧洲国家实际使用EUR定价的修正
+        'rs': 'EUR',     # Serbia - 实际使用欧元定价
+        'mk': 'EUR',     # North Macedonia - 实际使用欧元定价  
+        'md': 'EUR',     # Moldova - 实际使用欧元定价
+        'bg': 'EUR',     # Bulgaria - 实际使用欧元定价
+        'ro': 'EUR',     # Romania - 实际使用欧元定价
         'gd': 'XCD',     # Grenada - East Caribbean Dollar  
         'gp': 'EUR',     # Guadeloupe - Euro
         'ht': 'HTG',     # Haiti - Haitian Gourde
