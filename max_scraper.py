@@ -780,7 +780,18 @@ async def parse_max_prices(html: str, country_code: str) -> Tuple[List[Dict[str,
             print(f"📊 {country_code}: 找到 {len(sections)} 个标准价格区域 (data-plan-group)")
             for sec in sections:
                 p = sec['data-plan-group']
-                label = '每月' if p == 'monthly' else '每年'
+                # 正确处理bundle类型的标签
+                if p == 'monthly':
+                    label = '每月'
+                elif p == 'yearly':
+                    label = '每年'
+                elif p == 'bundle':
+                    # 对于bundle，需要检查价格文本来确定周期
+                    # 暂时设为每月，后续会根据价格文本进行调整
+                    label = '每月'
+                else:
+                    # 其他未知类型默认为月付
+                    label = '每月'
                 cards = sec.find_all('div', class_='max-plan-picker-group__card')
                 print(f"📦 {country_code}: {label} 区域找到 {len(cards)} 个套餐")
                 
@@ -807,9 +818,19 @@ async def parse_max_prices(html: str, country_code: str) -> Tuple[List[Dict[str,
                         price_number = extract_price_number(price)
                         currency = detect_currency(price, country_code)
                         
+                        # 对于bundle类型，使用全球周期检测来确定正确的周期
+                        if p == 'bundle':
+                            detected_cycle, cycle_label = detect_billing_cycle_globally(price, price_number, country_code)
+                            final_plan_group = detected_cycle
+                            final_label = cycle_label
+                            print(f"    🔍 {country_code}: Bundle套餐周期检测: {price} -> {cycle_label}")
+                        else:
+                            final_plan_group = p
+                            final_label = label
+                        
                         # 处理年付价格：如果是年付或bundle且价格格式为"12x $X.XX/mes"，计算年度总价
                         annual_total_price = price_number
-                        if (p == 'yearly' or p == 'bundle') and price_number > 0:
+                        if (final_plan_group == 'yearly' or p == 'bundle') and price_number > 0:
                             # 检查是否是"12x"格式
                             if '12x' in price or '12 x' in price:
                                 # 年付价格 = 月价格 × 12
@@ -817,8 +838,8 @@ async def parse_max_prices(html: str, country_code: str) -> Tuple[List[Dict[str,
                                 print(f"    💰 {country_code}: 年付价格计算: {price_number}/月 × 12 = {annual_total_price}/年")
                         
                         plan_data = {
-                            "plan_group": p,
-                            "label": label,
+                            "plan_group": final_plan_group,
+                            "label": final_label,
                             "name": normalized_name,  # 使用统一后的套餐名
                             "original_name": name,    # 保留原始套餐名用于调试
                             "price": price,
@@ -827,7 +848,7 @@ async def parse_max_prices(html: str, country_code: str) -> Tuple[List[Dict[str,
                             "currency": currency
                         }
                         plans.append(plan_data)
-                        print(f"✅ {country_code}: {normalized_name} ({label}) - {price} ({currency})")
+                        print(f"✅ {country_code}: {normalized_name} ({final_label}) - {price} ({currency})")
                         if name != normalized_name:
                             print(f"    📋 原始名称: '{name}' -> 统一名称: '{normalized_name}'")
                         
