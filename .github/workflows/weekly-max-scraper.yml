@@ -68,8 +68,6 @@ jobs:
           ls -la max_prices_all_countries_playwright*.json
           file_size=$(du -h max_prices_all_countries_playwright.json | cut -f1)
           echo "📁 数据文件大小: $file_size"
-          # 创建兼容性链接，供后续脚本使用
-          cp max_prices_all_countries_playwright.json max_prices_all_countries.json
         else
           echo "❌ Playwright 爬虫数据文件未生成"
           exit 1
