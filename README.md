@@ -19,6 +19,7 @@
 | 📊 **Standardized Data** | Multi-language plan name standardization and categorization |
 | 🤖 **Automated Execution** | GitHub Actions runs automatically every Monday, no manual intervention needed |
 | 📈 **Historical Data** | Auto-archive by year, supports price trend analysis |
+| 📊 **Price Change Detection** | Quarterly price comparison with detailed change reports and CHANGELOG tracking |
 
 ## 🚀 Quick Start
 
@@ -113,11 +114,14 @@ graph LR
 📦 hbo-max-global-prices
 ├── 🕷️ max_scraper.py                  # Core scraping engine
 ├── 💱 max_rate_converter.py           # Currency conversion & data processing
+├── 📊 max_price_change_detector.py    # Price change detection and comparison
+├── 📝 max_changelog_archiver.py       # Changelog management and archiving
 ├── 📋 requirements.txt                 # Python dependencies
 ├── ⚙️ .env.example                    # Environment variables template
 ├── 📁 archive/                        # Historical data archive
 │   ├── 2025/                         # Organized by year
 │   └── 2026/
+├── 📝 CHANGELOG.md                    # Price change history and reports
 ├── 🔄 .github/workflows/
 │   ├── weekly-max-scraper.yml        # Main automation workflow
 │   └── manual-test.yml               # Manual testing workflow
@@ -183,6 +187,23 @@ Actions → Select failed workflow → Expand logs
 ```
 </details>
 
+## 📊 Price Change Tracking
+
+### 🔍 Automated Detection
+The system automatically compares price data quarterly (every 3 months) and generates detailed change reports:
+
+- ✅ **Price Increase Detection** - Identifies subscription fee increases
+- ✅ **Price Decrease Detection** - Spots promotional discounts and price drops
+- ✅ **New Plan Detection** - Discovers newly launched subscription tiers
+- ✅ **Discontinued Plan Detection** - Tracks removed subscription options
+- ✅ **Historical Archive** - Maintains quarterly archives for trend analysis
+
+### 📝 CHANGELOG Integration
+All price changes are automatically documented in `CHANGELOG.md` with:
+- Detailed change summaries by country and plan type
+- Quarterly archive organization
+- Easy-to-read change reports with timestamps
+
 ## 📈 Data Examples
 
 Latest Global HBO Max Price Top 5:
@@ -231,6 +252,7 @@ Welcome to submit Issues and Pull Requests!
 - **v1.2** 🌍 Added support for 70+ countries and regions
 - **v1.3** 💱 Integrated real-time currency conversion
 - **v1.4** 🤖 GitHub Actions automation
+- **v1.5** 📊 Added automated price change detection and CHANGELOG tracking
 
 ## 📄 License
 
