@@ -229,7 +229,8 @@ def process_country_data(country_data: Dict[str, Any], rates: Dict[str, float]) 
                     'country_code': country_code,
                     'country_name': country_name,
                     'country_name_cn': get_chinese_country_name(country_name),
-                    'plan_name': plan_name,
+                    'name': plan_name,  # 改为name以匹配筛选逻辑
+                    'plan_name': plan_name,  # 保留plan_name向后兼容
                     'plan_name_standardized': plan_name,
                     'plan_group': plan_group,
                     'billing_cycle': label,
