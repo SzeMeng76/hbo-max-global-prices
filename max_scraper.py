@@ -817,19 +817,19 @@ def detect_currency(price_str: str, country_code: str = None) -> str:
         'vc': 'USD',     # Saint Vincent and the Grenadines - 实际使用美元定价
         've': 'VES',     # Venezuela - Venezuelan Bolívar
 
-        # 2025年10月亚太扩展国家
-        'bd': 'BDT',     # Bangladesh - Taka
+        # 2025年10月亚太扩展国家（如果HBO Max使用USD，符号检测会优先识别）
+        'bd': 'BDT',     # Bangladesh - Taka (fallback)
         'bn': 'BND',     # Brunei - Brunei Dollar
         'kh': 'USD',     # Cambodia - 实际使用美元定价
-        'la': 'LAK',     # Laos - Kip
-        'mo': 'MOP',     # Macau - Pataca
-        'mn': 'MNT',     # Mongolia - Tugrik
-        'lk': 'LKR',     # Sri Lanka - Rupee
-        'mm': 'MMK',     # Myanmar - Kyat
-        'np': 'NPR',     # Nepal - Rupee
+        'la': 'LAK',     # Laos - Kip (fallback)
+        'mo': 'MOP',     # Macau - Pataca (fallback)
+        'mn': 'MNT',     # Mongolia - Tugrik (fallback)
+        'lk': 'LKR',     # Sri Lanka - Rupee (fallback)
+        'mm': 'MMK',     # Myanmar - Kyat (fallback)
+        'np': 'NPR',     # Nepal - Rupee (fallback)
         'pw': 'USD',     # Palau - 实际使用美元定价
-        'pg': 'PGK',     # Papua New Guinea - Kina
-        'sb': 'SBD',     # Solomon Islands - Dollar
+        'pg': 'PGK',     # Papua New Guinea - Kina (fallback)
+        'sb': 'SBD',     # Solomon Islands - Dollar (fallback)
         'tl': 'USD',     # Timor Leste - 实际使用美元定价
 
         # 2026年1月欧洲扩展国家
@@ -856,15 +856,8 @@ def detect_currency(price_str: str, country_code: str = None) -> str:
         'zw': 'USD',     # Zimbabwe - 实际使用美元定价
     }
     
-    # 优先使用国家上下文（最重要的修复）
-    if country_code:
-        country_code_lower = country_code.lower()
-        if country_code_lower in country_currency_map:
-            expected_currency = country_currency_map[country_code_lower]
-            print(f"    💱 {country_code}: 使用国家映射货币 {expected_currency}")
-            return expected_currency
-    
     # 详细的货币符号检测（按优先级排序）
+    # 注意：优先检测价格文本中的货币符号，因为有些国家虽然有本币，但HBO Max使用USD定价
     currency_symbols = {
         # 优先检查带前缀的特殊符号（避免与通用$混淆）
         'US$': 'USD', 'USD': 'USD',
