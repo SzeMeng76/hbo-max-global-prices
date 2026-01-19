@@ -900,14 +900,26 @@ def detect_currency(price_str: str, country_code: str = None) -> str:
         if symbol in price_str:
             return currency
 
-    # 如果只找到$符号，先检查国家映射再决定是否用USD
+    # 如果只找到$符号，需要智能判断是USD还是本地货币
     if '$' in price_str:
-        # 有国家上下文，优先用国家映射
+        # 尝试提取价格数值
+        import re
+        price_match = re.search(r'[\$]\s*([0-9,]+\.?\d*)', price_str)
+        if price_match:
+            try:
+                price_value = float(price_match.group(1).replace(',', ''))
+                # 如果价格<1000，大概率是USD（HBO Max月费通常$5-$20，年费$50-$200）
+                if price_value < 1000:
+                    return 'USD'
+            except:
+                pass
+
+        # 价格>=1000或无法提取，使用国家映射
         if country_code:
             country_code_lower = country_code.lower()
             if country_code_lower in country_currency_map:
                 return country_currency_map[country_code_lower]
-        # 没有国家映射，才认为是USD
+        # 没有国家映射，默认USD
         return 'USD'
 
     # 如果都没找到，返回国家映射的货币或默认USD
