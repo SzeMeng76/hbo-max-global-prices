@@ -427,14 +427,9 @@ def main():
     top_10_monthly = generate_top_cheapest(all_plans, "monthly", 10)
     top_10_yearly = generate_top_cheapest(all_plans, "yearly", 10)
     
-    # 新增：Ultimate年付套餐排行榜（组合过滤）
-    ultimate_yearly_plans = [p for p in all_plans 
-                           if 'ultimate' in p.get('plan_name', '').lower() 
-                           and (p.get('plan_group') == 'yearly' or '每年' in p.get('billing_cycle', ''))]
-    top_10_ultimate_yearly = sorted(ultimate_yearly_plans, key=lambda x: x.get('price_cny', float('inf')))[:10]
-    for i, plan in enumerate(top_10_ultimate_yearly, 1):
-        plan['rank'] = i
-        plan['price_number'] = str(plan.get('original_price_number', 0))
+    # 新增：Ultimate年付套餐排行榜（包含Premium和Ultimate，因为它们是同级别）
+    yearly_plans = [p for p in all_plans if p.get('plan_group') == 'yearly' or '每年' in p.get('billing_cycle', '')]
+    top_10_ultimate_yearly = generate_top_cheapest(yearly_plans, "ultimate", 10)
     
     # 构建输出数据（参考Spotify项目的JSON结构）
     output_data = {
