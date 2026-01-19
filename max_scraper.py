@@ -902,13 +902,55 @@ def detect_currency(price_str: str, country_code: str = None) -> str:
 
     # 如果只找到$符号，需要智能判断是USD还是本地货币
     if '$' in price_str:
-        # 尝试提取价格数值
+        # 尝试提取价格数值（注意：有些国家用.做千位分隔符，有些用,做千位分隔符）
         import re
-        price_match = re.search(r'[\$]\s*([0-9,]+\.?\d*)', price_str)
+        price_match = re.search(r'[\$]\s*([0-9,.]+)', price_str)
         if price_match:
             try:
-                price_value = float(price_match.group(1).replace(',', ''))
-                # 如果价格<1000，大概率是USD（HBO Max月费通常$5-$20，年费$50-$200）
+                num_str = price_match.group(1)
+
+                # 判断数字格式的关键规则：
+                # - 如果最后一个分隔符后面是2位数字 → 小数点（表示美分/分）
+                # - 如果最后一个分隔符后面是3位数字 → 千位分隔符
+                #
+                # 例如：
+                # $49.99 → 点后2位 → 点是小数点 → 49.99
+                # $6.490 → 点后3位 → 点是千位分隔符 → 6490
+                # $6.490,00 → 逗号后2位 → 逗号是小数点 → 6490.00
+                # $6,490.00 → 点后2位 → 点是小数点 → 6490.00
+
+                # 查找最后一个点或逗号的位置
+                last_dot = num_str.rfind('.')
+                last_comma = num_str.rfind(',')
+
+                if last_dot > last_comma:
+                    # 点在后面
+                    digits_after = len(num_str) - last_dot - 1
+                    if digits_after == 2:
+                        # 点后2位 → 点是小数点 (美国格式: $49.99, $6,490.00)
+                        clean_num = num_str.replace(',', '')
+                        price_value = float(clean_num)
+                    else:
+                        # 点后3位 → 点是千位分隔符 (阿根廷: $6.490)
+                        clean_num = num_str.replace('.', '')
+                        price_value = float(clean_num)
+                elif last_comma > last_dot:
+                    # 逗号在后面
+                    digits_after = len(num_str) - last_comma - 1
+                    if digits_after == 2:
+                        # 逗号后2位 → 逗号是小数点 (欧洲格式: $49,99, $6.490,00)
+                        clean_num = num_str.replace('.', '').replace(',', '.')
+                        price_value = float(clean_num)
+                    else:
+                        # 逗号后3位 → 逗号是千位分隔符 (不太常见)
+                        clean_num = num_str.replace(',', '')
+                        price_value = float(clean_num)
+                else:
+                    # 没有分隔符，直接转换
+                    price_value = float(num_str)
+
+                # 如果价格<1000，大概率是USD（月费$5-$20，年费$50-$250）
+                # 本地货币如ARS通常>1000
                 if price_value < 1000:
                     return 'USD'
             except:
