@@ -31,6 +31,7 @@ MAX_URL = "https://www.hbomax.com"
 
 # 静态区域映射：国家代码 -> 多语言 URL 路径列表（基于原有max.py）
 REGION_PATHS: Dict[str, List[str]] = {
+    # 亚太地区
     "my": ["/my/en", "/my/zh", "/my/ms"],
     "hk": ["/hk/en", "/hk/zh"],
     "ph": ["/ph/en", "/ph/tl"],
@@ -38,6 +39,20 @@ REGION_PATHS: Dict[str, List[str]] = {
     "id": ["/id/en", "/id/id"],
     "sg": ["/sg/en", "/sg/ms"],
     "th": ["/th/en", "/th/th"],
+    "au": ["/au/en"],
+    "bd": ["/bd/en", "/bd/bn"],        # Bangladesh
+    "bn": ["/bn/en", "/bn/ms"],        # Brunei
+    "kh": ["/kh/en", "/kh/km"],        # Cambodia
+    "la": ["/la/en", "/la/lo"],        # Laos
+    "mo": ["/mo/en", "/mo/zh"],        # Macau
+    "mn": ["/mn/en", "/mn/mn"],        # Mongolia
+    "lk": ["/lk/en", "/lk/si"],        # Sri Lanka
+    "mm": ["/mm/en", "/mm/my"],        # Myanmar
+    "np": ["/np/en", "/np/ne"],        # Nepal
+    "pw": ["/pw/en"],                  # Palau
+    "pg": ["/pg/en"],                  # Papua New Guinea
+    "sb": ["/sb/en"],                  # Solomon Islands
+    "tl": ["/tl/en", "/tl/pt"],        # Timor Leste
     "co": ["/co/es"], "cr": ["/cr/es"], "gt": ["/gt/es"], "pe": ["/pe/es"],
     "uy": ["/uy/es"], "mx": ["/mx/es"], "hn": ["/hn/es"], "ni": ["/ni/es"],
     "pa": ["/pa/es"], "ar": ["/ar/es"], "bo": ["/bo/es"], "do": ["/do/es"],
@@ -50,7 +65,6 @@ REGION_PATHS: Dict[str, List[str]] = {
     "lc": ["/lc/en"], "vc": ["/vc/en"], "sr": ["/sr/en"], "tt": ["/tt/en"],
     "tc": ["/tc/en"],
     "us": ["/us/en", "/us/es"],
-    "au": ["/au/en"],
     "ad": ["/ad/en", "/ad/es"],
     "ba": ["/ba/en", "/ba/hr"],
     "bg": ["/bg/en", "/bg/bg"],
@@ -75,7 +89,8 @@ REGION_PATHS: Dict[str, List[str]] = {
     "nl": ["/nl/en", "/nl/nl"],
     "pl": ["/pl/pl"],
     "tr": ["/tr/en", "/tr/tr"],
-    
+    "pk": ["/pk/en", "/pk/ur"],        # Pakistan
+
     # 缺失的欧洲国家
     "al": ["/al/en", "/al/sq"],        # Albania
     "am": ["/am/en", "/am/hy"],        # Armenia  
@@ -89,16 +104,45 @@ REGION_PATHS: Dict[str, List[str]] = {
     "lt": ["/lt/en", "/lt/lt"],        # Lithuania
     "mt": ["/mt/en", "/mt/mt"],        # Malta
     "tj": ["/tj/en", "/tj/tg"],        # Tajikistan
-    
-    # 缺失的拉美国家  
+    "de": ["/de/en", "/de/de"],        # Germany
+    "it": ["/it/en", "/it/it"],        # Italy
+    "at": ["/at/en", "/at/de"],        # Austria
+    "ch": ["/ch/en", "/ch/de", "/ch/fr", "/ch/it"],  # Switzerland
+    "gr": ["/gr/en", "/gr/el"],        # Greece
+    "lu": ["/lu/en", "/lu/fr", "/lu/de"],  # Luxembourg
+    "li": ["/li/en", "/li/de"],        # Liechtenstein
+    "il": ["/il/en", "/il/he"],        # Israel
+    "gb": ["/gb/en"],                  # United Kingdom
+    "ie": ["/ie/en"],                  # Ireland
+
+    # 非洲国家
+    "bw": ["/bw/en"],                  # Botswana
+    "et": ["/et/en"],                  # Ethiopia
+    "gh": ["/gh/en"],                  # Ghana
+    "ke": ["/ke/en"],                  # Kenya
+    "ng": ["/ng/en"],                  # Nigeria
+    "za": ["/za/en"],                  # South Africa
+    "tz": ["/tz/en"],                  # Tanzania
+    "ug": ["/ug/en"],                  # Uganda
+    "zw": ["/zw/en"],                  # Zimbabwe
+
+    # 缺失的拉美国家
     "gp": ["/gp/en", "/gp/fr"],        # Guadeloupe
     "ve": ["/ve/es"],                  # Venezuela
 }
 
 # 国家名称映射
 COUNTRY_NAMES = {
+    # 亚太地区
     "my": "Malaysia", "hk": "Hong Kong", "ph": "Philippines", "tw": "Taiwan",
-    "id": "Indonesia", "sg": "Singapore", "th": "Thailand", "co": "Colombia",
+    "id": "Indonesia", "sg": "Singapore", "th": "Thailand", "au": "Australia",
+    "bd": "Bangladesh", "bn": "Brunei", "kh": "Cambodia", "la": "Laos",
+    "mo": "Macau", "mn": "Mongolia", "lk": "Sri Lanka", "mm": "Myanmar",
+    "np": "Nepal", "pw": "Palau", "pg": "Papua New Guinea", "sb": "Solomon Islands",
+    "tl": "Timor Leste",
+
+    # 拉丁美洲
+    "co": "Colombia",
     "cr": "Costa Rica", "gt": "Guatemala", "pe": "Peru", "uy": "Uruguay",
     "mx": "Mexico", "hn": "Honduras", "ni": "Nicaragua", "pa": "Panama",
     "ar": "Argentina", "bo": "Bolivia", "do": "Dominican Republic", "ec": "Ecuador",
@@ -109,19 +153,27 @@ COUNTRY_NAMES = {
     "dm": "Dominica", "gd": "Grenada", "gy": "Guyana", "ht": "Haiti",
     "kn": "Saint Kitts and Nevis", "lc": "Saint Lucia", "vc": "Saint Vincent and the Grenadines",
     "sr": "Suriname", "tt": "Trinidad and Tobago", "tc": "Turks and Caicos Islands",
-    "us": "United States", "au": "Australia", "ad": "Andorra", "ba": "Bosnia and Herzegovina",
+    "us": "United States", "ad": "Andorra", "ba": "Bosnia and Herzegovina",
     "bg": "Bulgaria", "hr": "Croatia", "cz": "Czech Republic", "hu": "Hungary",
     "mk": "North Macedonia", "md": "Moldova", "me": "Montenegro", "ro": "Romania",
     "rs": "Serbia", "sk": "Slovakia", "si": "Slovenia", "dk": "Denmark",
     "fi": "Finland", "no": "Norway", "se": "Sweden", "es": "Spain",
     "fr": "France", "be": "Belgium", "pt": "Portugal", "nl": "Netherlands",
-    "pl": "Poland", "tr": "Turkey",
-    
+    "pl": "Poland", "tr": "Turkey", "pk": "Pakistan",
+
     # 缺失的欧洲国家
     "al": "Albania", "am": "Armenia", "cy": "Cyprus", "ee": "Estonia",
-    "ge": "Georgia", "is": "Iceland", "kz": "Kazakhstan", "kg": "Kyrgyzstan", 
+    "ge": "Georgia", "is": "Iceland", "kz": "Kazakhstan", "kg": "Kyrgyzstan",
     "lv": "Latvia", "lt": "Lithuania", "mt": "Malta", "tj": "Tajikistan",
-    
+    "de": "Germany", "it": "Italy", "at": "Austria", "ch": "Switzerland",
+    "gr": "Greece", "lu": "Luxembourg", "li": "Liechtenstein", "il": "Israel",
+    "gb": "United Kingdom", "ie": "Ireland",
+
+    # 非洲国家
+    "bw": "Botswana", "et": "Ethiopia", "gh": "Ghana", "ke": "Kenya",
+    "ng": "Nigeria", "za": "South Africa", "tz": "Tanzania", "ug": "Uganda",
+    "zw": "Zimbabwe",
+
     # 缺失的拉美国家
     "gp": "Guadeloupe", "ve": "Venezuela"
 }

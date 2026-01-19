@@ -340,9 +340,12 @@ def generate_top_cheapest(all_plans: List[Dict[str, Any]], plan_type: str = "all
     elif plan_type == "standard":
         filtered_plans = [p for p in all_plans if 'standard' in p.get('plan_name', '').lower()]
     elif plan_type == "ultimate":
-        filtered_plans = [p for p in all_plans if 'ultimate' in p.get('plan_name', '').lower()]
+        # 注意：一些国家(如PH, TR)已将Ultimate改名为Premium，两者是同级别的最高套餐
+        # 因此ultimate排行榜需要同时包含这两种命名
+        filtered_plans = [p for p in all_plans if 'ultimate' in p.get('plan_name', '').lower() or 'premium' in p.get('plan_name', '').lower()]
     elif plan_type == "premium":
-        filtered_plans = [p for p in all_plans if 'premium' in p.get('plan_name', '').lower()]
+        # premium排行榜也应包含ultimate，因为它们是同一级别
+        filtered_plans = [p for p in all_plans if 'premium' in p.get('plan_name', '').lower() or 'ultimate' in p.get('plan_name', '').lower()]
     elif plan_type == "basic":
         filtered_plans = [p for p in all_plans if 'basic' in p.get('plan_name', '').lower()]
     else:
