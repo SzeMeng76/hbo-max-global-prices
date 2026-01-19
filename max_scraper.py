@@ -890,18 +890,26 @@ def detect_currency(price_str: str, country_code: str = None) -> str:
         'S/.': 'PEN', 'PEN': 'PEN',  # 秘鲁索尔
         'L': 'HNL', 'Gs': 'PYG', 'Q': 'GTQ',
         'kr': 'SEK',  # 默认kr为瑞典克朗
-        
-        # 最后检查通用美元符号（优先级最低）
-        '$': 'USD'
     }
-    
+
     # 按符号长度从长到短排序，优先匹配更具体的符号
     sorted_symbols = sorted(currency_symbols.items(), key=lambda x: len(x[0]), reverse=True)
-    
+
+    # 先检查明确的货币符号（除了单独的$）
     for symbol, currency in sorted_symbols:
         if symbol in price_str:
             return currency
-    
+
+    # 如果只找到$符号，先检查国家映射再决定是否用USD
+    if '$' in price_str:
+        # 有国家上下文，优先用国家映射
+        if country_code:
+            country_code_lower = country_code.lower()
+            if country_code_lower in country_currency_map:
+                return country_currency_map[country_code_lower]
+        # 没有国家映射，才认为是USD
+        return 'USD'
+
     # 如果都没找到，返回国家映射的货币或默认USD
     if country_code:
         country_code_lower = country_code.lower()
