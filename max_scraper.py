@@ -767,6 +767,7 @@ def detect_currency(price_str: str, country_code: str = None) -> str:
         'cz': 'CZK',     # Czech Republic - Kč
         'hu': 'HUF',     # Hungary - Ft
         'tr': 'TRY',     # Turkey - ₺
+        'pk': 'PKR',     # Pakistan - Rs
         'dk': 'DKK',     # Denmark - kr
         'no': 'NOK',     # Norway - kr
         'se': 'SEK',     # Sweden - kr
@@ -815,6 +816,44 @@ def detect_currency(price_str: str, country_code: str = None) -> str:
         'ni': 'NIO',     # Nicaragua - Nicaraguan Córdoba
         'vc': 'USD',     # Saint Vincent and the Grenadines - 实际使用美元定价
         've': 'VES',     # Venezuela - Venezuelan Bolívar
+
+        # 2025年10月亚太扩展国家
+        'bd': 'BDT',     # Bangladesh - Taka
+        'bn': 'BND',     # Brunei - Brunei Dollar
+        'kh': 'USD',     # Cambodia - 实际使用美元定价
+        'la': 'LAK',     # Laos - Kip
+        'mo': 'MOP',     # Macau - Pataca
+        'mn': 'MNT',     # Mongolia - Tugrik
+        'lk': 'LKR',     # Sri Lanka - Rupee
+        'mm': 'MMK',     # Myanmar - Kyat
+        'np': 'NPR',     # Nepal - Rupee
+        'pw': 'USD',     # Palau - 实际使用美元定价
+        'pg': 'PGK',     # Papua New Guinea - Kina
+        'sb': 'SBD',     # Solomon Islands - Dollar
+        'tl': 'USD',     # Timor Leste - 实际使用美元定价
+
+        # 2026年1月欧洲扩展国家
+        'de': 'EUR',     # Germany - €
+        'it': 'EUR',     # Italy - €
+        'at': 'EUR',     # Austria - €
+        'ch': 'CHF',     # Switzerland - CHF
+        'gr': 'EUR',     # Greece - €
+        'lu': 'EUR',     # Luxembourg - €
+        'li': 'CHF',     # Liechtenstein - CHF
+        'il': 'ILS',     # Israel - ₪
+        'gb': 'GBP',     # United Kingdom - £
+        'ie': 'EUR',     # Ireland - €
+
+        # 非洲国家
+        'bw': 'BWP',     # Botswana - Pula
+        'et': 'ETB',     # Ethiopia - Birr
+        'gh': 'GHS',     # Ghana - Cedi
+        'ke': 'KES',     # Kenya - Shilling
+        'ng': 'NGN',     # Nigeria - Naira
+        'za': 'ZAR',     # South Africa - Rand
+        'tz': 'TZS',     # Tanzania - Shilling
+        'ug': 'UGX',     # Uganda - Shilling
+        'zw': 'USD',     # Zimbabwe - 实际使用美元定价
     }
     
     # 优先使用国家上下文（最重要的修复）
