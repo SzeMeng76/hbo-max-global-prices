@@ -58,7 +58,7 @@ REGION_PATHS: Dict[str, List[str]] = {
     "pa": ["/pa/es"], "ar": ["/ar/es"], "bo": ["/bo/es"], "do": ["/do/es"],
     "ec": ["/ec/es"], "sv": ["/sv/es"], "py": ["/py/es"], "cl": ["/cl/es"],
     "br": ["/br/pt"],
-    "jm": ["/jm/en"], "ms": ["/ms/en"], "ai": ["/ai/en"], "ag": ["/ag/en"],
+    "jm": ["/jm/en"], "ai": ["/ai/en"], "ag": ["/ag/en"],
     "aw": ["/aw/en"], "bs": ["/bs/en"], "bb": ["/bb/en"], "bz": ["/bz/en"],
     "vg": ["/vg/en"], "ky": ["/ky/en"], "cw": ["/cw/en"], "dm": ["/dm/en"],
     "gd": ["/gd/en"], "gy": ["/gy/en"], "ht": ["/ht/en"], "kn": ["/kn/en"],
@@ -104,6 +104,7 @@ REGION_PATHS: Dict[str, List[str]] = {
     "lt": ["/lt/en", "/lt/lt"],        # Lithuania
     "mt": ["/mt/en", "/mt/mt"],        # Malta
     "tj": ["/tj/en", "/tj/tg"],        # Tajikistan
+    "ua": ["/ua/en", "/ua/uk"],        # Ukraine
     "de": ["/de/en", "/de/de"],        # Germany
     "it": ["/it/en", "/it/it"],        # Italy
     "at": ["/at/en", "/at/de"],        # Austria
@@ -128,7 +129,6 @@ REGION_PATHS: Dict[str, List[str]] = {
 
     # 缺失的拉美国家
     "gp": ["/gp/en", "/gp/fr"],        # Guadeloupe
-    "ve": ["/ve/es"],                  # Venezuela
 }
 
 # 国家名称映射
@@ -147,7 +147,7 @@ COUNTRY_NAMES = {
     "mx": "Mexico", "hn": "Honduras", "ni": "Nicaragua", "pa": "Panama",
     "ar": "Argentina", "bo": "Bolivia", "do": "Dominican Republic", "ec": "Ecuador",
     "sv": "El Salvador", "py": "Paraguay", "cl": "Chile", "br": "Brazil",
-    "jm": "Jamaica", "ms": "Montserrat", "ai": "Anguilla", "ag": "Antigua and Barbuda",
+    "jm": "Jamaica", "ai": "Anguilla", "ag": "Antigua and Barbuda",
     "aw": "Aruba", "bs": "Bahamas", "bb": "Barbados", "bz": "Belize",
     "vg": "British Virgin Islands", "ky": "Cayman Islands", "cw": "Curacao",
     "dm": "Dominica", "gd": "Grenada", "gy": "Guyana", "ht": "Haiti",
@@ -164,7 +164,7 @@ COUNTRY_NAMES = {
     # 缺失的欧洲国家
     "al": "Albania", "am": "Armenia", "cy": "Cyprus", "ee": "Estonia",
     "ge": "Georgia", "is": "Iceland", "kz": "Kazakhstan", "kg": "Kyrgyzstan",
-    "lv": "Latvia", "lt": "Lithuania", "mt": "Malta", "tj": "Tajikistan",
+    "lv": "Latvia", "lt": "Lithuania", "mt": "Malta", "tj": "Tajikistan", "ua": "Ukraine",
     "de": "Germany", "it": "Italy", "at": "Austria", "ch": "Switzerland",
     "gr": "Greece", "lu": "Luxembourg", "li": "Liechtenstein", "il": "Israel",
     "gb": "United Kingdom", "ie": "Ireland",
@@ -175,7 +175,7 @@ COUNTRY_NAMES = {
     "zw": "Zimbabwe",
 
     # 缺失的拉美国家
-    "gp": "Guadeloupe", "ve": "Venezuela"
+    "gp": "Guadeloupe"
 }
 
 # HBO Max 套餐名统一映射表（参考Spotify项目架构）
@@ -812,10 +812,10 @@ def detect_currency(price_str: str, country_code: str = None) -> str:
         
         'gp': 'EUR',     # Guadeloupe - Euro
         'ht': 'HTG',     # Haiti - Haitian Gourde
-        'ms': 'XCD',     # Montserrat - East Caribbean Dollar
         'ni': 'NIO',     # Nicaragua - Nicaraguan Córdoba
         'vc': 'USD',     # Saint Vincent and the Grenadines - 实际使用美元定价
-        've': 'VES',     # Venezuela - Venezuelan Bolívar
+        'ua': 'EUR',     # Ukraine - Euro (actual pricing currency)
+        'tj': 'EUR',     # Tajikistan - Euro (actual pricing currency)
 
         # 2025年10月亚太扩展国家（如果HBO Max使用USD，符号检测会优先识别）
         'bd': 'BDT',     # Bangladesh - Taka (fallback)
