@@ -326,6 +326,11 @@ HBO_PLAN_NAME_MAP = {
     "pinakamataas": "Ultimate",
     "pangunahing": "Basic",
     
+    # Bundle 套餐
+    "hbo max & viu bundle": "Max & Viu Bundle",
+    "& viu bundle": "Max & Viu Bundle",
+    "viu bundle": "Max & Viu Bundle",
+
     # 其他可能的变体
     "mob": "Mobile",
     "std": "Standard",
@@ -397,7 +402,7 @@ BASE_HEADERS: Dict[str, str] = {
 }
 
 # 代理API配置（使用环境变量）
-PROXY_API_TEMPLATE = os.getenv("PROXY_API_TEMPLATE", "http://api.mooproxy.xyz/v1/gen?user=Domo_lee&country={country}&pass=UNuYSniZ8D")
+PROXY_API_TEMPLATE = os.getenv("PROXY_API_TEMPLATE", "http://api.mooproxy.xyz/v1/gen?user=sm9076&country={country}&pass=XwKxA1p3uW")
 
 def extract_year_from_timestamp(timestamp: str) -> str:
     """从时间戳中提取年份"""
@@ -972,17 +977,134 @@ def detect_currency(price_str: str, country_code: str = None) -> str:
     
     return 'USD'
 
+def _extract_plans_from_nextjs_json(html: str, country_code: str) -> List[Dict[str, Any]]:
+    """
+    方法0: 从 Next.js __NEXT_DATA__ JSON script 标签提取套餐价格
+    适用于 PH、PK 等使用 Next.js 渲染的页面
+    """
+    plans = []
+    seen = set()
+
+    scripts = re.findall(r'<script[^>]*type="application/json"[^>]*>(.*?)</script>', html, re.DOTALL)
+    if not scripts:
+        return plans
+
+    try:
+        data = json.loads(scripts[0])
+    except Exception as e:
+        print(f"    ⚠️ {country_code}: Next.js JSON 解析失败 - {e}")
+        return plans
+
+    mapped = data.get('props', {}).get('pageProps', {}).get('mappedData', {})
+    if not mapped:
+        return plans
+
+    cycle_label_map = {
+        'Monthly': ('monthly', '每月'),
+        'Yearly': ('yearly', '每年'),
+        'Bundle': ('bundle', '每月'),
+    }
+
+    for ref_key, ref_val in mapped.items():
+        if not isinstance(ref_val, dict):
+            continue
+        items = ref_val.get('items', {})
+        if not isinstance(items, dict):
+            continue
+
+        for cycle_key, plan_list in items.items():
+            if not isinstance(plan_list, list):
+                continue
+
+            plan_group, label = cycle_label_map.get(cycle_key, ('monthly', '每月'))
+
+            for plan in plan_list:
+                if not isinstance(plan, dict):
+                    continue
+                content = plan.get('content', {})
+                plan_card = content.get('planCard', {})
+                if not plan_card:
+                    continue
+
+                # Extract plan name
+                product_name = plan_card.get('productName', {})
+                if isinstance(product_name, dict):
+                    name_raw = product_name.get('plainText', '') or product_name.get('richTextHtml', '')
+                    # Strip HTML tags from richTextHtml
+                    name_raw = re.sub(r'<[^>]+>', '', name_raw).strip()
+                else:
+                    name_raw = str(product_name).strip()
+
+                if not name_raw:
+                    continue
+
+                # Extract price
+                price_info = plan_card.get('price', {})
+                if not isinstance(price_info, dict):
+                    continue
+
+                amount_obj = price_info.get('amount', {})
+                amount_str = amount_obj.get('plainText', '') if isinstance(amount_obj, dict) else ''
+                currency_code = price_info.get('currencyCode', '')
+                period_obj = price_info.get('period', {})
+                period_str = period_obj.get('plainText', '') if isinstance(period_obj, dict) else ''
+
+                if not amount_str or not currency_code:
+                    continue
+
+                # Build price display string
+                price_display = f"{currency_code} {amount_str}/{period_str}" if period_str else f"{currency_code} {amount_str}"
+
+                # Dedup
+                key = (plan_group, name_raw, amount_str, currency_code)
+                if key in seen:
+                    continue
+                seen.add(key)
+
+                normalized_name = normalize_plan_name(name_raw)
+                price_number = extract_price_number(amount_str)
+
+                if plan_group == 'yearly':
+                    monthly_price = round(price_number / 12, 2)
+                else:
+                    monthly_price = price_number
+
+                plan_data = {
+                    "plan_group": plan_group,
+                    "label": label,
+                    "name": normalized_name,
+                    "original_name": name_raw,
+                    "price": price_display,
+                    "price_number": price_number,
+                    "monthly_price": monthly_price,
+                    "currency": currency_code,
+                }
+                plans.append(plan_data)
+                print(f"✅ {country_code}: [Next.js JSON] {normalized_name} ({label}) - {price_display} ({currency_code})")
+
+    return plans
+
+
 async def parse_max_prices(html: str, country_code: str) -> Tuple[List[Dict[str, Any]], str]:
     """解析HBO Max页面价格信息，返回（结构化数据列表, 文本输出）"""
     if not html:
         err = f"❌ 无法获取页面内容 ({country_code})"
         return [], err
-    
+
     try:
         soup = BeautifulSoup(html, 'html.parser')
         plans: List[Dict[str, Any]] = []
         seen: set = set()
-        
+
+        # 方法0: Next.js JSON script 提取（优先，适用于 PH/PK 等）
+        nextjs_plans = _extract_plans_from_nextjs_json(html, country_code)
+        if nextjs_plans:
+            print(f"📊 {country_code}: Next.js JSON 提取到 {len(nextjs_plans)} 个套餐")
+            out = [f"**HBO Max {country_code.upper()} 订阅价格:**"]
+            for item in nextjs_plans:
+                out.append(f"✅ {item['name']} ({item['label']}): **{item['price']}**")
+            return nextjs_plans, "\n".join(out)
+
         # 方法1: 寻找带data-plan-group属性的标准结构
         sections = soup.find_all('section', {'data-plan-group': True})
         
