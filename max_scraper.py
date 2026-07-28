@@ -1011,7 +1011,7 @@ def _extract_plans_from_nextjs_json(html: str, country_code: str) -> List[Dict[s
                 if not isinstance(plan_list, list):
                     continue
 
-                plan_group, label = cycle_label_map.get(cycle_key, ('monthly', '每月'))
+                mapped_cycle = cycle_label_map.get(cycle_key)
 
                 for plan in plan_list:
                     if not isinstance(plan, dict):
@@ -1048,6 +1048,15 @@ def _extract_plans_from_nextjs_json(html: str, country_code: str) -> List[Dict[s
 
                     if not amount_str or not currency_code:
                         continue
+
+                    if mapped_cycle is not None:
+                        plan_group, label = mapped_cycle
+                    else:
+                        # cycle_key 是本地化文本（如西语站点的 'Mensual'/'Anual'），
+                        # 映射表查不到时用周期文本做多语言检测，而不是默认当月付
+                        plan_group, label = detect_billing_cycle_globally(
+                            period_str or periodicity_text, extract_price_number(amount_str), country_code
+                        )
 
                     # Build price display string
                     price_display = f"{currency_code} {amount_str}/{period_str}" if period_str else f"{currency_code} {amount_str}"
@@ -1121,7 +1130,7 @@ def _extract_plans_from_nextjs_json(html: str, country_code: str) -> List[Dict[s
             if not isinstance(plan_list, list):
                 continue
 
-            plan_group, label = cycle_label_map.get(cycle_key, ('monthly', '每月'))
+            mapped_cycle = cycle_label_map.get(cycle_key)
 
             for plan in plan_list:
                 if not isinstance(plan, dict):
@@ -1156,6 +1165,15 @@ def _extract_plans_from_nextjs_json(html: str, country_code: str) -> List[Dict[s
 
                 if not amount_str or not currency_code:
                     continue
+
+                if mapped_cycle is not None:
+                    plan_group, label = mapped_cycle
+                else:
+                    # cycle_key 是本地化文本（如西语站点的 'Mensual'/'Anual'），
+                    # 映射表查不到时用周期文本做多语言检测，而不是默认当月付
+                    plan_group, label = detect_billing_cycle_globally(
+                        period_str, extract_price_number(amount_str), country_code
+                    )
 
                 # Build price display string
                 price_display = f"{currency_code} {amount_str}/{period_str}" if period_str else f"{currency_code} {amount_str}"
