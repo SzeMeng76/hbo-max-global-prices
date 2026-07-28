@@ -981,10 +981,112 @@ def _extract_plans_from_nextjs_json(html: str, country_code: str) -> List[Dict[s
     """
     方法0: 从 Next.js __NEXT_DATA__ JSON script 标签提取套餐价格
     适用于 PH、PK 等使用 Next.js 渲染的页面
+
+    支持两种数据结构:
+    1. 新版 (2026-07+): data-plan-picker-source script (菲律宾等)
+    2. 旧版: __NEXT_DATA__.props.pageProps.mappedData (巴基斯坦等)
     """
     plans = []
     seen = set()
 
+    # 方法1: 尝试新版 data-plan-picker-source 结构
+    plan_picker_match = re.search(r'<script type="application/json" data-plan-picker-source>\s*(.*?)\s*</script>', html, re.DOTALL)
+    if plan_picker_match:
+        try:
+            data = json.loads(plan_picker_match.group(1))
+            print(f"    📊 {country_code}: 使用新版 data-plan-picker-source 结构")
+
+            items = data.get('items', {})
+            if not items:
+                print(f"    ⚠️ {country_code}: data-plan-picker-source 中没有 items")
+                return plans
+
+            cycle_label_map = {
+                'Monthly': ('monthly', '每月'),
+                'Yearly': ('yearly', '每年'),
+                'Bundle': ('bundle', '每月'),  # Bundle 通常是月付
+            }
+
+            for cycle_key, plan_list in items.items():
+                if not isinstance(plan_list, list):
+                    continue
+
+                plan_group, label = cycle_label_map.get(cycle_key, ('monthly', '每月'))
+
+                for plan in plan_list:
+                    if not isinstance(plan, dict):
+                        continue
+                    content = plan.get('content', )
+                    plan_card = content.get('planCard', {})
+                    if not plan_card:
+                        continue
+
+                    # Extract plan name
+                    product_name = plan_card.get('productName', {})
+                    if isinstance(product_name, dict):
+                        name_raw = product_name.get('plainText', '') or product_name.get('richTextHtml', '')
+                        name_raw = re.sub(r'<[^>]+>', '', name_raw).strip()
+                    else:
+                        name_raw = str(product_name).strip()
+
+                    if not name_raw:
+                        continue
+
+                    # Extract price
+                    price_info = plan_card.get('price', {})
+                    if not isinstance(price_info, dict):
+                        continue
+
+                    amount_obj = price_info.get('amount', {})
+                    amount_str = amount_obj.get('plainText', '') if isinstance(amount_obj, dict) else ''
+                    currency_code = price_info.get('currencyCode', '')
+                    period_obj = price_info.get('period', {})
+                    period_str = period_obj.get('plainText', '') if isinstance(period_obj, dict) else ''
+
+                    # 周期文本（用于确认月付/年付）
+                    periodicity_text = plan_card.get('periodicityText', '')
+
+                    if not amount_str or not currency_code:
+                        continue
+
+                    # Build price display string
+                    price_display = f"{currency_code} {amount_str}/{period_str}" if period_str else f"{currency_code} {amount_str}"
+
+                    # Dedup
+                    key = (plan_group, name_raw, amount_str, currency_code)
+                    if key in seen:
+                        continue
+                    seen.add(key)
+
+                    normalized_name = normalize_plan_name(name_raw)
+                    price_number = extract_price_number(amount_str)
+
+                    # 根据周期计算月等价价格
+                    if plan_group == 'yearly' or 'year' in period_str.lower():
+                        monthly_price = round(price_number / 12, 2)
+                    else:
+                        monthly_price = price_number
+
+                    plan_data = {
+                        "plan_group": plan_group,
+                        "label": label,
+                        "name": normalized_name,
+                        "original_name": name_raw,
+                        "price": price_display,
+                        "price_number": price_number,
+                        "monthly_price": monthly_price,
+                        "currency": currency_code,
+                    }
+                    plans.append(plan_data)
+                    print(f"✅ {country_code}: [data-plan-picker-source] {normalized_name} ({label}) - {price_display} ({currency_code})")
+
+            return plans
+
+        except Exception as e:
+            print(f"    ⚠️ {country_code}: data-plan-picker-source 解析失败 - {e}")
+            # 继续尝试旧版结构
+
+    # 方法2: 尝试旧版 __NEXT_DATA__ 结构
     scripts = re.findall(r'<script[^>]*type="application/json"[^>]*>(.*?)</script>', html, re.DOTALL)
     if not scripts:
         return plans
@@ -997,7 +1099,10 @@ def _extract_plans_from_nextjs_json(html: str, country_code: str) -> List[Dict[s
 
     mapped = data.get('props', {}).get('pageProps', {}).get('mappedData', {})
     if not mapped:
+        print(f"    📊 {country_code}: __NEXT_DATA__ 中没有 mappedData (可能使用其他渲染方式)")
         return plans
+
+    print(f"    📊 {country_code}: 使用旧版 __NEXT_DATA__.mappedData 结构")
 
     cycle_label_map = {
         'Monthly': ('monthly', '每月'),
