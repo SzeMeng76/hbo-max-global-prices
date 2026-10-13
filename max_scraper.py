@@ -549,7 +549,7 @@ def detect_billing_cycle_globally(price_text: str, price_number: float, country_
     # 月付标记（多语言）
     monthly_keywords = [
         'month', '/month', 'monthly', 'per month',  # English
-        'mes', '/mes', 'mensual', 'por mes',        # Spanish  
+        'mes', '/mes', 'mensual', 'por mes',        # Spanish
         'mês', '/mês', 'mensal', 'por mês',         # Portuguese
         'mois', '/mois', 'mensuel', 'par mois',     # French
         'mese', '/mese', 'mensile', 'al mese',      # Italian
@@ -562,13 +562,14 @@ def detect_billing_cycle_globally(price_text: str, price_number: float, country_
         'ay', '/ay', 'aylık', 'ayda',               # Turkish
         'mies', '/mies', 'miesięcznie',             # Polish alt
         'месяц', '/месяц', 'в месяц',               # Russian
+        'buwan', '/buwan',                          # Filipino/Tagalog
     ]
-    
+
     # 年付标记（多语言）
     yearly_keywords = [
         'year', '/year', 'yearly', 'annual', 'per year', 'annually',  # English
         'año', '/año', 'anual', 'por año', 'anualmente',              # Spanish
-        'ano', '/ano', 'anual', 'por ano', 'anualmente',              # Portuguese  
+        'ano', '/ano', 'anual', 'por ano', 'anualmente',              # Portuguese
         'an', '/an', 'année', '/année', 'annuel', 'par an',           # French
         'anno', '/anno', 'annuale', 'all\'anno',                      # Italian
         'jahr', '/jahr', 'jährlich', 'pro jahr',                      # German
@@ -578,6 +579,7 @@ def detect_billing_cycle_globally(price_text: str, price_number: float, country_
         'vuosi', '/vuosi', 'vuosittain',                              # Finnish
         'yıl', '/yıl', 'yıllık', 'yılda',                            # Turkish
         'год', '/год', 'в год', 'годовой',                            # Russian
+        'taon', '/taon',                                              # Filipino/Tagalog
     ]
     
     # 检查文本标记
